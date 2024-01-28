@@ -9,37 +9,38 @@ theme: jekyll-theme-chirpy
 lang: en
 
 # Change to your timezone › https://kevinnovak.github.io/Time-Zone-Picker
-timezone:
+timezone: Asia/Calcutta
 
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Chirpy # the main title
+title: Ravikumar # the main title
 
-tagline: A text-focused Jekyll theme # it will display as the sub-title
+tagline: Machine Learning Engineer # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
-  A minimal, responsive and feature-rich Jekyll theme for technical writing.
-
+  blog, ravikumarmn, github, ravikumarmn.github.io, ravikumarmn github, ravikumar naduvin, machine learning blogs, blogging, large language models, LLM, Deep learning. 
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.
-url: ""
+url: "https://ravikumarmn.github.io/"
 
 github:
-  username: github_username # change to your github username
+  username: ravikumarmn # change to your github username
 
 twitter:
-  username: twitter_username # change to your twitter username
+  username: ravikumarmn_ # change to your twitter username
 
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: your_full_name
-  email: example@domain.com # change to your email address
+  name: Ravikumar
+  email: ravikumarnaduvin@gmail.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://twitter.com/username # change to your twitter homepage
-    - https://github.com/username # change to your github homepage
+    - https://www.linkedin.com/in/ravikumar-mn
+    - https://github.com/ravikumarmn # change to your github homepage
+    - https://twitter.com/ravikumarmn_ # change to your twitter homepage
+   
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
     # - https://www.linkedin.com/in/username
@@ -73,7 +74,7 @@ theme_mode: # [light|dark]
 img_cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar:
+avatar: https://media.licdn.com/dms/image/D5603AQE91lW0R4hmDg/profile-displayphoto-shrink_100_100/0/1671721886217?e=1712188800&v=beta&t=RWkcxLU6WxqpLlZm-PvgEHxgmVea1pEV6aN8bJIhGNo
 
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.
@@ -83,7 +84,7 @@ social_preview_image: # string, local or CORS resources
 toc: true
 
 comments:
-  active: # The global switch for posts comments, e.g., 'disqus'.  Keep it empty means disable
+  active: disqus # The global switch for posts comments, e.g., 'disqus'.  Keep it empty means disable
   # The active options are as follows:
   disqus:
     shortname: # fill with the Disqus shortname. › https://help.disqus.com/en/articles/1717111-what-s-a-shortname
