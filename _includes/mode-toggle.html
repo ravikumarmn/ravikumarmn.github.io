@@ -52,7 +52,11 @@
         self.notify();
       });
     } /* constructor() */
-
+    initializeDefaultMode() {
+      if (!this.hasMode) {
+        this.setLight();
+      }
+    }
     get sysDarkPrefers() {
       return window.matchMedia('(prefers-color-scheme: dark)');
     }
@@ -140,4 +144,5 @@
   } /* ModeToggle */
 
   const modeToggle = new ModeToggle();
+  modeToggle.initializeDefaultMode();
 </script>
