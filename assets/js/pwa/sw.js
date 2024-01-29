@@ -28,13 +28,13 @@ function isExcluded(url) {
   return false;
 }
 
-// self.addEventListener('install', (event) => {
-//   event.waitUntil(
-//     caches.open(cacheName).then((cache) => {
-//       return cache.addAll(resource);
-//     })
-//   );
-// });
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(cacheName).then((cache) => {
+      return cache.addAll(resource);
+    })
+  );
+});
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(

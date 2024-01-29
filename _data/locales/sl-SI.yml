@@ -31,14 +31,12 @@ copyright:
   # Shown at the bottom of the post
   license:
     template: Ta objava je licencirana pod :LICENCE_NAME s strani avtorja. #This post is licensed under :LICENSE_NAME by the author.
-    name: CC BY 4.0
-    link: https://creativecommons.org/licenses/by/4.0/
-
+    name: 
+    link: ""
   # Displayed in the footer
   brief: Nekatere pravice pridržane. #Some rights reserved.
   verbose: >-
-    Razen kjer navedeno drugače, vse objave spletnega dnevnika so licencirane
-    pod Creative Commons Attribution 4.0 International (CC BY 4.0) s strani avtorja.
+    ""
 
 meta: Uporabljena :PLATFORM tema :THEME #Using the :PLATFORM theme :THEME
 
