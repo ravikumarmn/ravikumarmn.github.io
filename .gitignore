@@ -20,5 +20,5 @@ package-lock.json
 
 # Misc
 assets/js/dist
-frontmatter.json
 .frontmatter
+reference.md

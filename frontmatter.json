@@ -1,0 +1,88 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "default",
+      "pageBundle": false,
+      "previewPath": null,
+      "fields": [
+        {
+          "title": "title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "author",
+          "name": "author",
+          "type": "string",
+          "default": "Ravikumar"
+        },
+        {
+          "title": "date",
+          "name": "date",
+          "type": "datetime"
+        },
+        {
+          "title": "categories",
+          "name": "categories",
+          "type": "list"
+        },
+        {
+          "title": "tags",
+          "name": "tags",
+          "type": "list"
+        },
+        {
+          "title": "pin",
+          "name": "pin",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "title": "math",
+          "name": "math",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "title": "mermaid",
+          "name": "mermaid",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "title": "image",
+          "name": "image",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "path",
+              "name": "path",
+              "type": "image",
+              "isPreviewImage": true
+            },
+            {
+              "title": "lqip",
+              "name": "lqip",
+              "type": "string"
+            },
+            {
+              "title": "above img alt",
+              "name": "alt",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "frontMatter.framework.id": "jekyll",
+  "frontMatter.content.publicFolder": "",
+  "frontMatter.preview.host": "http://localhost:4000",
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "posts",
+      "path": "[[workspace]]/_posts"
+    }
+  ]
+}
