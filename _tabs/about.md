@@ -40,8 +40,8 @@ My passion lies in exploring the limitless possibilities of **Deep Learning** an
 As a **Freelance Machine Learning Engineer**, I not only work with **Large Language Models** but also:
 
 - Deliver complex **Machine Learning/Deep Learning projects**.
-- Develop cutting-edge solutions in **Computer Vision**.
 - Implement advanced **NLP and LLM techniques**.
+- Develop cutting-edge solutions in **Computer Vision**.
 - Specialize in **Retrieval Augmented Generation (RAG)**.
 - Provide expertise in **model fine-tuning** for specific needs.
 
