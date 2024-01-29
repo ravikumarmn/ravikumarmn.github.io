@@ -14,8 +14,7 @@
         {
           "title": "author",
           "name": "author",
-          "type": "string",
-          "default": "Ravikumar"
+          "type": "string"
         },
         {
           "title": "date",
@@ -25,30 +24,27 @@
         {
           "title": "categories",
           "name": "categories",
-          "type": "list"
+          "type": "categories"
         },
         {
           "title": "tags",
           "name": "tags",
-          "type": "list"
+          "type": "tags"
         },
         {
           "title": "pin",
           "name": "pin",
-          "type": "boolean",
-          "default": "false"
+          "type": "boolean"
         },
         {
           "title": "math",
           "name": "math",
-          "type": "boolean",
-          "default": "false"
+          "type": "boolean"
         },
         {
           "title": "mermaid",
           "name": "mermaid",
-          "type": "boolean",
-          "default": "false"
+          "type": "string"
         },
         {
           "title": "image",
@@ -58,8 +54,7 @@
             {
               "title": "path",
               "name": "path",
-              "type": "image",
-              "isPreviewImage": true
+              "type": "string"
             },
             {
               "title": "lqip",
@@ -67,11 +62,16 @@
               "type": "string"
             },
             {
-              "title": "above img alt",
+              "title": "alt",
               "name": "alt",
               "type": "string"
             }
           ]
+        },
+        {
+          "title": "permalink",
+          "name": "permalink",
+          "type": "string"
         }
       ]
     }
