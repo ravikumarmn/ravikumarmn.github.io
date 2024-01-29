@@ -50,7 +50,7 @@ My freelancing journey is fueled by a passion for innovation and a commitment to
 ## 🌱 Specialization
 
 In the field of **Retrieval Augmented Generation**, I excel in utilizing:
-- `Hugging Face Language Models & Embeds 🤗` 
+- `Hugging Face Language Models & Embeddings 🤗` 
 - `Cohere 🌟`
 - `ChromaDB 📚`
 - `Weaviate 🔍`
