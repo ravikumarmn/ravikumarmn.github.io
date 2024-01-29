@@ -11,7 +11,7 @@ order: 4
   - `Python 🐍`
 - **Frameworks & Libraries**: 
   - `PyTorch 🔥`
-  - `Hugging Face 😊`
+  - `Hugging Face 🤗`
   - `LangChain 🔗`
   - `LlamaIndex 🦙`
   - `Flask 🌶️`
@@ -50,7 +50,7 @@ My freelancing journey is fueled by a passion for innovation and a commitment to
 ## 🌱 Specialization
 
 In the field of **Retrieval Augmented Generation**, I excel in utilizing:
-
+- `Hugging Face Language Models & Embeds 🤗` 
 - `Cohere 🌟`
 - `ChromaDB 📚`
 - `Weaviate 🔍`
