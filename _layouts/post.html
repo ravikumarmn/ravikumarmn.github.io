@@ -62,9 +62,9 @@ tail_includes:
             {% if authors %}
               {% for author in authors %}
                 {% if site.data.authors[author].url -%}
-                  <a href="{{ site.data.authors[author].url }}">{{ site.data.authors[author].name }}</a>
+                  <a href="{{ site.author }}">{{ site.author }}</a>
                 {%- else -%}
-                  {{ site.data.authors[author].name }}
+                  {{ site.author }}
                 {%- endif %}
                 {% unless forloop.last %}{{ '</em>, <em>' }}{% endunless %}
               {% endfor %}

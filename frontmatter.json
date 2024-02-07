@@ -14,7 +14,8 @@
         {
           "title": "author",
           "name": "author",
-          "type": "string"
+          "type": "string",
+          "default": "Ravikumar"
         },
         {
           "title": "date",
