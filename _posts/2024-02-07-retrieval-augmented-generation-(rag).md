@@ -1,6 +1,6 @@
 ---
 title: Retrieval-Augmented Generation (RAG)
-author: "Ravikumar"
+author: Ravikumar
 date: 2024-02-02T20:18:09.710Z
 categories:
   - Large Language Models
