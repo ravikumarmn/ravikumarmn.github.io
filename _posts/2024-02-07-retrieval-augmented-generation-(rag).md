@@ -38,7 +38,7 @@ Retrieval-Augmented Generation in an AI-based application:
 Steps involved: 
 
 * User ask a query.
-* System search and looks for similar/related documents that could answer to the users query. These documents database.
+* The System search and looks for similar/related documents that could answer to the users query. These documents are stored in database.
 * System creates prompt for Large language model that includes the user's questions, the relevant documents, and instructions for the LLM to use these documents as context to answer the user question.
 * The system forwards prompt to LLM. 
 * Ths LLM provides an response to the user's query, based on the related documents/context supplied. This response is the output of system.
@@ -48,7 +48,7 @@ Steps involved:
     <img src="images/Machine Learning/RAG/idea-of-rag1.png" alt="General RAG" title="General RAG" width="70%" height="70%" style="display: block; margin-left: auto; margin-right: auto;">
 </div>
 
-I have explained RAG in simple terms, but I didn't give much detail on how it works. Now Let's go depth into understanding of how RAG works in details. 
+I have explained RAG in simple terms, but I didn't give much detail on how it works. now lets go in-depth for understanding how RAG works in detail
 
 
 The proposed architecture by the authors of the paper titles [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/pdf/2005.11401.pdf) consists of two main parts.
