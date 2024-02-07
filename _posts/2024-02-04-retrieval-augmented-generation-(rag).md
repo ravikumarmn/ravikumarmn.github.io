@@ -1,6 +1,6 @@
 ---
 title: Retrieval-Augmented Generation (RAG)
-author: "'Ravikumar'"
+author: "Ravikumar"
 date: 2024-02-02T20:18:09.710Z
 categories:
   - Large Language Models
@@ -219,6 +219,16 @@ Thank you for reading, and best wishes for your AI endeavors.
 
 All Illustrations in this blog post are created by the [author](https://ravikumarmn.github.io/). You are free to use any original images from this post for any purpose, provided you give credit by linking back to this article.
 
+## **References**
 
+* [Retrieval Augmented Generation (RAG) for LLMs](https://www.promptingguide.ai/research/rag)
+
+* [Retrieval-Augmented Generation for Large Language Models: A Survey](https://arxiv.org/abs/2312.10997)
+
+* [LlamaIndex Documentation](https://docs.llamaindex.ai/en/stable/)
+
+* [Retrieval Augmented Generation: Streamlining the creation of intelligent natural language processing models](https://ai.meta.com/blog/retrieval-augmented-generation-streamlining-the-creation-of-intelligent-natural-language-processing-models/)
+
+* [Building Systems with the ChatGPT API](https://www.deeplearning.ai/short-courses/building-systems-with-chatgpt/)
 
 
