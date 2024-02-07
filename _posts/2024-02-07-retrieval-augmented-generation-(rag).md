@@ -16,7 +16,7 @@ permalink: /blogs/:title
 
 ## Introduction
 
-Basically, Large Language Models are designed to read, understand, and generate text almost like a humans, They have been trained on the vast amount of text data. Training these kind of modesl will take longer time, and  the data they are trainined are pretty old. 
+Basically, Large Language Models are designed to read, understand, and generate text almost like a humans, They have been trained on the vast amount of text data. Training these kind of models will take longer time, and  the data they are trainined are pretty old. 
 
 LLMs are not aware of the specific data you often need for your AI-Based application. To adress this, we extend the models with new data by simply fine-tuning them. But now out models are very larger and have already been trained with large data. Usually, Fine-tuning method is suitable for only few scenario. Fine-tuning will perform well when we want to our large language models to talk in different tone or style.
 
@@ -41,7 +41,7 @@ Steps involved:
 * System search and looks for similar/related documents that could answer to the users query. These documents database.
 * System creates prompt for Large language model that includes the user's questions, the relevant documents, and instructions for the LLM to use these documents as context to answer the user question.
 * The system forwards prompt to LLM. 
-* Ths LLM provides an response to the user's query, based on the related documents/context supplied. This respons is the output of system.
+* Ths LLM provides an response to the user's query, based on the related documents/context supplied. This response is the output of system.
 
 
 <div style="text-align: center;">
@@ -64,7 +64,7 @@ Here is the sketch of the architecture as presented in paper:
 </div>
 
 
-The **Retriever** transformes the input text into a sequence of vector using query encoder and It does same for every documents with help of document encoder, and stores in search index. The system searche for document vectors related to the input/query vector, then turns those document vectors back into text and gives text as output.
+The **Retriever** transform the input text into a sequence of vector using query encoder and It does same for every documents with help of document encoder, and stores in search index. The system searchs for document vectors related to the input/query vector, then turns those document vectors back into text and gives text as output.
 
 The **Generator** takes the user's query text and the matched documents text, creates prompt by combining them, and asks a language model for a response to the user's input based on the document information. The language model's response is the system's output.
 
@@ -75,7 +75,7 @@ Paper author proposes two approaches for implementation of RAG architecture:
 
 * **RAG-sequence** - In this approach, generates all output tokens that answers a user query using retrived k documents.
 
-* **RAG-token** - We first find k documents and then use theose documents to create the next word. Then, we find another k documents to create the following word, and we keep doing this. This means we might get many different groups of documents while making one answer to a question.
+* **RAG-token** - We first find k documents and then use those documents to create the next word. Then, we find another k documents to create the following word, and we keep doing this. This means we might get many different groups of documents while making one answer to a question.
 
 Now we understand the big picture of how things work in the RAG paper. But, not everything in the paper was done exactly as proposed.
 
@@ -89,7 +89,7 @@ A query system is generally consists of two steps:
   * Vector Search
   * Hybrid Search
 
-* **Ranking:** It takes the documents that we found similar/relevant by retrieval system and rearranges them to improve their order of importance.
+* **Ranking:** It takes the documents that we found similar/relevant by retrieval system and re-arranges them, to improve their order of importance.
 
 
 
@@ -114,7 +114,7 @@ The keyword search approach works well when the keywords actually appear in the 
 
 Consider an example, If you are looking for a pet online and search "small dog for adoption" and documentation mentions "tiny puppy available," it is "tiny puppy available," keyword search might miss identifing that as a match. But, Vector search would know they match.  
 
-If we are searching for unstructured text, Vector Search apporach is very much suitable. 
+If we are searching for unstructured text, `Vector Search`` apporach is very much suitable. 
 
 
 Here is the overview of RAG with vector search. 
