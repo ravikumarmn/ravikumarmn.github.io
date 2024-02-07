@@ -16,7 +16,7 @@ permalink: /blogs/:title
 
 ## Introduction
 
-Basically, Large Language Models are designed to read, understand, and generate text almost like a humans, They have been trained on the vast amount of text data. Training these kind of models will take longer time, and  the data they are trainined are pretty old. 
+Basically, Large Language Models are designed to read, understand, and generate text almost like a humans, They have been trained on the vast amount of text data. Training these kind of models will take longer time, and  the data they are trained are pretty old. 
 
 LLMs are not aware of the specific data you often need for your AI-Based application. To adress this, we extend the models with new data by simply fine-tuning them. But now out models are very larger and have already been trained with large data. Usually, Fine-tuning method is suitable for only few scenario. Fine-tuning will perform well when we want to our large language models to talk in different tone or style.
 
