@@ -12,6 +12,8 @@ image:
   path: images/Machine Learning/RAG/rag_proposed.png
   alt: Architecture of a Retriever-Augmented Generation (RAG)
 permalink: /blogs/:title
+
+comments: true
 ---
 
 ## Introduction
