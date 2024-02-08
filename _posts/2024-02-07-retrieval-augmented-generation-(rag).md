@@ -18,9 +18,9 @@ comments: true
 
 ## Introduction
 
-Basically, Large Language Models are designed to read, understand, and generate text almost like a humans, They have been trained on the vast amount of text data. Training these kind of models will take longer time, and  the data they are trained are pretty old. 
+Basically, Large Language Models are designed to read, understand, and generate text almost like humans, They have been trained on vast amounts of text data. Training such models takes longer and the data its trained on is pretty old.
 
-LLMs are not aware of the specific data you often need for your AI-Based application. To adress this, we extend the models with new data by simply fine-tuning them. But now out models are very larger and have already been trained with large data. Usually, Fine-tuning method is suitable for only few scenario. Fine-tuning will perform well when we want to our large language models to talk in different tone or style.
+LLMs are not aware of the specific data you often need for your AI-Based application. To address this, we extend the models with new data by simply fine-tuning them. But now most models are very large and have already been trained on large amounts of data. Usually, Fine-tuning method is suitable for only few scenario. Fine-tuning will perform well when we want to our large language models to talk in different tone or style.
 
 Sometimes, Fine-tuning big models doesn't work for new data aswell, which I see happening a lot in businesses. Also, Large language models needs a lot of good data, a lot of money for computer resources, and a lot of time, for fine-tuning.
 
@@ -28,7 +28,7 @@ In this guide, Will cover an interesteing technique called [`Retrieval-Augmeted 
 (RAG). This technique was introduced by [Meta AI Research](https://ai.meta.com/research/) in the year of 2021. 
 
 
-This approach adress the issue of having lot of data, lot of budget or lot of time for fine-tuning the LLMs.
+This approach address the issue of having lot of data, lot of budget or lot of time for fine-tuning the LLMs.
 
 Checkout the Implementation code  for a basic RAG is available in the [**Github repo**](https://github.com/ravikumarmn/Simple-RAG-Implementation).
 
