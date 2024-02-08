@@ -20,15 +20,15 @@ comments: true
 
 Basically, Large Language Models are designed to read, understand, and generate text almost like humans, They have been trained on vast amounts of text data. Training such models takes longer and the data its trained on is pretty old.
 
-LLMs are not aware of the specific data you often need for your AI-Based application. To address this, we extend the models with new data by simply fine-tuning them. But now most models are very large and have already been trained on large amounts of data. Usually, Fine-tuning method is suitable for only few scenario. Fine-tuning will perform well when we want to our large language models to talk in different tone or style.
+LLMs are not aware of the specific data you often need for your AI-Based application. To address this, we extend the models with new data by simply fine-tuning them. But now most models are very large and have already been trained on large amounts of data. Usually, Fine tuning works only in very few scenarios. Fine tuning performs well when we want our large language model to talk in a different style or tone.
 
-Sometimes, Fine-tuning big models doesn't work for new data aswell, which I see happening a lot in businesses. Also, Large language models needs a lot of good data, a lot of money for computer resources, and a lot of time, for fine-tuning.
+While fine-tuning large models can be effective, it doesn't always perform well with new data, a phenomenon I frequently observe in businesses. Large language models needs a lot of good data, lot of computer resources, and a lot of time for fine tuning.
 
-In this guide, Will cover an interesteing technique called [`Retrieval-Augmeted Generation`](https://arxiv.org/pdf/2005.11401.pdf)
+In this guide, Will cover an intresting technique called [`Retrieval-Augmented Generation`](https://arxiv.org/pdf/2005.11401.pdf)
 (RAG). This technique was introduced by [Meta AI Research](https://ai.meta.com/research/) in the year of 2021. 
 
 
-This approach address the issue of having lot of data, lot of budget or lot of time for fine-tuning the LLMs.
+This approaches all the limitations faced with data, resource and latency.
 
 Checkout the Implementation code  for a basic RAG is available in the [**Github repo**](https://github.com/ravikumarmn/Simple-RAG-Implementation).
 
@@ -39,9 +39,9 @@ I will also explain the code in this blog post.
 Retrieval-Augmented Generation in an AI-based application:
 Steps involved: 
 
-* User ask a query.
-* The System search and looks for similar/related documents that could answer to the users query. These documents are stored in database.
-* System creates prompt for Large language model that includes the user's questions, the relevant documents, and instructions for the LLM to use these documents as context to answer the user question.
+* User asks a query.
+* System searches and looks for similar and related documents stored in the database that could answer the users query.
+* System creates a prompt for LLM's that include users question, the relevant documents and the instructions for LLM's on how to use the documents to answer the users query.
 * The system forwards prompt to LLM. 
 * Ths LLM provides an response to the user's query, based on the related documents/context supplied. This response is the output of system.
 
