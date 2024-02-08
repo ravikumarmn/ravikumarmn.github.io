@@ -18,19 +18,19 @@ comments: true
 
 ## Introduction
 
-Basically, Large Language Models are designed to read, understand, and generate text almost like humans, They have been trained on vast amounts of text data. Training such models takes longer and the data its trained on is pretty old.
+Large Language Models are designed to read, understand, and generate text almost like humans, They have been trained on vast amounts of text data. Training such models takes longer and the data it's trained on is pretty old.
 
-LLMs are not aware of the specific data you often need for your AI-Based application. To address this, we extend the models with new data by simply fine-tuning them. But now most models are very large and have already been trained on large amounts of data. Usually, Fine tuning works only in very few scenarios. Fine tuning performs well when we want our large language model to talk in a different style or tone.
+LLMs are not aware of the specific data you often need for your AI-based application. To address this, we extend the models with new data by simply fine-tuning them. But now most models are very large and have already been trained on large amounts of data. Usually, Fine-tuning works only in very few scenarios. Fine-tuning performs well when we want our large language model to talk in a different style or tone.
 
-While fine-tuning large models can be effective, it doesn't always perform well with new data, a phenomenon I frequently observe in businesses. Large language models needs a lot of good data, lot of computer resources, and a lot of time for fine tuning.
+While fine-tuning large models can be effective, it doesn't always perform well with new data, a phenomenon I frequently observe in businesses. Large language models need a lot of good data, a lot of computer resources, and a lot of time for fine-tuning.
 
-In this guide, Will cover an intresting technique called [`Retrieval-Augmented Generation`](https://arxiv.org/pdf/2005.11401.pdf)
-(RAG). This technique was introduced by [Meta AI Research](https://ai.meta.com/research/) in the year of 2021. 
+This guide, Will cover an interesting technique called [`Retrieval-Augmented Generation`](https://arxiv.org/pdf/2005.11401.pdf)
+(RAG). This technique was introduced by [Meta AI Research](https://ai.meta.com/research/) in 2021. 
 
 
-This approaches all the limitations faced with data, resource and latency.
+This approaches all the limitations faced with data, resources and latency.
 
-Checkout the Implementation code  for a basic RAG is available in the [**Github repo**](https://github.com/ravikumarmn/Simple-RAG-Implementation).
+Check out the Implementation code for a basic RAG is available in the [**Github repo**](https://github.com/ravikumarmn/Simple-RAG-Implementation).
 
 I will also explain the code in this blog post. 
 
@@ -40,10 +40,11 @@ Retrieval-Augmented Generation in an AI-based application:
 Steps involved: 
 
 * User asks a query.
-* System searches and looks for similar and related documents stored in the database that could answer the users query.
-* System creates a prompt for LLM's that include users question, the relevant documents and the instructions for LLM's on how to use the documents to answer the users query.
-* The system forwards prompt to LLM. 
-* Ths LLM provides an response to the user's query, based on the related documents/context supplied. This response is the output of system.
+* System searches and looks for similar and related documents stored in the database that could answer the user's query.
+* System creates prompt for Large language model that includes the user's questions, the relevant documents, and instructions for the LLM to use these documents as context to answer the user question.
+* The system forwards a prompt to LLM. 
+* This LLM provides a response to the user's query, based on the related documents/context supplied. The system generates this as the output.
+
 
 
 <div style="text-align: center;">
@@ -77,7 +78,7 @@ Paper author proposes two approaches for implementation of RAG architecture:
 
 * **RAG-sequence** - In this approach, generates all output tokens that answers a user query using retrived k documents.
 
-* **RAG-token** - We first find k documents and then use those documents to create the next word. Then, we find another k documents to create the following word, and we keep doing this. This means we might get many different groups of documents while making one answer to a question.
+* **RAG-token** - We first find k documents and then use those documents to create the next word. Then, we find another k documents to create the following word, and we keep doing this. This means we get many different groups of documents while making one answer to a question.
 
 Now we understand the big picture of how things work in the RAG paper. But, not everything in the paper was done exactly as proposed.
 
@@ -228,5 +229,7 @@ All Illustrations in this blog post are created by the [author](https://ravikuma
 * [Retrieval Augmented Generation: Streamlining the creation of intelligent natural language processing models](https://ai.meta.com/blog/retrieval-augmented-generation-streamlining-the-creation-of-intelligent-natural-language-processing-models/)
 
 * [Building Systems with the ChatGPT API](https://www.deeplearning.ai/short-courses/building-systems-with-chatgpt/)
+
+
 
 

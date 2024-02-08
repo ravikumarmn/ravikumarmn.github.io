@@ -14,8 +14,7 @@
         {
           "title": "author",
           "name": "author",
-          "type": "string",
-          "default": "Ravikumar"
+          "type": "string"
         },
         {
           "title": "date",
@@ -33,21 +32,6 @@
           "type": "tags"
         },
         {
-          "title": "pin",
-          "name": "pin",
-          "type": "boolean"
-        },
-        {
-          "title": "math",
-          "name": "math",
-          "type": "boolean"
-        },
-        {
-          "title": "mermaid",
-          "name": "mermaid",
-          "type": "string"
-        },
-        {
           "title": "image",
           "name": "image",
           "type": "fields",
@@ -55,11 +39,6 @@
             {
               "title": "path",
               "name": "path",
-              "type": "string"
-            },
-            {
-              "title": "lqip",
-              "name": "lqip",
               "type": "string"
             },
             {
@@ -73,6 +52,11 @@
           "title": "permalink",
           "name": "permalink",
           "type": "string"
+        },
+        {
+          "title": "comments",
+          "name": "comments",
+          "type": "boolean"
         }
       ]
     }
