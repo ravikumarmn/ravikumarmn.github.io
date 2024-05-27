@@ -192,7 +192,7 @@ These vectors are sent to LSTM model, and returns hidden state vectors. returned
 
 ![pooling.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/pooling.jpg)
 Concatinated are sent to linear/Dense layer for decisions.
-![dense.jpg](images/Sentiment-Classification-and-Word-Embedding/dense.jpg)
+![dense.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/dense.jpg)
 
 I have tranined model taking embedding size to 32. Below are my result
 ### Accuracy  
