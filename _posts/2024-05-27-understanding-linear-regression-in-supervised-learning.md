@@ -185,6 +185,8 @@ Let's build a linear regression model from scratch. You can follow along in the 
 {% include notebooks/linear_regression.html %}
 
 
+If you appreciate the content, Feel free to share the blogs.
+
 ## **References**
 
 - **Supervised Learning:** Comprehensive details about supervised learning can be found in the Scikit-learn documentation. [Learn more about Supervised Learning.](https://scikit-learn.org/stable/supervised_learning.html)

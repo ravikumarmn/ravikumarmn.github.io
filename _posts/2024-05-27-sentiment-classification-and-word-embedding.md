@@ -9,7 +9,7 @@ tags:
   - Word Embeddings
   - TSNE
 image:
-  path: images/Data_Science/Linear_Regression/Sentiment_Classification/word_embeddings.jpg
+  path: images/Data_Science/Sentiment_Classification/word_embeddings.jpg
   alt: Representing(TSNE) Word Embeddings.
 permalink: /blogs/:title
 comments: true
@@ -35,7 +35,7 @@ Sample reviews :
 dataset.head()
 ```
 
-![imdb_data_head.png](images/Data_Science/Linear_Regression/Sentiment_Classification/imdb_data_head.png)
+![imdb_data_head.png](images/Data_Science/Sentiment_Classification/imdb_data_head.png)
 
 
 ### **Properties of dataset**
@@ -50,13 +50,13 @@ print(f'Number of Rows    : {dataset.shape[0]}\nNumber of Columns : {dataset.sha
 ```python
 dataset.info()
 ``` 
-![dataset_information.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/data_info.jpg)
+![dataset_information.jpg](images/Data_Science/Sentiment_Classification/data_info.jpg)
 
 There are two columns, review and sentiment, with samples 5000.
 ```python
 dataset.describe()
 ```
-![dataset_describe.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/data_describe.jpg)
+![dataset_describe.jpg](images/Data_Science/Sentiment_Classification/data_describe.jpg)
 
 By observation, there are 50k counts/samples, have two unique labels/classes (postive/negative).
 
@@ -64,7 +64,7 @@ there are 5 samples frequently occured, which means, repeated reviews. Let's see
 ```python
 Counter(dataset.review).most_common(2)
 ```    
-![repeat_review.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/repeat_review.jpg)
+![repeat_review.jpg](images/Data_Science/Sentiment_Classification/repeat_review.jpg)
 
 we can see the review are duplicated. 
 ```python
@@ -79,7 +79,7 @@ print(f"Number of Rows    : {dataset.shape[0]}\nNumber of Columns : {dataset.sha
 
 Human make mistakes,It is inevitable part of being human. 
 
-![human_mistake.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/human_mistake.jpg)
+![human_mistake.jpg](images/Data_Science/Sentiment_Classification/human_mistake.jpg)
 
 People may forget to give feedbacks/reviews. 
 
@@ -97,13 +97,13 @@ dataset.isnull().sum()
 How many reviews are Positive/Negative class.
 sentiment
 
-![bar_chat_1.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/bar_chat_1.jpg)
+![bar_chat_1.jpg](images/Data_Science/Sentiment_Classification/bar_chat_1.jpg)
 
 Above graph shows us distribution is 24.88k and 24.69K, for postive and negative classes, respectively.
 
 #### Are there any words follows with # tags?
 
-![tags.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/tags.jpg)
+![tags.jpg](images/Data_Science/Sentiment_Classification/tags.jpg)
 
 
 There are 83 # taged words present. let't clean them.
@@ -119,7 +119,7 @@ dataset.review = dataset.review.apply(lambda x : clean_text(x))
 
 Representing positive review text data in which the size of each word indicates its frequency
 
-![pos.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/pos.jpg)
+![pos.jpg](images/Data_Science/Sentiment_Classification/pos.jpg)
 
 Word "br" is indicating more frequency. which is no use, We need to clean. 
 
@@ -127,7 +127,7 @@ Word "br" is indicating more frequency. which is no use, We need to clean.
 
 Representing positive review text data in which the size of each word indicates its frequency
 
-![neg.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/neg.jpg)
+![neg.jpg](images/Data_Science/Sentiment_Classification/neg.jpg)
 
 In negative review also Word "br" is indicating more frequency, We need to clean. 
 
@@ -163,10 +163,10 @@ print(f"Minimun word review length is {list(df['review_len'])[0]}")
 
 Here are the 100 most common words.
 
-![most_common.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/most_common.jpg)
+![most_common.jpg](images/Data_Science/Sentiment_Classification/most_common.jpg)
 
 #### Average word length in text (positive and negative review)
-![avg_word.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/avg_word.jpg)
+![avg_word.jpg](images/Data_Science/Sentiment_Classification/avg_word.jpg)
 
 Negative average word length are more, than positive average word length.
 
@@ -180,26 +180,26 @@ Negative average word length are more, than positive average word length.
 We have two embedding vectors, one is from the nn.Embedding trained embedding vectors and another is word trained using gensim library to get the vectors of words, Which is used to train our model.
 
 #### Model architecture
-![LSTM-Dense-Design.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/LSTM-Dense-Design.jpg)
+![LSTM-Dense-Design.jpg](images/Data_Science/Sentiment_Classification/LSTM-Dense-Design.jpg)
 
 Here Embeddings are randomly intialized and trained.
 
 sequence of tokens(sentence) will be sent to embedding layer of nn.Embedding, Itself creates embeddings to each vectors as shown here. 
 
-![random_embedding.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/random_embedding.jpg)
+![random_embedding.jpg](images/Data_Science/Sentiment_Classification/random_embedding.jpg)
 
 These vectors are sent to LSTM model, and returns hidden state vectors. returned hidden state vectors are concatinated of mean pooled hidden state and max pooled hidden state.
 
-![pooling.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/pooling.jpg)
+![pooling.jpg](images/Data_Science/Sentiment_Classification/pooling.jpg)
 Concatinated are sent to linear/Dense layer for decisions.
-![dense.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/dense.jpg)
+![dense.jpg](images/Data_Science/Sentiment_Classification/dense.jpg)
 
 I have tranined model taking embedding size to 32. Below are my result
 ### Accuracy  
-![accuracy.png](images/Data_Science/Linear_Regression/Sentiment_Classification/acc.png)
+![accuracy.png](images/Data_Science/Sentiment_Classification/acc.png)
 
 ### Loss
-![error.png](images/Data_Science/Linear_Regression/Sentiment_Classification/error.png)
+![error.png](images/Data_Science/Sentiment_Classification/error.png)
 
 **training_accuracy is 94.5%.
 validation loss is 89.5%.***
@@ -222,14 +222,14 @@ In this project, I have trained all the words with help of gensim(library) to ge
 #### Model architecture
 
 There is tinny change in this model architecture, instead of randomly intialized embeddings, we will use pre-trained embedding to train our model.
-![embd_model.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/embd_model.jpg)
+![embd_model.jpg](images/Data_Science/Sentiment_Classification/embd_model.jpg)
 
 Will see the result after using pre-trained embeddings.
 
 ### Accuracy
-![w2v_acc.png](images/Data_Science/Linear_Regression/Sentiment_Classification/w2v_acc.png)
+![w2v_acc.png](images/Data_Science/Sentiment_Classification/w2v_acc.png)
 ### Loss
-![w2v_loss.png](images/Data_Science/Linear_Regression/Sentiment_Classification/w2v_loss.png)
+![w2v_loss.png](images/Data_Science/Sentiment_Classification/w2v_loss.png)
 
 **training_accuracy is 97.89%.
 validation accuracy is 89.7%.***
@@ -243,15 +243,15 @@ you can follow above step to optimize the results.
 ### Representing(TSNE) word embeddings.
 Each cluster will be regarded as a topic
  
-![emb1.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/emb1.jpg)
+![emb1.jpg](images/Data_Science/Sentiment_Classification/emb1.jpg)
 Here "**editing**" word, nearest/similar words are camera,shot,clip. In this image,It is representing the nearest words.
-![fav.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/fav.jpg) 
+![fav.jpg](images/Data_Science/Sentiment_Classification/fav.jpg) 
 
 Checking word for "**favorite**", nearest words are best,early,highlight, and peak. 
-![africa.png](images/Data_Science/Linear_Regression/Sentiment_Classification/africa.png)
+![africa.png](images/Data_Science/Sentiment_Classification/africa.png)
 
 **Characters name cluster**
-![char.jpg](images/Data_Science/Linear_Regression/Sentiment_Classification/char.jpg)
+![char.jpg](images/Data_Science/Sentiment_Classification/char.jpg)
 
 
 ### **Summary**
@@ -262,5 +262,7 @@ We have explored dataset and taken several action and observation.
 - Trimed sentence to maximun length.
 
 Source Code : [Github](https://github.com/ravikumarmn/Learning-NLP-with-PyTorch)
+
+If you appreciate the content, Feel free to share the blogs.
 
 Thank you for your time 🌟 .
