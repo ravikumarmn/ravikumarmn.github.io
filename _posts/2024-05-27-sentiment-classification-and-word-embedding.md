@@ -1,12 +1,12 @@
 ---
-title: Sentiment Classification and Word Embedding
+title: Sentiment Classification and Word Embeddings
 author: Ravikumar
 date: 2024-05-27T17:30:10.841Z
 categories:
   - Data Science
 tags:
   - Sentiment classification
-  - Word Embedding
+  - Word Embeddings
   - TSNE
 image:
   path: images/Data_Science/Linear_Regression/Sentiment_Classification/word_embeddings.jpg
