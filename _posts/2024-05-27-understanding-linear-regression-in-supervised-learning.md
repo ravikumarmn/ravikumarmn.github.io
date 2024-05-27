@@ -15,7 +15,9 @@ permalink: /blogs/:title
 comments: true
 ---
 
-## Introduction
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/13BVD4innmUq1EbxrsMpkwQ8GTVESUXYG?usp=sharing)
+
+## **Introduction**
 
 **Machine learning** : Learn from data and improve decision-making over time without human interference.
 
@@ -178,18 +180,14 @@ Here *simultaneously* means that you calculate the partial derivatives for all t
 
 ## **Implementation**
 
-Let’s get wild and build each one from scratch
+Let's build a linear regression model from scratch. You can follow along in the notebook linked below:
 
 {% include notebooks/linear_regression.html %}
 
 
 ## **References**
 
-* [Supervised Learning](https://scikit-learn.org/stable/supervised_learning.html)
-
-* [Linear Model- Regression](https://scikit-learn.org/stable/modules/linear_model.html#regression)
-
-* [Gradient Descent by Andrew Ng](https://www.youtube.com/watch?v=yFPLyDwVifc)
-
-* [Machine Learning Specialization by Andrew Ng](https://www.coursera.org/specializations/machine-learning-introduction)
-
+- **Supervised Learning:** Comprehensive details about supervised learning can be found in the Scikit-learn documentation. [Learn more about Supervised Learning.](https://scikit-learn.org/stable/supervised_learning.html)
+- **Linear Model - Regression:** For an in-depth understanding of linear models in regression, refer to the Scikit-learn guide on linear regression. [Read about Linear Model-Regression.](https://scikit-learn.org/stable/modules/linear_model.html#regression)
+- **Gradient Descent by Andrew Ng:** This video by Andrew Ng provides a foundational explanation of the gradient descent algorithm. [Watch the video on Gradient Descent.](https://www.youtube.com/watch?v=yFPLyDwVifc)
+- **Machine Learning Specialization by Andrew Ng:** Explore the Machine Learning Specialization on Coursera to dive deeper into machine learning concepts taught by Andrew Ng. [Enroll in the Machine Learning Specialization.](https://www.coursera.org/specializations/machine-learning-introduction)
