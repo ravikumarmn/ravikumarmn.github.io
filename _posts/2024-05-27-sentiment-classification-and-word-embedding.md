@@ -4,6 +4,7 @@ author: Ravikumar
 date: 2024-05-27T17:30:10.841Z
 categories:
   - Data Science
+  - Sentiment Classification
 tags:
   - Sentiment classification
   - Word Embeddings

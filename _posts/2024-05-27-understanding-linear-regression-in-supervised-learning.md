@@ -4,6 +4,7 @@ author: Ravikumar
 date: 2024-05-24T07:18:48.102Z
 categories:
   - Data Science
+  - Linear Regression
 tags:
   - Linear Regression
   - Gradient Descent

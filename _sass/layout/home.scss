@@ -4,8 +4,10 @@
 
 #post-list {
   margin-top: 2rem;
+  width: 100%; /* Ensures the post list container uses full width */
 
   .card-wrapper {
+    width: 100%; /* Each card wrapper uses full width to allow maximum horizontal expansion */
     &:hover {
       text-decoration: none;
     }
@@ -16,6 +18,8 @@
   }
 
   .card {
+    width: 100%; /* Makes each card use the full width of the container */
+    margin: 0; /* Removes side margins entirely */
     border: 0;
     background: none;
 
@@ -33,7 +37,7 @@
 
     .card-body {
       height: 100%;
-      padding: 1rem;
+      padding: 0.5rem; /* Reduced padding to increase effective width of card content */
 
       .card-title {
         @extend %text-clip;
@@ -62,7 +66,7 @@
 
         i {
           &:not(:first-child) {
-            margin-left: 1.5rem;
+            margin-left: 1rem; /* Slightly reduce spacing between icons */
           }
         }
 
@@ -137,7 +141,7 @@
   #post-list {
     .card {
       .card-body {
-        padding: 1.75rem 1.75rem 1.25rem 1.75rem;
+        padding: 1.25rem 1.75rem 1rem 1.75rem; /* Adjusted padding for larger viewports */
 
         .card-text {
           display: inherit !important;
