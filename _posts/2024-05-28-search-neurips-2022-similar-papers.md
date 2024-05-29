@@ -9,7 +9,7 @@ tags:
   - Sentence Transformer
   - S-BERT
   - NeurIPS
-  - Annoy indexe
+  - Annoy index
 image:
   path: images/Machine Learning/Natural_Language_Processing/Search_neurips_paper/information_retrieval.png
   alt: Information Retrieval
