@@ -11,3 +11,6 @@ resume/
 .idea
 .vscode
 *.log
+
+# Agent worktrees
+.claude/worktrees/

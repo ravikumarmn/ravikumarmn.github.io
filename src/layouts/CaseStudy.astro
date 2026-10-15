@@ -193,10 +193,16 @@ const pager = [
       top: var(--header-h);
       z-index: 40;
       border-block: 1px solid var(--border);
-      /* Nearly opaque: body text scrolling underneath shouldn't read through the links. */
+      /* Nearly opaque where blur is unsupported, so body text never reads through the links. */
       background: color-mix(in oklab, var(--bg) 97%, transparent);
-      backdrop-filter: saturate(1.4) blur(16px);
-      -webkit-backdrop-filter: saturate(1.4) blur(16px);
+    }
+    /* Same treatment as the site header. Only the unprefixed property: the CSS minifier folds a
+       prefixed + unprefixed pair into the prefixed one, which Chrome ignores. */
+    @supports (backdrop-filter: blur(1px)) {
+      .case-toc {
+        background: var(--header-bg);
+        backdrop-filter: blur(14px) saturate(1.5);
+      }
     }
   }
   .case-toc-link {
