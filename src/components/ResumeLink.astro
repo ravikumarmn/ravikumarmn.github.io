@@ -1,6 +1,7 @@
 ---
+/** Downloads the résumé PDF, which the build generates from /resume (scripts/build-resume-pdf.mjs). */
 import Icon from './Icon.astro';
-import { hasResume, profile } from '~/lib/site';
+import { profile } from '~/lib/site';
 
 interface Props {
   variant?: 'primary' | 'secondary';
@@ -11,19 +12,11 @@ interface Props {
 const { variant = 'secondary', size = 'md', class: className } = Astro.props;
 ---
 
-{
-  hasResume ? (
-    <a href={profile.resume} class:list={['btn', `btn-${variant}`, `btn-${size}`, className]} download>
-      <Icon name="file-text" />
-      Résumé
-    </a>
-  ) : (
-    <span
-      class:list={['btn', 'btn-todo', `btn-${size}`, className]}
-      title="TODO: add a résumé PDF without your phone number at public/resume.pdf"
-    >
-      <Icon name="file-text" />
-      Résumé (TODO)
-    </span>
-  )
-}
+<a
+  href={profile.resume}
+  class:list={['btn', `btn-${variant}`, `btn-${size}`, className]}
+  download="Ravikumar-MN-Resume.pdf"
+>
+  <Icon name="file-text" />
+  Résumé
+</a>

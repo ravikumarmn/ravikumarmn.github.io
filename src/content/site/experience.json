@@ -50,13 +50,13 @@
     "highlights": [
       "Fine-tuned transformer NLP models from 78% to 89% sentiment accuracy while cutting inference latency 30%; custom classifiers raised pipeline accuracy 18% and cut processing time 25%.",
       "Built computer-vision pipelines for image classification and object detection with CNN and GAN models, reaching 92% accuracy.",
-      "Built generative data-augmentation frameworks that cut resource utilization 20% and sped up content-creation workflows."
+      "Designed a Gemini API–based extractor that turns unstructured healthcare documents into structured data in under 3 seconds, raising throughput 30%."
     ],
     "stack": [
       "PyTorch",
       "Hugging Face",
       "CNNs",
-      "GANs"
+      "Gemini API"
     ]
   },
   {
@@ -66,17 +66,15 @@
     "location": "Remote, India",
     "start": "Feb 2021",
     "end": "Dec 2021",
-    "summary": "Generative AI services and document extraction on AWS.",
+    "summary": "Generative AI services on AWS.",
     "highlights": [
       "Built AI services on FastAPI and AWS (EC2, S3, SageMaker) that cut generative-model inference response time from 5s to 2s.",
-      "Integrated modular AI microservices with GPT-powered APIs into enterprise workflows, cutting manual content-creation time 40%.",
-      "Designed a Gemini API–based extractor that turns unstructured healthcare documents into structured data in under 3 seconds, raising throughput 30%."
+      "Integrated modular AI microservices with GPT-powered APIs into enterprise workflows, cutting manual content-creation time 40%."
     ],
     "stack": [
       "FastAPI",
-      "AWS SageMaker",
-      "OpenAI API",
-      "Gemini API"
+      "AWS (EC2, S3, SageMaker)",
+      "OpenAI API"
     ]
   }
 ]

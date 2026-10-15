@@ -2,8 +2,7 @@
 title: Agentic document intelligence, from PDFs to structured data and answers
 summary: Docling parsing and LLM extraction turn PDFs, forms, and reports into JSON, a knowledge graph, and grounded QA, at under 3s per page.
 role: AI / ML Engineer
-org: Zyoin · ResearchBrains
-period: 'TODO: dates'
+org: Zyoin · Acranton · projects
 order: 3
 metrics:
   - { value: '<3s', label: 'ingestion per page' }
@@ -14,7 +13,7 @@ stack: [Docling, LLMs, Gemini API, FastAPI, Vector DB, Python]
 
 import { documentIntelligence } from '~/components/diagrams/specs';
 
-<Todo block>Confirm the period and which parts were built where. The résumé lists Docling ingestion at Zyoin, the Gemini form extractor at ResearchBrains (2021), and the platform itself under Projects.</Todo>
+{/* GAP: period, and which parts were built where. Résumé: Docling ingestion at Zyoin, the Gemini form extractor at Acranton, the platform under Projects. */}
 
 ## Problem
 
@@ -25,7 +24,7 @@ Most enterprise knowledge sits in documents nobody can query: PDFs, scanned form
 - **Messy inputs.** Layouts, tables, forms, and handwriting vary widely between documents.
 - **Throughput.** Collections are enterprise-scale, so ingestion has to stay fast per page.
 - **Grounded answers.** Answers and summaries must come from the documents themselves.
-- **Healthcare data.** Some of it was medical. Extraction had to be fast enough for clinicians to use. <Todo>Any privacy or compliance constraints worth stating (e.g. PHI handling)?</Todo>
+- **Healthcare data.** Some of it was medical. Extraction had to be fast enough for clinicians to use. {/* GAP: privacy or compliance constraints (e.g. PHI handling). */}
 
 ## Approach
 
@@ -45,7 +44,7 @@ A RAG pipeline over the vector index answers questions and summarizes across ing
 
 ### The same pattern in healthcare
 
-- **Form extraction (ResearchBrains).** A Gemini API–based extractor converts unstructured healthcare documents into structured data in **under 3 seconds**, raising throughput **30%**.
+- **Form extraction (Acranton).** A Gemini API–based extractor converts unstructured healthcare documents into structured data in **under 3 seconds**, raising throughput **30%**.
 - **Handwritten prescriptions.** Gemini Flash converts handwritten prescriptions into JSON within **5 seconds**, making the data accessible to clinicians.
 
 <Callout title="Parser + LLM vs. one multimodal model" tone="tradeoff">
@@ -61,7 +60,7 @@ A RAG pipeline over the vector index answers questions and summarizes across ing
   <Metric value="<5s" label="handwritten prescription → JSON" />
 </MetricGrid>
 
-<Todo block>Add extraction accuracy (field-level precision or recall, or exact match) and collection size. Speed without accuracy invites the obvious question.</Todo>
+{/* GAP: extraction accuracy (field-level precision/recall or exact match) and collection size. */}
 
 ## Stack
 
@@ -73,6 +72,9 @@ A RAG pipeline over the vector index answers questions and summarizes across ing
   ]}
 />
 
-## Links
+## Related writing
 
-<Todo block>Public repo, demo, or write-up, if any.</Todo>
+- [Retrieval-Augmented Generation (RAG)](</blogs/retrieval-augmented-generation-(rag)>): the QA side of this pipeline.
+- [Search NeurIPS-2022 Similar Papers](/blogs/search-neurips-2022-similar-papers): semantic search over a document collection with sentence embeddings.
+
+{/* GAP: public repo, demo, or write-up, if any. */}

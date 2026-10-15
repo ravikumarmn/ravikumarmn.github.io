@@ -1,9 +1,7 @@
 ---
 title: An enterprise GenAI copilot with agentic RAG and tool use
 summary: One copilot over documents, tables, and analytics tools, with hybrid retrieval and query planning, answering in 1.8s end to end.
-role: 'TODO: your role'
-org: 'TODO: employer'
-period: 'TODO: dates'
+org: Project
 order: 2
 metrics:
   - { value: '1.8s', label: 'end-to-end response latency' }
@@ -14,7 +12,7 @@ stack: [LangChain, LlamaIndex, Azure, Databricks, MLflow, Python]
 
 import { agenticRag } from '~/components/diagrams/specs';
 
-<Todo block>Confirm where this was built (Zyoin, C5i, or independently) and its dates. The résumé lists it under Projects without an employer.</Todo>
+{/* GAP: where this was built (Zyoin, C5i, or independently), your role, and dates. The résumé lists it under Projects. */}
 
 ## Problem
 
@@ -35,7 +33,7 @@ Multi-agent orchestration splits each request into three steps: **query planning
 
 ### Hybrid retrieval across structured and unstructured data
 
-Vector search alone misses exact identifiers and rare terms, and keyword search alone misses paraphrases. I combined **vector and keyword retrieval** across structured and unstructured sources, which improved answer relevance and grounding accuracy. <Todo>By how much? Retrieval hit-rate, grounding score, or human rating before and after.</Todo> <Verify note="Merge/rank step drawn in the figure is inferred; confirm the fusion method (e.g. reciprocal rank fusion, a reranker).">The two result sets are merged and ranked before synthesis.</Verify>
+Vector search alone misses exact identifiers and rare terms, and keyword search alone misses paraphrases. I combined **vector and keyword retrieval** across structured and unstructured sources, which improved answer relevance and grounding accuracy. {/* GAP: how much relevance/grounding improved (hit-rate, grounding score, human rating). */} <Verify note="Merge/rank step drawn in the figure is inferred; confirm the fusion method (e.g. reciprocal rank fusion, a reranker).">The two result sets are merged and ranked before synthesis.</Verify>
 
 ### Synthesis with memory and guardrails
 
@@ -43,9 +41,9 @@ The synthesis step keeps **contextual memory** across turns and applies **guardr
 
 ### Latency work
 
-I optimized both the inference path and the retrieval path, reaching **1.8s end-to-end** response latency with vector search **under 120ms** at scale. <Todo>What changed to get there (index type, caching, smaller models for planning, parallel retrieval), and what was the starting point?</Todo>
+I optimized both the inference path and the retrieval path, reaching **1.8s end-to-end** response latency with vector search **under 120ms** at scale. {/* GAP: what changed to get there, and the starting latency. */}
 
-<ArchitectureFigure spec={agenticRag} caption="Routing and retrieval paths. The merge-and-rank step is a simplification; confirm the fusion method." />
+<ArchitectureFigure spec={agenticRag} caption="Routing and retrieval paths. The merge-and-rank step is simplified." />
 
 ### Shipping
 
@@ -63,7 +61,7 @@ The system is deployed on **Azure** and **Databricks**, with **MLflow** for mode
   <Metric value="Hybrid" label="vector + keyword retrieval, structured + unstructured" />
 </MetricGrid>
 
-<Todo block>Add a quality number (grounding accuracy, answer relevance, or task success) and the corpus size or query volume.</Todo>
+{/* GAP: a quality number (grounding accuracy, answer relevance, or task success) and corpus size or query volume. */}
 
 ## Stack
 
@@ -75,6 +73,8 @@ The system is deployed on **Azure** and **Databricks**, with **MLflow** for mode
   ]}
 />
 
-## Links
+## Related writing
 
-<Todo block>Is there a public repo, demo, or write-up?</Todo>
+- [Retrieval-Augmented Generation (RAG)](</blogs/retrieval-augmented-generation-(rag)>): the retriever and generator design this copilot builds on.
+
+{/* GAP: public repo, demo, or write-up, if any. */}

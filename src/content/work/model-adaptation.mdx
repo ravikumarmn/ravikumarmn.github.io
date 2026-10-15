@@ -28,11 +28,11 @@ Off-the-shelf models were close but not good enough. They didn't follow domain-s
 
 ### LLMs: SFT with parameter-efficient adapters
 
-I fine-tuned open-source LLMs for domain-specific instruction following using **supervised fine-tuning (SFT)** and **PEFT**. **LoRA** adapters kept the base model frozen, which reduced GPU memory and training cost while preserving model performance. The training pipelines covered dataset curation, prompt formatting, evaluation metrics, and inference optimization. <Todo>Base model and size, GPU memory or cost saved, and the task score before and after.</Todo>
+I fine-tuned open-source LLMs for domain-specific instruction following using **supervised fine-tuning (SFT)** and **PEFT**. **LoRA** adapters kept the base model frozen, which reduced GPU memory and training cost while preserving model performance. The training pipelines covered dataset curation, prompt formatting, evaluation metrics, and inference optimization. {/* GAP: base model and size, GPU memory or cost saved, task score before and after. */}
 
 ### Embeddings: contrastive fine-tuning for retrieval
 
-General-purpose embeddings blur domain distinctions, so I fine-tuned transformer embedding models on **domain-specific text pairs** with a contrastive objective (Sentence Transformers). This improved top-k retrieval relevance and downstream QA performance in RAG and semantic search. <Todo>Recall@k or MRR before and after, and the size of the pair set.</Todo>
+General-purpose embeddings blur domain distinctions, so I fine-tuned transformer embedding models on **domain-specific text pairs** with a contrastive objective (Sentence Transformers). This improved top-k retrieval relevance and downstream QA performance in RAG and semantic search. {/* GAP: recall@k or MRR before and after, and pair-set size. */}
 
 ### Classifiers: accuracy and latency together
 
@@ -62,8 +62,9 @@ At Acranton I optimized and fine-tuned transformer NLP models, raising sentiment
   ]}
 />
 
-## Links
+## Related writing
 
-Related write-ups on this site: [Multi-label classification with Hugging Face Transformers](/blogs/multi-label-classification-using-huggingface-transformer) and [Sentiment classification and word embeddings](/blogs/sentiment-classification-and-word-embedding).
+- [Multi-Label Classification Using Hugging Face Transformer](/blogs/multi-label-classification-using-huggingface-transformer): fine-tuning a transformer classifier end to end.
+- [Sentiment Classification and Word Embeddings](/blogs/sentiment-classification-and-word-embedding): an LSTM sentiment model and what its embeddings learn.
 
-<Todo block>A public fine-tuning repo or Hugging Face model card would strengthen this page.</Todo>
+{/* GAP: a public fine-tuning repo or Hugging Face model card. */}

@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Icon from './Icon.astro';
-import MaybeTodo from './MaybeTodo.astro';
 import Diagram from './diagrams/Diagram.astro';
 import { diagramsBySlug } from './diagrams/specs';
 
@@ -23,7 +22,7 @@ const diagram = diagramsBySlug[entry.id];
   }
   <div class="work-body">
     <div class="flex items-start justify-between gap-4">
-      <p class="eyebrow"><MaybeTodo value={org} /> · <MaybeTodo value={period} /></p>
+      <p class="eyebrow">{[org, period].filter(Boolean).join(' · ')}</p>
       <Icon
         name="arrow-up-right"
         size={18}

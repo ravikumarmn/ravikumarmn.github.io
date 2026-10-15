@@ -8,7 +8,7 @@ Personal site of Ravikumar M. N., Senior AI Engineer. Static Astro site deployed
 nvm use            # Node 22+
 npm install
 npm run dev        # http://localhost:4321 (inferred copy is underlined in dev)
-npm run build      # type-check + build to dist/
+npm run build      # type-check, build to dist/, print /resume to dist/resume.pdf (needs Chrome)
 npm run preview    # serve dist/
 npm run audit:content   # list remaining TODO placeholders and copy to verify
 ```
@@ -29,9 +29,9 @@ npm run audit:content   # list remaining TODO placeholders and copy to verify
 
 JSON is validated at build time (`src/lib/site.ts`, `src/content.config.ts`), so a typo fails the build with a clear message.
 
-**Placeholders.** Any JSON value starting with `TODO` and any `<Todo>` in MDX renders as a visible amber badge. `<Verify>` marks copy that was inferred from the résumé; it is underlined in dev only. Run `npm run audit:content` to list both. Once the TODOs are resolved, build with `STRICT_CONTENT=1` (or add it to the workflow) so a placeholder can never ship.
+**Placeholders.** Any JSON value starting with `TODO` and any `<Todo>` in MDX renders as a visible amber badge, and the deploy workflow builds with `STRICT_CONTENT=1`, so a page with one fails to deploy. Facts that would strengthen a case study but aren't on the résumé are kept as hidden `{/* GAP: … */}` comments. `<Verify>` marks copy that was inferred from the résumé; it is underlined in dev only. `npm run audit:content` lists all three.
 
-**Résumé download.** Put a PDF **without your phone number** at `public/resume.pdf`. Until it exists, the Résumé buttons render as a TODO. The full résumé in `resume/` is gitignored and never published.
+**Résumé.** `/resume` is generated from the same content files, and the build prints it to `/resume.pdf` (`scripts/build-resume-pdf.mjs`), so the download always matches the site. It has no phone number by design, and the build fails if one appears. The full résumé in `resume/` is gitignored and never published.
 
 ## Deploy
 

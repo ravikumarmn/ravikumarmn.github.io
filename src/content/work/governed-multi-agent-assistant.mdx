@@ -25,8 +25,8 @@ Business teams needed one assistant that could find information, reason over it,
 
 ## Constraints
 
-- **Latency.** Interactive use, so responses had to stay fast while many sessions ran concurrently. The system holds a sub-800ms *average*. <Todo>Is there a p95/p99 figure, and what was the latency before?</Todo>
-- **Multi-tenancy.** Concurrent sessions from multiple tenants on shared infrastructure, so it had to scale horizontally. <Todo>How many tenants, concurrent sessions, or requests per day?</Todo>
+- **Latency.** Interactive use, so responses had to stay fast while many sessions ran concurrently. The system holds a sub-800ms *average*. {/* GAP: p95/p99, and latency before. */}
+- **Multi-tenancy.** Concurrent sessions from multiple tenants on shared infrastructure, so it had to scale horizontally. {/* GAP: tenants, concurrent sessions, or requests per day. */}
 - **Governed data.** Every agent-facing data source needed lineage, access control, and compliance coverage.
 - **Auditability.** Model versions, prompts, and responses all had to be reviewable after the fact.
 - **Release safety.** Web and application layers ship together, so builds, tests, and deploys had to be automated.
@@ -76,7 +76,7 @@ Azure DevOps pipelines build, test, and deploy both the web and application laye
   <Metric value="−18%" label="incident response time" />
 </MetricGrid>
 
-<Todo block>How is answer quality evaluated (golden sets, LLM-as-judge, human review), and what are the numbers? This is the first thing frontier-lab reviewers will look for.</Todo>
+{/* GAP: how answer quality is evaluated (golden sets, LLM-as-judge, human review) and the numbers. Highest-value addition for frontier-lab reviewers. */}
 
 ## Stack
 
@@ -88,6 +88,4 @@ Azure DevOps pipelines build, test, and deploy both the web and application laye
   ]}
 />
 
-## Links
-
-Client work. There is no public repository or demo. <Todo>Add a public write-up or talk if one exists.</Todo>
+{/* GAP: public write-up or talk, if one exists (then add a Links section). */}

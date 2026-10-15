@@ -9,9 +9,10 @@ const work = defineCollection({
     title: z.string(),
     /** One line shown on the homepage card: the problem, not the tech. */
     summary: z.string(),
-    role: z.string(),
+    /** Omitted when the résumé doesn't state it; the page leaves that field out rather than guessing. */
+    role: z.string().optional(),
     org: z.string(),
-    period: z.string(),
+    period: z.string().optional(),
     order: z.number(),
     /** Headline numbers. The first two appear on the homepage card. */
     metrics: z.array(z.object({ value: z.string(), label: z.string() })).min(2),

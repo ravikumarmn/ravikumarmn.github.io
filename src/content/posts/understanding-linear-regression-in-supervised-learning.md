@@ -73,9 +73,7 @@ The model for linear regression is given by the equation:
 
 $$f(x) = wx + b$$
 
-Certainly! Here's a more conceptual take:
-
-"In the equation $$f(x) = wx + b$$, think of $$x$$ as your input. The function transforms this input using fixed values for $$w$$ and $$b$$ to produce the output, $$\hat{y}$$, which is your estimated result."
+In the equation $$f(x) = wx + b$$, think of $$x$$ as your input. The function transforms this input using fixed values for $$w$$ and $$b$$ to produce the output, $$\hat{y}$$, which is your estimated result.
 
 In this equation, all you need to do is find the right $$w$$ and $$b$$ that make $$\hat{y}$$ predict correctly for your dataset.
 

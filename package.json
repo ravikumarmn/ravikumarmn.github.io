@@ -5,7 +5,7 @@
   "version": "2.0.0",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro check && astro build && node scripts/build-resume-pdf.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "audit:content": "node scripts/audit-content.mjs"
@@ -31,6 +31,7 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "lucide-static": "^1.57.0"
+    "lucide-static": "^1.57.0",
+    "puppeteer-core": "^25.14.0"
   }
 }

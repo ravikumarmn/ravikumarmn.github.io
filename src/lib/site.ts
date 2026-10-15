@@ -3,8 +3,6 @@
  * Each file is validated at build time, so a typo in the JSON fails the build
  * with a readable error instead of rendering a broken page.
  */
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
 import { z } from 'astro/zod';
 import profileJson from '../content/site/profile.json';
 import metricsJson from '../content/site/metrics.json';
@@ -78,12 +76,6 @@ export type IconName = z.infer<typeof IconName>;
 export const isTodo = (value: string) => value.trimStart().startsWith('TODO');
 export const todoText = (value: string) => value.replace(/^\s*TODO:?\s*/, '');
 
-/**
- * The public résumé lives at public/resume.pdf (a copy WITHOUT the phone number;
- * the full one in resume/ is gitignored). Until it exists, résumé buttons render
- * as a visible TODO instead of a dead link.
- */
-export const hasResume = existsSync(join(process.cwd(), 'public', profile.resume.replace(/^\//, '')));
 
 export const navLinks = [
   { href: '/#work', label: 'Work', id: 'work' },

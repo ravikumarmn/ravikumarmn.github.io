@@ -2,7 +2,6 @@
 import type { CollectionEntry } from 'astro:content';
 import Base from './Base.astro';
 import Icon from '~/components/Icon.astro';
-import MaybeTodo from '~/components/MaybeTodo.astro';
 import { articleJsonLd } from '~/lib/jsonld';
 import '~/styles/prose.css';
 
@@ -17,6 +16,13 @@ interface Props {
 const { entry, prev, next, sections = [] } = Astro.props;
 const { title, summary, role, org, period, metrics, stack } = entry.data;
 const url = new URL(`/work/${entry.id}`, Astro.site);
+// Facts the résumé doesn't state are left out rather than shown as blanks.
+const facts = [
+  { label: 'Role', value: role },
+  { label: 'Context', value: org },
+  { label: 'When', value: period },
+  { label: 'Core stack', value: stack.slice(0, 3).join(', ') },
+].filter((fact): fact is { label: string; value: string } => Boolean(fact.value));
 const image = `/og/work/${entry.id}.png`;
 ---
 
@@ -39,22 +45,14 @@ const image = `/og/work/${entry.id}.png`;
       <p class="enter enter-2 mt-5 max-w-[60ch] text-md leading-relaxed text-muted">{summary}</p>
 
       <dl class="enter enter-3 mt-10 grid grid-cols-2 gap-6 border-y border-border py-6 text-sm md:grid-cols-4">
-        <div>
-          <dt class="eyebrow">Role</dt>
-          <dd class="mt-1.5 text-text"><MaybeTodo value={role} /></dd>
-        </div>
-        <div>
-          <dt class="eyebrow">Where</dt>
-          <dd class="mt-1.5 text-text"><MaybeTodo value={org} /></dd>
-        </div>
-        <div>
-          <dt class="eyebrow">When</dt>
-          <dd class="mt-1.5 text-text"><MaybeTodo value={period} /></dd>
-        </div>
-        <div>
-          <dt class="eyebrow">Core stack</dt>
-          <dd class="mt-1.5 text-text">{stack.slice(0, 3).join(', ')}</dd>
-        </div>
+        {
+          facts.map((fact) => (
+            <div>
+              <dt class="eyebrow">{fact.label}</dt>
+              <dd class="mt-1.5 text-text">{fact.value}</dd>
+            </div>
+          ))
+        }
       </dl>
 
       <dl class="mt-6 grid grid-cols-1 gap-3 min-[30rem]:grid-cols-2 md:grid-cols-3">
