@@ -21,7 +21,7 @@ export default defineConfig({
   build: { format: 'file' },
   markdown: {
     processor: unified({
-      remarkPlugins: [remarkMath],
+      remarkPlugins: [[remarkMath, { singleDollarTextMath: false }]],
       rehypePlugins: [[rehypeKatex, { strict: false, throwOnError: false }]],
     }),
     shikiConfig: {

@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Base from './Base.astro';
+import Icon from '~/components/Icon.astro';
+import { articleJsonLd } from '~/lib/jsonld';
+import '~/styles/prose.css';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+
+const { post } = Astro.props;
+const { title, description, date, topic, tags, math } = post.data;
+const url = new URL(`/blogs/${post.id}`, Astro.site);
+const image = `/og/blogs/${post.id}.png`;
+const formatted = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+---
+
+<Base
+  title={title}
+  description={description}
+  image={image}
+  type="article"
+  publishedTime={date}
+  jsonLd={articleJsonLd({ title, description, url, date, image: new URL(image, Astro.site) })}
+>
+  <Fragment slot="head">
+    {math && <link rel="stylesheet" href="/katex/katex.min.css" />}
+  </Fragment>
+  <article class="container-page pt-12 pb-24 md:pt-20">
+    <header class="max-w-[var(--prose-max)]">
+      <a href="/writing" class="group inline-flex items-center gap-1.5 text-sm text-muted hover:text-text">
+        <Icon name="arrow-left" size={14} class="transition-transform group-hover:-translate-x-0.5" />
+        Writing
+      </a>
+      <p class="eyebrow mt-10">{topic}</p>
+      <h1 class="mt-4 text-2xl leading-[1.1] tracking-[-0.03em] md:text-3xl">{title}</h1>
+      <p class="mt-5 font-mono text-xs text-subtle">
+        <time datetime={date.toISOString()}>{formatted}</time>
+        {tags.length > 0 && <span> · {tags.join(' · ')}</span>}
+      </p>
+    </header>
+    <div class="prose mt-12 border-t border-border pt-10">
+      <slot />
+    </div>
+  </article>
+</Base>
