@@ -1,39 +1,94 @@
 ---
+import Icon from './Icon.astro';
+import MetricValue from './MetricValue.astro';
+import { getWork } from '~/lib/collections';
 import { metrics } from '~/lib/site';
+
+/**
+ * Each headline number links to the case study that reports it, so every claim is one click
+ * from its context. The match is on the case study's own metrics (same value, overlapping
+ * label); a number with no matching case study simply isn't a link.
+ */
+const work = await getWork();
+const words = (text: string) => new Set(text.toLowerCase().match(/[a-z0-9]+/g) ?? []);
+const overlap = (a: string, b: string) => [...words(a)].filter((w) => words(b).has(w)).length;
+const sourceOf = (value: string, label: string) =>
+  work.find((entry) => entry.data.metrics.some((m) => m.value === value && overlap(m.label, label) >= 2));
+
+const items = metrics.map((metric) => ({ ...metric, work: sourceOf(metric.value, metric.label) }));
 ---
 
 <section class="container-page" aria-labelledby="impact-title">
   <h2 id="impact-title" class="sr-only">Impact in numbers</h2>
   <ul class="impact grid grid-cols-2 border-y border-border lg:grid-cols-4" data-reveal>
     {
-      metrics.map((metric) => (
-        <li class="impact-item py-6 sm:px-6 sm:py-8">
-          <p class="font-mono text-xl font-medium tracking-[-0.04em] text-text tabular-nums sm:text-2xl md:text-3xl">
-            {metric.value}
-          </p>
-          <p class="mt-2 text-sm font-medium text-text">{metric.label}</p>
-          <p class="mt-1 text-xs text-subtle sm:text-sm">{metric.context}</p>
-        </li>
-      ))
+      items.map((metric) => {
+        const body = (
+          <>
+            <MetricValue
+              value={metric.value}
+              class="block text-[1.75rem] leading-none font-medium tracking-[-0.04em] text-text sm:text-2xl md:text-3xl"
+            />
+            <span class="mt-4 block text-sm leading-snug font-medium text-pretty text-text">{metric.label}</span>
+            <span class="mt-1.5 block text-xs leading-normal text-subtle sm:text-sm">{metric.context}</span>
+          </>
+        );
+        return (
+          <li class="impact-item">
+            {metric.work ? (
+              <a
+                href={`/work/${metric.work.id}`}
+                class="impact-cell group"
+                aria-label={`${metric.value} ${metric.label}. ${metric.context}. Read the case study.`}
+              >
+                {body}
+                <span class="impact-arrow" aria-hidden="true">
+                  <Icon name="arrow-up-right" size={16} />
+                </span>
+              </a>
+            ) : (
+              <div class="impact-cell">{body}</div>
+            )}
+          </li>
+        );
+      })
     }
   </ul>
 </section>
 
 <style>
-  /* Two columns on small screens, four from lg; hairlines between cells. */
-  .impact-item:nth-child(odd) {
+  .impact-cell {
+    position: relative;
+    display: block;
+    height: 100%;
+    padding-block: 1.5rem;
+  }
+  @media (min-width: 40rem) {
+    .impact-cell {
+      padding-block: 1.75rem;
+    }
+  }
+
+  /* Two columns on small screens, four from lg; hairlines between cells. The outer cells
+     sit flush with the container edge so the numbers line up with the hero text above. */
+  .impact-item:nth-child(odd) .impact-cell {
     padding-right: 1rem;
   }
   .impact-item:nth-child(even) {
-    padding-left: 1rem;
     border-left: 1px solid var(--border);
+  }
+  .impact-item:nth-child(even) .impact-cell {
+    padding-left: 1rem;
   }
   .impact-item:nth-child(n + 3) {
     border-top: 1px solid var(--border);
   }
   @media (min-width: 40rem) {
-    .impact-item:nth-child(n) {
-      padding-inline: 1.5rem;
+    .impact-item:nth-child(odd) .impact-cell {
+      padding-right: 1.5rem;
+    }
+    .impact-item:nth-child(even) .impact-cell {
+      padding-left: 1.5rem;
     }
   }
   @media (min-width: 64rem) {
@@ -42,6 +97,63 @@ import { metrics } from '~/lib/site';
     }
     .impact-item + .impact-item {
       border-left: 1px solid var(--border);
+    }
+    .impact-item:nth-child(n) .impact-cell {
+      padding-inline: 1.5rem;
+    }
+    .impact-item:first-child .impact-cell {
+      padding-left: 0;
+    }
+  }
+
+  .impact-arrow {
+    position: absolute;
+    display: block;
+    line-height: 0;
+    top: 1.5rem;
+    right: 0.75rem;
+    color: var(--text-subtle);
+    opacity: 0.7;
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      opacity var(--dur-fast) var(--ease-out),
+      transform var(--dur-fast) var(--ease-out);
+  }
+  .impact-item:nth-child(even) .impact-arrow {
+    right: 0;
+  }
+  @media (min-width: 40rem) {
+    .impact-arrow {
+      top: 1.75rem;
+      right: 1.5rem;
+    }
+    .impact-item:nth-child(even) .impact-arrow {
+      right: 0;
+    }
+  }
+  @media (min-width: 64rem) {
+    .impact-item:nth-child(n) .impact-arrow {
+      right: 1.25rem;
+    }
+    .impact-item:last-child .impact-arrow {
+      right: 0;
+    }
+  }
+  .impact-cell:hover .impact-arrow,
+  .impact-cell:focus-visible .impact-arrow {
+    color: var(--accent-text);
+    opacity: 1;
+  }
+  .impact-cell:focus-visible {
+    outline-offset: -2px;
+  }
+  .impact-cell:hover :global(.metric-value) {
+    color: var(--text);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .impact-cell:hover .impact-arrow {
+      transform: translate(2px, -2px);
     }
   }
 </style>

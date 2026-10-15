@@ -4,7 +4,7 @@ import ResumeLink from './ResumeLink.astro';
 import { profile } from '~/lib/site';
 ---
 
-<section class="container-page pt-16 pb-14 sm:pt-24 md:pt-32 md:pb-20" aria-labelledby="hero-title">
+<section class="container-page pt-14 pb-12 sm:pt-20 md:pt-24 md:pb-16" aria-labelledby="hero-title">
   {
     profile.availability && (
       <p class="enter eyebrow flex items-center gap-2.5 normal-case tracking-normal text-muted">
@@ -22,14 +22,14 @@ import { profile } from '~/lib/site';
   <p class="enter enter-2 mt-6 max-w-[62ch] text-base text-muted sm:text-md sm:leading-relaxed">
     {profile.subline}
   </p>
-  <div class="enter enter-3 mt-10 flex flex-wrap items-center gap-3">
+  <div class="enter enter-3 mt-9 flex flex-wrap items-center gap-3">
     <ResumeLink variant="primary" />
     <a href="#contact" class="btn btn-secondary btn-md">
       <Icon name="mail" />
       Contact
     </a>
     <span class="mx-1 hidden h-6 w-px bg-border sm:block" aria-hidden="true"></span>
-    <ul class="flex items-center gap-1" aria-label="Profiles">
+    <ul class="-ml-3 flex w-full items-center gap-1 sm:ml-0 sm:w-auto" aria-label="Profiles">
       {
         profile.links.map((link) => (
           <li>
