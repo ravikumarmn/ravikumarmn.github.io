@@ -4,7 +4,7 @@
     "org": "C5i",
     "type": "Full-time",
     "location": "India",
-    "start": "TODO: start month 2025",
+    "start": "Jun 2026",
     "end": "Present",
     "summary": "Enterprise multi-agent assistant on LangGraph and Databricks, with governance built in.",
     "highlights": [
@@ -12,22 +12,32 @@
       "Serve agents on Databricks Model Serving with Unity Catalog lineage and access control on every agent-facing source; Genie-based agents cut analyst query turnaround 30%.",
       "Built governance in from day one (model versioning, prompt and response auditing, access policies) plus Azure DevOps CI/CD that cut release cycle time 20% and deployment failures 15%."
     ],
-    "stack": ["LangGraph", "Databricks", "Unity Catalog", "Azure DevOps"]
+    "stack": [
+      "LangGraph",
+      "Databricks",
+      "Unity Catalog",
+      "Azure DevOps"
+    ]
   },
   {
     "role": "AI Engineer",
     "org": "Zyoin",
     "type": "Contract",
     "location": "India",
-    "start": "Oct 2025",
-    "end": "TODO: end month 2025",
+    "start": "Nov 2025",
+    "end": "May 2026",
     "summary": "Agentic RAG and synthetic data for enterprise analytics and customer intelligence.",
     "highlights": [
       "Designed and deployed an agentic RAG chatbot for enterprise knowledge, fed by Docling-based ingestion that turns unstructured documents into structured data.",
       "Built an agentic synthetic-persona generator for financial survey datasets to improve downstream model robustness and segmentation analysis.",
       "Ran the model lifecycle on Databricks, Azure, and MLflow: experiment tracking, versioning, and cloud deployment."
     ],
-    "stack": ["RAG", "Docling", "Databricks", "MLflow"]
+    "stack": [
+      "RAG",
+      "Docling",
+      "Databricks",
+      "MLflow"
+    ]
   },
   {
     "role": "Machine Learning Engineer",
@@ -39,9 +49,34 @@
     "summary": "NLP, computer vision, and generative AI, from prototype to production.",
     "highlights": [
       "Fine-tuned transformer NLP models from 78% to 89% sentiment accuracy while cutting inference latency 30%; custom classifiers raised pipeline accuracy 18% and cut processing time 25%.",
-      "Shipped a Gemini-based extractor that turns unstructured healthcare forms into structured data in under 3 seconds, raising throughput 30%.",
-      "Integrated GPT-powered microservices into enterprise workflows, cutting manual content-creation time 40%."
+      "Built computer-vision pipelines for image classification and object detection with CNN and GAN models, reaching 92% accuracy.",
+      "Built generative data-augmentation frameworks that cut resource utilization 20% and sped up content-creation workflows."
     ],
-    "stack": ["PyTorch", "Hugging Face", "Gemini API", "OpenAI API"]
+    "stack": [
+      "PyTorch",
+      "Hugging Face",
+      "CNNs",
+      "GANs"
+    ]
+  },
+  {
+    "role": "Generative AI Engineer",
+    "org": "ResearchBrains",
+    "type": "Internship",
+    "location": "Remote, India",
+    "start": "Feb 2021",
+    "end": "Dec 2021",
+    "summary": "Generative AI services and document extraction on AWS.",
+    "highlights": [
+      "Built AI services on FastAPI and AWS (EC2, S3, SageMaker) that cut generative-model inference response time from 5s to 2s.",
+      "Integrated modular AI microservices with GPT-powered APIs into enterprise workflows, cutting manual content-creation time 40%.",
+      "Designed a Gemini API–based extractor that turns unstructured healthcare documents into structured data in under 3 seconds, raising throughput 30%."
+    ],
+    "stack": [
+      "FastAPI",
+      "AWS SageMaker",
+      "OpenAI API",
+      "Gemini API"
+    ]
   }
 ]
