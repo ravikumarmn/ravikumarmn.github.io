@@ -9,7 +9,7 @@ featured: false
 math: true
 ---
 
-In previous [blog](https://ravikumarmn.github.io/blogs/multi-label-classification-using-huggingface-transformer/) we used pretrained **BERT-base-uncased** model for text classification, Which was 99% accurate.
+In previous [blog](/blogs/multi-label-classification-using-huggingface-transformer) we used pretrained **BERT-base-uncased** model for text classification, Which was 99% accurate.
 
 In this blogs, let us use nn.TransformerEncoder to classify the results, and mean pooling the output represenation of the transformer.
 

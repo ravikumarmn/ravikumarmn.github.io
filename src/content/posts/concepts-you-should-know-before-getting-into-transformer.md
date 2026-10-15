@@ -5,7 +5,7 @@ date: "2024-05-27T22:58:48.921Z"
 description: "The building blocks of a transformer, one at a time: input embeddings, positional encoding, scaled dot-product attention, residual connections, masking, and softmax."
 topic: "Natural Language Processing"
 tags: ["Neural Network","Attention","Transformers","Embeddings"]
-featured: true
+featured: false
 math: false
 ---
 

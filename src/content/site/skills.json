@@ -5,7 +5,7 @@
   },
   {
     "group": "Training & inference",
-    "items": ["PyTorch", "Hugging Face Transformers", "SFT", "PEFT / LoRA", "Sentence Transformers", "Contrastive learning", "scikit-learn", "Optuna", "Inference optimization"]
+    "items": ["PyTorch", "Hugging Face Transformers", "SFT", "PEFT / LoRA / QLoRA", "Unsloth", "Sentence Transformers", "Contrastive learning", "scikit-learn", "Optuna", "Inference optimization"]
   },
   {
     "group": "Data & MLOps",

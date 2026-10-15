@@ -3,8 +3,5 @@
   { "title": "Conversational PDFs and websites", "detail": "Turns static PDFs and sites into queryable knowledge systems.", "metric": "95% query success rate", "stack": "LangChain · LlamaIndex" },
   { "title": "Multimodal chatbot", "detail": "Routes across three models to handle text and image interactions in one assistant.", "metric": "+35% user engagement", "stack": "LlamaIndex" },
   { "title": "Handwritten prescription → JSON", "detail": "Structured extraction from handwritten medical prescriptions with Gemini Flash.", "metric": "<5s per prescription", "stack": "LangChain · Gemini" },
-  { "title": "Research paper search engine", "detail": "Semantic search over NeurIPS 2022 papers with Sentence-BERT embeddings and an Annoy index.", "metric": "Write-up on the blog", "stack": "Sentence-BERT · Annoy", "href": "/blogs/search-neurips-2022-similar-papers" },
-  { "title": "Retinopathy diagnosis", "detail": "Classifier for Central Serous Retinopathy.", "metric": "+12% classification performance", "stack": "PyTorch" },
-  { "title": "Face-mask detection", "detail": "Real-time VGG19 classifier built during COVID-19.", "metric": "93% precision", "stack": "PyTorch · VGG19" },
-  { "title": "Bird-call classification", "detail": "Audio classification with signal detection.", "metric": "88% precision", "stack": "PyTorch" }
+  { "title": "Research paper search engine", "detail": "Semantic search over NeurIPS 2022 papers with Sentence-BERT embeddings and an Annoy index.", "metric": "Write-up on the blog", "stack": "Sentence-BERT · Annoy", "href": "/blogs/search-neurips-2022-similar-papers" }
 ]

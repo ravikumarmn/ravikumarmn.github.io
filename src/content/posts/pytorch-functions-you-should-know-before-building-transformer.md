@@ -5,7 +5,7 @@ date: "2024-05-28T01:05:22.319Z"
 description: "The PyTorch tensor operations you need before implementing a transformer from scratch, each with a short example."
 topic: "Natural Language Processing"
 tags: ["Transformers","PyTorch"]
-featured: true
+featured: false
 math: false
 ---
 
@@ -273,5 +273,3 @@ print(matrix.repeat(1,4))
           [2, 2, 2, 2],
           [3, 3, 3, 3]])
 ```
-
-Reference : [Kaggle Notebook](https://www.kaggle.com/code/ravikumarmn/basic-advance-pytorch/notebook?scriptVersionId=110563539)

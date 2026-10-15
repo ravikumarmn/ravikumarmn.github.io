@@ -9,9 +9,6 @@ metrics:
   - { value: '<800ms', label: 'average response latency' }
   - { value: '−22%', label: 'end-to-end task time' }
   - { value: '−30%', label: 'analyst query turnaround' }
-  - { value: '−25%', label: 'deployment overhead' }
-  - { value: '−20%', label: 'release cycle time' }
-  - { value: '−18%', label: 'incident response time' }
 stack: [LangGraph, Databricks Model Serving, Unity Catalog, Databricks Genie, Azure DevOps, Python]
 ---
 
@@ -71,9 +68,7 @@ Azure DevOps pipelines build, test, and deploy both the web and application laye
   <Metric value="<800ms" label="average response latency, concurrent multi-tenant sessions" />
   <Metric value="−22%" label="end-to-end task completion time" />
   <Metric value="−30%" label="analyst query turnaround (Genie agents)" />
-  <Metric value="−25%" label="deployment overhead (Model Serving + job clusters)" />
   <Metric value="−20% / −15%" label="release cycle time / deployment failures" />
-  <Metric value="−18%" label="incident response time" />
 </MetricGrid>
 
 {/* GAP: how answer quality is evaluated (golden sets, LLM-as-judge, human review) and the numbers. Highest-value addition for frontier-lab reviewers. */}
