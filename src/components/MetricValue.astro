@@ -1,0 +1,38 @@
+---
+/**
+ * A headline number with its qualifier and unit set quieter than the digits, so "<800ms"
+ * reads as 800 first. Screen readers get the original string unchanged.
+ * Values that aren't a number ("SQL + RAG") render as given.
+ */
+interface Props {
+  value: string;
+  class?: string;
+}
+const { value, class: className } = Astro.props;
+const match = value.match(/^([<>~≈]?)([+\-−]?\d[\d.,]*)(.*)$/);
+const [, qualifier = '', number = value, unit = ''] = match ?? [];
+---
+
+<span class:list={['metric-value', className]}>
+  {qualifier && <span class="qualifier">{qualifier}</span>}{number}{unit && <span class="unit">{unit.trim()}</span>}
+</span>
+
+<style>
+  .metric-value {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .qualifier {
+    margin-right: 0.04em;
+    color: var(--text-subtle);
+    font-weight: 400;
+  }
+  .unit {
+    margin-left: 0.06em;
+    font-size: 0.62em;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--text-muted);
+  }
+</style>

@@ -1,18 +1,23 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Icon from './Icon.astro';
+import MetricValue from './MetricValue.astro';
 import Diagram from './diagrams/Diagram.astro';
 import { diagramsBySlug } from './diagrams/specs';
 
 interface Props {
   entry: CollectionEntry<'work'>;
+  /** The lead case study: spans the row on wide screens, with the diagram beside the text. */
+  featured?: boolean;
 }
-const { entry } = Astro.props;
+const { entry, featured = false } = Astro.props;
 const { title, summary, org, period, metrics, stack } = entry.data;
 const diagram = diagramsBySlug[entry.id];
+const shownMetrics = metrics.slice(0, featured ? 3 : 2);
+const shownStack = stack.slice(0, featured ? 5 : 3);
 ---
 
-<a href={`/work/${entry.id}`} class="work-card group" data-reveal>
+<a href={`/work/${entry.id}`} class:list={['work-card group', { featured }]} data-reveal>
   {
     diagram && (
       <div class="work-preview">
@@ -22,29 +27,45 @@ const diagram = diagramsBySlug[entry.id];
   }
   <div class="work-body">
     <div class="flex items-start justify-between gap-4">
-      <p class="eyebrow">{[org, period].filter(Boolean).join(' · ')}</p>
+      <p class="eyebrow">
+        {
+          [org, period]
+            .filter(Boolean)
+            .map((part, i) => (
+              <>
+                {i > 0 && ' · '}
+                <span class="whitespace-nowrap">{part}</span>
+              </>
+            ))
+        }
+      </p>
       <Icon
         name="arrow-up-right"
         size={18}
-        class="shrink-0 text-subtle transition-[color,transform] duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
+        class="-mt-0.5 shrink-0 text-subtle transition-[color,transform] duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent-text"
       />
     </div>
-    <h3 class="mt-4 text-lg leading-snug">{title}</h3>
-    <p class="mt-3 mb-8 text-muted">{summary}</p>
+    <h3 class="work-title mt-3 text-text">{title}</h3>
+    <p class="work-summary mt-3 text-muted">{summary}</p>
 
-    <dl class="grid grid-cols-2 gap-6 border-t border-border pt-6">
+    <dl class="work-metrics">
       {
-        metrics.slice(0, 2).map((metric) => (
-          <div class="flex flex-col-reverse justify-end gap-1">
-            <dt class="text-sm text-subtle">{metric.label}</dt>
-            <dd class="font-mono text-xl font-medium tracking-[-0.03em] text-text tabular-nums">{metric.value}</dd>
+        shownMetrics.map((metric, i) => (
+          <div class:list={['flex flex-col-reverse justify-end gap-1.5', { 'max-lg:hidden': i >= 2 }]}>
+            <dt class="text-sm leading-snug text-subtle">{metric.label}</dt>
+            <dd>
+              <MetricValue
+                value={metric.value}
+                class="text-xl leading-none font-medium tracking-[-0.03em] text-text"
+              />
+            </dd>
           </div>
         ))
       }
     </dl>
 
     <ul class="mt-6 flex flex-wrap gap-1.5" aria-label="Stack">
-      {stack.slice(0, 4).map((item) => <li class="chip">{item}</li>)}
+      {shownStack.map((item, i) => <li class:list={['chip', { 'max-lg:hidden': i >= 3 }]}>{item}</li>)}
     </ul>
   </div>
   <span class="sr-only">Read case study</span>
@@ -68,11 +89,16 @@ const diagram = diagramsBySlug[entry.id];
     border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
     box-shadow: var(--shadow-lift);
   }
+  /* Keep the card's own corners when focused (the global ring uses the small radius). */
+  .work-card:focus-visible {
+    border-radius: var(--radius-lg);
+    outline-offset: 2px;
+  }
 
   /* The case study's own architecture diagram, shrunk to a schematic. */
   .work-preview {
-    height: 10rem;
-    padding: 1.25rem 1.5rem;
+    height: 8.5rem;
+    padding: 1rem 1.25rem;
     border-bottom: 1px solid var(--border);
     background:
       radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0) 0 0 / 16px 16px,
@@ -80,8 +106,8 @@ const diagram = diagramsBySlug[entry.id];
   }
   @media (min-width: 48rem) {
     .work-preview {
-      height: 12rem;
-      padding: 1.5rem 2.5rem;
+      height: 11rem;
+      padding: 1.5rem 2rem;
     }
   }
   .work-preview :global(.diagram) {
@@ -117,16 +143,82 @@ const diagram = diagramsBySlug[entry.id];
     display: flex;
     flex: 1;
     flex-direction: column;
-    padding: 1.5rem;
+    padding: 1.25rem 1.25rem 1.5rem;
   }
   @media (min-width: 48rem) {
     .work-body {
-      padding: 1.75rem 2rem 2rem;
+      padding: 1.5rem 1.75rem 1.75rem;
     }
   }
+
+  .work-title {
+    font-size: var(--text-md);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+  .work-summary {
+    font-size: var(--text-sm);
+    line-height: 1.6;
+  }
+  @media (min-width: 40rem) {
+    .work-summary {
+      font-size: var(--text-base);
+    }
+  }
+  /* Three across from lg: narrower cards take a slightly smaller summary and tighter padding. */
+  @media (min-width: 64rem) {
+    .work-card:not(.featured) .work-summary {
+      font-size: var(--text-sm);
+    }
+    .work-card:not(.featured) .work-body {
+      padding: 1.5rem 1.5rem 1.75rem;
+    }
+  }
+
   /* Pin metrics and stack to the bottom so cards in a row line up. */
-  .work-body dl {
+  .work-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
     margin-top: auto;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+  .work-summary {
+    margin-bottom: 1.75rem;
+  }
+
+  /* Lead card: from lg it spans the row, text on the left and a larger diagram on the right. */
+  @media (min-width: 64rem) {
+    .featured {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    }
+    .featured .work-preview {
+      grid-column: 2;
+      grid-row: 1;
+      height: auto;
+      min-height: 100%;
+      padding: 2.5rem 2.75rem;
+      border-bottom: 0;
+      border-left: 1px solid var(--border);
+    }
+    .featured .work-body {
+      grid-column: 1;
+      grid-row: 1;
+      padding: 2.25rem 2.5rem 2.5rem;
+    }
+    .featured .work-title {
+      font-size: var(--text-lg);
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+    }
+    .featured .work-metrics {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .featured .work-metrics :global(.metric-value) {
+      font-size: var(--text-2xl);
+    }
   }
 
   @media (prefers-reduced-motion: no-preference) {
