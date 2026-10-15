@@ -5,21 +5,31 @@ import { profile } from '~/lib/site';
 ---
 
 <section class="container-page pt-14 pb-12 sm:pt-20 md:pt-24 md:pb-16" aria-labelledby="hero-title">
-  {
-    profile.availability && (
-      <p class="enter eyebrow flex items-center gap-2.5 normal-case tracking-normal text-muted">
-        <span class="status-dot" aria-hidden="true" />
-        {profile.availability}
-      </p>
-    )
-  }
+  <!-- Who, what level, where: the five-second scan, before the pitch. -->
+  <p class="enter flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-xs text-muted sm:text-[0.8125rem]">
+    <span class="font-medium text-text">{profile.name}</span>
+    <span class="text-subtle" aria-hidden="true">·</span>
+    <span>{profile.title} at {profile.company}</span>
+    {
+      profile.availability && (
+        <>
+          <span class="hidden text-subtle sm:inline" aria-hidden="true">·</span>
+          {/* Own line on phones, so a separator never starts a wrapped line. */}
+          <span class="inline-flex basis-full items-center gap-2 sm:basis-auto">
+            <span class="status-dot" aria-hidden="true" />
+            Open to new roles
+          </span>
+        </>
+      )
+    }
+  </p>
   <h1
     id="hero-title"
     class="enter enter-1 mt-6 max-w-[21ch] text-hero leading-[1.03] font-semibold tracking-[-0.038em] text-text"
   >
     {profile.headline}
   </h1>
-  <p class="enter enter-2 mt-6 max-w-[62ch] text-base text-muted sm:text-md sm:leading-relaxed">
+  <p class="enter enter-2 mt-6 max-w-[54ch] text-base text-muted sm:text-md sm:leading-relaxed">
     {profile.subline}
   </p>
   <div class="enter enter-3 mt-9 flex flex-wrap items-center gap-3">
@@ -39,11 +49,6 @@ import { profile } from '~/lib/site';
           </li>
         ))
       }
-      <li>
-        <a href={`mailto:${profile.email}`} class="social" aria-label="Email">
-          <Icon name="mail" size={18} />
-        </a>
-      </li>
     </ul>
   </div>
 </section>
