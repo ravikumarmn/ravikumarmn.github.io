@@ -8,7 +8,7 @@ import '~/styles/prose.css';
 
 interface Props {
   post: CollectionEntry<'posts'>;
-  /** h2/h3 headings, for the "On this page" sidebar. */
+  /** h2/h3 headings, for the "On this page" outline. */
   headings?: { depth: number; slug: string; text: string }[];
   newer?: CollectionEntry<'posts'>;
   older?: CollectionEntry<'posts'>;
@@ -21,6 +21,7 @@ const { title, description, date, topic, tags, math } = post.data;
 const url = new URL(`/blogs/${post.id}`, Astro.site);
 const image = `/og/blogs/${post.id}.png`;
 const formatted = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+const short = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 ---
 
 <Base
@@ -35,21 +36,52 @@ const formatted = date.toLocaleDateString('en-US', { month: 'long', day: 'numeri
     {math && <link rel="stylesheet" href="/katex/katex.min.css" />}
   </Fragment>
   <article class="container-page pt-12 pb-24 md:pt-20">
-    <header class="max-w-[var(--prose-max)]">
+    <header class="post-header">
       <a href="/writing" class="tap group inline-flex items-center gap-1.5 text-sm text-muted hover:text-text">
-        <Icon name="arrow-left" size={14} class="transition-transform group-hover:-translate-x-0.5" />
+        <Icon name="arrow-left" size={14} class="transition-transform motion-safe:group-hover:-translate-x-0.5" />
         Writing
       </a>
       <p class="eyebrow mt-10">{topic}</p>
       <h1 class="mt-4 text-2xl leading-[1.1] tracking-[-0.03em] md:text-3xl">{title}</h1>
-      <p class="mt-5 font-mono text-xs text-subtle">
-        <time datetime={date.toISOString()}>{formatted}</time> · {minutes} min read
-        {tags.length > 0 && <span> · {tags.join(' · ')}</span>}
+      {description && <p class="post-lede mt-5 text-md leading-relaxed text-muted">{description}</p>}
+      <p class="mt-6 font-mono text-xs text-subtle">
+        <time datetime={date.toISOString()}>{formatted}</time>
+        <span aria-hidden="true"> · </span>
+        <span>{minutes} min read</span>
       </p>
+      {
+        tags.length > 0 && (
+          <ul class="mt-4 flex flex-wrap gap-2" aria-label="Tags">
+            {tags.map((tag) => (
+              <li class="post-tag">{tag}</li>
+            ))}
+          </ul>
+        )
+      }
     </header>
 
-    <div class:list={['mt-12 border-t border-border pt-10', { 'post-grid': toc.length > 0 }]}>
-      <div class="prose min-w-0">
+    {
+      toc.length > 0 && (
+        <details class="post-toc-inline">
+          <summary>
+            <span class="eyebrow">On this page</span>
+            <span class="font-mono text-xs text-subtle">{toc.length} sections</span>
+          </summary>
+          <ul>
+            {toc.map((heading) => (
+              <li>
+                <a href={`#${heading.slug}`} class:list={['toc-link', { 'toc-sub': heading.depth === 3 }]}>
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </details>
+      )
+    }
+
+    <div class:list={['post-layout mt-10 border-t border-border pt-10 md:mt-12', { 'has-toc': toc.length > 0 }]}>
+      <div class="prose post-body min-w-0">
         <slot />
       </div>
       {
@@ -72,46 +104,181 @@ const formatted = date.toLocaleDateString('en-US', { month: 'long', day: 'numeri
       }
     </div>
 
-    <nav class="mt-20 grid gap-4 border-t border-border pt-10 sm:grid-cols-2" aria-label="More writing">
-      {
-        older ? (
-          <a href={`/blogs/${older.id}`} class="pager group">
-            <span class="eyebrow inline-flex items-center gap-1.5">
-              <Icon name="arrow-left" size={12} /> Older
-            </span>
-            <span class="mt-2 block font-medium text-text group-hover:text-accent-text">{older.data.title}</span>
-          </a>
-        ) : (
-          <span class="hidden sm:block" />
-        )
-      }
-      {
-        newer && (
-          <a href={`/blogs/${newer.id}`} class="pager group sm:text-right">
-            <span class="eyebrow inline-flex items-center gap-1.5">
-              Newer <Icon name="arrow-right" size={12} />
-            </span>
-            <span class="mt-2 block font-medium text-text group-hover:text-accent-text">{newer.data.title}</span>
-          </a>
-        )
-      }
-    </nav>
-    <a href="/writing" class="tap link mt-8 inline-flex items-center gap-1.5 text-sm">
-      All writing <Icon name="arrow-right" size={14} />
-    </a>
+    <footer class="mt-20 border-t border-border pt-10">
+      <nav class="grid gap-3 sm:grid-cols-2 sm:gap-4" aria-label="More writing">
+        {
+          older ? (
+            <a href={`/blogs/${older.id}`} class="pager group">
+              <span class="eyebrow flex items-center gap-1.5">
+                <Icon name="arrow-left" size={12} class="transition-transform motion-safe:group-hover:-translate-x-0.5" /> Older
+              </span>
+              <span class="mt-3 block font-medium text-pretty text-text transition-colors group-hover:text-accent-text">
+                {older.data.title}
+              </span>
+              <span class="mt-2 block font-mono text-xs text-subtle">
+                {older.data.topic} · {short(older.data.date)}
+              </span>
+            </a>
+          ) : (
+            <span class="hidden sm:block" />
+          )
+        }
+        {
+          newer && (
+            <a href={`/blogs/${newer.id}`} class="pager group sm:text-right">
+              <span class="eyebrow flex items-center gap-1.5 sm:justify-end">
+                Newer <Icon name="arrow-right" size={12} class="transition-transform motion-safe:group-hover:translate-x-0.5" />
+              </span>
+              <span class="mt-3 block font-medium text-pretty text-text transition-colors group-hover:text-accent-text">
+                {newer.data.title}
+              </span>
+              <span class="mt-2 block font-mono text-xs text-subtle">
+                {newer.data.topic} · {short(newer.data.date)}
+              </span>
+            </a>
+          )
+        }
+      </nav>
+      <a href="/writing" class="tap link mt-8 inline-flex items-center gap-1.5 text-sm">
+        All writing <Icon name="arrow-right" size={14} />
+      </a>
+    </footer>
   </article>
+
+  <!-- Cloned onto each code block by the script below; without JS, code blocks simply have no button. -->
+  <template id="code-copy">
+    <button type="button" class="code-copy" aria-label="Copy code">
+      <span class="code-copy-icon" data-icon="copy"><Icon name="copy" size={13} /></span>
+      <span class="code-copy-icon" data-icon="check" hidden><Icon name="check" size={13} /></span>
+      <span data-label>Copy</span>
+    </button>
+  </template>
+  <p class="sr-only" role="status" data-copy-status></p>
 </Base>
 
+<script>
+  // Copy buttons for code blocks. The language label is CSS-only, so wrapping a block
+  // here adds a button without moving anything on the page.
+  const template = document.querySelector<HTMLTemplateElement>('template#code-copy');
+  const status = document.querySelector<HTMLElement>('[data-copy-status]');
+  if (template && navigator.clipboard) {
+    document.querySelectorAll<HTMLPreElement>('.post-body pre').forEach((pre) => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'code-block';
+      pre.before(wrapper);
+      wrapper.append(pre);
+      const button = template.content.firstElementChild!.cloneNode(true) as HTMLButtonElement;
+      const label = button.querySelector<HTMLElement>('[data-label]')!;
+      const [copyIcon, checkIcon] = button.querySelectorAll<HTMLElement>('[data-icon]');
+      let timer = 0;
+      button.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText((pre.querySelector('code') ?? pre).innerText.replace(/\n$/, ''));
+        } catch {
+          return;
+        }
+        label.textContent = 'Copied';
+        copyIcon.hidden = true;
+        checkIcon.hidden = false;
+        if (status) status.textContent = 'Code copied to clipboard';
+        clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          label.textContent = 'Copy';
+          copyIcon.hidden = false;
+          checkIcon.hidden = true;
+          if (status) status.textContent = '';
+        }, 1800);
+      });
+      wrapper.append(button);
+    });
+  }
+</script>
+
 <style>
+  .post-header {
+    max-width: 44rem;
+  }
+  .post-lede {
+    max-width: 40rem;
+    text-wrap: pretty;
+  }
+  .post-tag {
+    display: inline-flex;
+    align-items: center;
+    height: 1.5rem;
+    padding-inline: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    line-height: 1;
+  }
+
+  /* Below 80rem there is no room for the side outline, so it folds into a disclosure. */
+  .post-toc-inline {
+    margin-top: 2.5rem;
+    max-width: 37rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface-1);
+  }
+  .post-toc-inline summary {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    min-height: 2.75rem;
+    padding-inline: 1rem;
+    cursor: pointer;
+    list-style: none;
+    border-radius: var(--radius);
+  }
+  .post-toc-inline summary::-webkit-details-marker {
+    display: none;
+  }
+  .post-toc-inline summary::after {
+    content: '';
+    width: 0.4375rem;
+    height: 0.4375rem;
+    flex-shrink: 0;
+    border-right: 1.5px solid var(--text-subtle);
+    border-bottom: 1.5px solid var(--text-subtle);
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .post-toc-inline summary .font-mono {
+    margin-left: auto;
+  }
+  .post-toc-inline[open] summary::after {
+    transform: translateY(2px) rotate(-135deg);
+  }
+  .post-toc-inline ul {
+    padding: 0.25rem 1rem 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+  .post-toc-inline .toc-link {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: 0;
+  }
+  .post-toc-inline .toc-sub {
+    padding-left: 0.875rem;
+  }
+  @media (min-width: 80rem) {
+    .post-toc-inline {
+      display: none;
+    }
+  }
+
   .post-toc {
     display: none;
   }
   /* Wide screens: prose on the left, a sticky outline on the right. */
   @media (min-width: 80rem) {
-    .post-grid {
+    .post-layout.has-toc {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 15rem;
-      gap: 4rem;
+      grid-template-columns: minmax(0, 48rem) 14rem;
+      justify-content: space-between;
+      gap: 3.5rem;
     }
     .post-toc {
       display: block;
@@ -142,12 +309,15 @@ const formatted = date.toLocaleDateString('en-US', { month: 'long', day: 'numeri
 
   .pager {
     display: block;
-    padding: 1.25rem;
+    padding: 1.25rem 1.375rem;
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    transition: border-color var(--dur-fast) var(--ease-out);
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
   }
   .pager:hover {
     border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+    background: var(--surface-1);
   }
 </style>
