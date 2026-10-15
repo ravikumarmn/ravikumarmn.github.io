@@ -1,13 +1,17 @@
 /**
  * Open Graph images (1200×630), rendered at build time with satori + resvg:
  *   /og/home.png, /og/work/<slug>.png, /og/blogs/<slug>.png
+ *
+ * Built for how they are actually seen: shrunk to ~500px wide in a LinkedIn or X
+ * feed. So type is large, labels use the muted (not subtle) tier, and nothing
+ * important sits near the edges where some clients crop.
  */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { Resvg } from '@resvg/resvg-js';
 import satori from 'satori';
-import { getPosts, getWork } from '~/lib/collections';
+import { getPosts, getWork, readingTime } from '~/lib/collections';
 import { metrics, profile } from '~/lib/site';
 
 const font = (pkg: string, file: string) => readFileSync(join(process.cwd(), 'node_modules/@fontsource', pkg, 'files', file));
@@ -17,27 +21,45 @@ const fonts = [
   { name: 'Geist Mono', data: font('geist-mono', 'geist-mono-latin-500-normal.woff'), weight: 500 as const },
 ];
 
-const C = { bg: '#0b0c0e', text: '#edeef0', muted: '#a1a6ae', subtle: '#868b94', border: '#23262b', accent: '#5fd4c0' };
+// Dark-theme tokens (src/styles/tokens.css).
+const C = {
+  bg: '#0b0c0e',
+  surface: '#16181c',
+  surface3: '#1d2024',
+  text: '#edeef0',
+  muted: '#a3a8b0',
+  subtle: '#8a8f98',
+  border: '#25282d',
+  borderStrong: '#34383f',
+  accent: '#5fd4c0',
+};
 
 interface Card {
   eyebrow: string;
   title: string;
   stats: { value: string; label: string }[];
+  meta?: string;
 }
+
+const isTodo = (value: string) => value.trimStart().startsWith('TODO');
+const ascii = (value: string) => value.replace(/−/g, '-').replace(/→/g, ' to ');
 
 export const getStaticPaths = (async () => {
   const work = await getWork();
   const posts = await getPosts();
-  const headline = (value: string) => (value.startsWith('TODO') ? '' : value);
   return [
     {
       params: { path: 'home' },
-      props: { eyebrow: profile.title, title: profile.headline, stats: metrics.slice(0, 3).map(({ value, label }) => ({ value, label })) },
+      props: {
+        eyebrow: profile.availability ?? profile.title,
+        title: profile.headline,
+        stats: metrics.slice(0, 3).map(({ value, label }) => ({ value, label })),
+      },
     },
     ...work.map((entry) => ({
       params: { path: `work/${entry.id}` },
       props: {
-        eyebrow: ['Case study', headline(entry.data.org)].filter(Boolean).join(' · '),
+        eyebrow: ['Case study', isTodo(entry.data.org) ? '' : entry.data.org].filter(Boolean).join(' · '),
         title: entry.data.title,
         stats: entry.data.metrics.slice(0, 3),
       },
@@ -48,6 +70,10 @@ export const getStaticPaths = (async () => {
         eyebrow: `Writing · ${post.data.topic}`,
         title: post.data.title,
         stats: [],
+        meta: [
+          post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }),
+          `${readingTime(post.body)} min read`,
+        ].join('  ·  '),
       },
     })),
   ];
@@ -56,46 +82,69 @@ export const getStaticPaths = (async () => {
 const h = (type: string, style: Record<string, unknown>, children?: unknown) => ({ type, props: { style, children } });
 
 export const GET: APIRoute = async ({ props }) => {
-  const { eyebrow, title, stats } = props as Card;
-  const titleSize = title.length > 70 ? 52 : title.length > 44 ? 60 : 68;
+  const { eyebrow, title, stats, meta } = props as Card;
+  // Sized so every title lands on at most two lines at 1040px.
+  const titleSize = title.length > 80 ? 52 : title.length > 60 ? 58 : title.length > 40 ? 66 : 76;
 
-  const content = h(
-    'div',
-    {
-      position: 'absolute',
-      top: 64,
-      right: 72,
-      bottom: 56,
-      left: 72,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-    },
-    [
-      h('div', { display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'Geist Mono', fontSize: 20, color: C.subtle }, [
-        h('div', { display: 'flex', alignItems: 'center', gap: 14 }, [
-          h('div', { width: 12, height: 12, borderRadius: 999, backgroundColor: C.accent }),
-          h('div', { display: 'flex', textTransform: 'uppercase', letterSpacing: 2 }, `${profile.name}  ·  ${eyebrow}`),
-        ]),
-        h('div', { display: 'flex' }, 'ravikumarmn.github.io'),
-      ]),
-      h(
+  const identity = h('div', { display: 'flex', alignItems: 'center', gap: 18 }, [
+    h(
+      'div',
+      {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 52,
+        height: 52,
+        borderRadius: 11,
+        border: `1.5px solid ${C.borderStrong}`,
+        backgroundImage: `linear-gradient(to bottom, ${C.surface3}, ${C.surface})`,
+        fontFamily: 'Geist Mono',
+        fontSize: 19,
+        color: C.text,
+        letterSpacing: -0.5,
+      },
+      profile.initials,
+    ),
+    h('div', { display: 'flex', flexDirection: 'column', gap: 2 }, [
+      h('div', { display: 'flex', fontSize: 25, fontWeight: 600, color: C.text, letterSpacing: -0.4 }, profile.name),
+      h('div', { display: 'flex', fontSize: 20, color: C.muted }, profile.title),
+    ]),
+  ]);
+
+  const header = h('div', { display: 'flex', alignItems: 'center', justifyContent: 'space-between' }, [
+    identity,
+    h('div', { display: 'flex', fontFamily: 'Geist Mono', fontSize: 20, color: C.subtle }, 'ravikumarmn.github.io'),
+  ]);
+
+  const body = h('div', { display: 'flex', flexDirection: 'column', gap: 22 }, [
+    h('div', { display: 'flex', alignItems: 'center', gap: 14, fontFamily: 'Geist Mono', fontSize: 20, color: C.accent, letterSpacing: 1.5, textTransform: 'uppercase' }, [
+      h('div', { width: 10, height: 10, borderRadius: 999, backgroundColor: C.accent }),
+      h('div', { display: 'flex' }, eyebrow),
+    ]),
+    h(
+      'div',
+      { display: 'flex', fontSize: titleSize, fontWeight: 600, lineHeight: 1.06, letterSpacing: -titleSize * 0.032, maxWidth: 1040, color: C.text },
+      title,
+    ),
+  ]);
+
+  const footer = stats.length
+    ? h(
         'div',
-        { display: 'flex', fontSize: titleSize, fontWeight: 600, lineHeight: 1.08, letterSpacing: -2, maxWidth: 1000 },
-        title,
-      ),
-      h(
-        'div',
-        { display: 'flex', gap: 56, minHeight: 92, borderTop: `1px solid ${C.border}`, paddingTop: 28 },
+        { display: 'flex', gap: 64, borderTop: `1.5px solid ${C.border}`, paddingTop: 30 },
         stats.map((stat) =>
-          h('div', { display: 'flex', flexDirection: 'column', gap: 8, flexShrink: 0 }, [
-            h('div', { display: 'flex', fontFamily: 'Geist Mono', fontSize: 36, color: C.text, letterSpacing: -1 }, stat.value.replace(/−/g, '-').replace(/→/g, ' to ')),
-            h('div', { display: 'flex', fontSize: 19, color: C.subtle }, stat.label),
+          h('div', { display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0, maxWidth: 320 }, [
+            h('div', { display: 'flex', fontFamily: 'Geist Mono', fontSize: 44, color: C.text, letterSpacing: -1.5 }, ascii(stat.value)),
+            h('div', { display: 'flex', fontSize: 21, color: C.muted }, stat.label),
           ]),
         ),
-      ),
-    ],
-  );
+      )
+    : h(
+        'div',
+        { display: 'flex', borderTop: `1.5px solid ${C.border}`, paddingTop: 30, fontFamily: 'Geist Mono', fontSize: 22, color: C.muted },
+        meta ?? '',
+      );
+
   const tree = h(
     'div',
     {
@@ -104,11 +153,35 @@ export const GET: APIRoute = async ({ props }) => {
       width: 1200,
       height: 630,
       backgroundColor: C.bg,
-      backgroundImage: `radial-gradient(circle at 12% 0%, rgba(95,212,192,0.16), transparent 52%)`,
+      backgroundImage: `radial-gradient(circle at 8% 0%, rgba(95,212,192,0.17), transparent 55%)`,
       color: C.text,
       fontFamily: 'Geist',
     },
-    [content],
+    [
+      // A hairline of accent along the top edge: the one brand mark on the card.
+      h('div', {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 3,
+        backgroundImage: `linear-gradient(to right, ${C.accent}, rgba(95,212,192,0) 70%)`,
+      }),
+      h(
+        'div',
+        {
+          position: 'absolute',
+          top: 60,
+          right: 72,
+          bottom: 60,
+          left: 72,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        },
+        [header, body, footer],
+      ),
+    ],
   );
 
   const svg = await satori(tree as Parameters<typeof satori>[0], { width: 1200, height: 630, fonts });

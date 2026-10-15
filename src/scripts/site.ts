@@ -7,15 +7,24 @@ const root = document.documentElement;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Theme toggle. The initial theme is applied pre-paint in Base.astro.
+const toggles = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
+function syncTheme(theme: 'light' | 'dark') {
+  // Browser chrome follows the chosen theme, not just the OS one.
+  const color = theme === 'dark' ? '#0b0c0e' : '#fafaf9';
+  document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => meta.setAttribute('content', color));
+  toggles.forEach((button) => button.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`));
+}
 function setTheme(theme: 'light' | 'dark', persist: boolean) {
   root.dataset.theme = theme;
+  syncTheme(theme);
   if (persist) {
     try {
       localStorage.setItem('theme', theme);
     } catch {}
   }
 }
-document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
+syncTheme(root.dataset.theme === 'light' ? 'light' : 'dark');
+toggles.forEach((button) => {
   button.addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true));
 });
 // Follow OS changes until the visitor picks a theme explicitly.

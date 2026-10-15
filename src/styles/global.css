@@ -76,9 +76,15 @@
   h4 {
     font-weight: 600;
     line-height: 1.12;
-    letter-spacing: -0.025em;
+    letter-spacing: var(--tracking-heading);
     text-wrap: balance;
     overflow-wrap: break-word;
+  }
+  /* Smaller headings read better with less negative tracking and a little more leading. */
+  h3,
+  h4 {
+    line-height: 1.2;
+    letter-spacing: var(--tracking-title);
   }
 
   p {
@@ -90,10 +96,14 @@
     color: var(--text);
   }
 
+  /* One focus treatment everywhere: a 2px ring offset from the element, following its own radius. */
   :focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
     border-radius: var(--radius-sm);
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
   }
 
   ::-webkit-scrollbar {
@@ -107,6 +117,13 @@
     background: var(--border-strong);
     border: 3px solid var(--bg);
     border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-subtle);
+  }
+
+  hr {
+    border-color: var(--border);
   }
 
   code,
@@ -144,7 +161,8 @@
   .eyebrow {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
-    letter-spacing: 0.06em;
+    line-height: 1.4;
+    letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
     color: var(--text-subtle);
   }
@@ -158,13 +176,14 @@
     transition: text-decoration-color var(--dur-fast) var(--ease-out);
   }
   .link:hover {
-    text-decoration-color: var(--accent);
+    text-decoration-color: currentColor;
   }
 
 
   .btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     border-radius: var(--radius);
     font-size: var(--text-sm);
@@ -190,6 +209,9 @@
     background: var(--text);
     color: var(--bg);
   }
+  .btn-primary {
+    box-shadow: 0 1px 0 rgb(255 255 255 / 0.12) inset;
+  }
   .btn-primary:hover {
     background: color-mix(in oklab, var(--text) 86%, var(--bg));
   }
@@ -197,6 +219,7 @@
     border: 1px solid var(--border-strong);
     background: var(--surface-1);
     color: var(--text);
+    box-shadow: 0 1px 0 rgb(255 255 255 / 0.03) inset;
   }
   .btn-secondary:hover {
     background: var(--surface-2);
@@ -251,6 +274,19 @@
   }
   .skip-link:focus-visible {
     transform: none;
+    outline-color: var(--text);
+  }
+}
+
+/* Safety net for every page: when the visitor asks for less motion, nothing animates or eases. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

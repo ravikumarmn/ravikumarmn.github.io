@@ -1,38 +1,89 @@
 ---
+import Icon from './Icon.astro';
 import { profile } from '~/lib/site';
 
-const year = new Date().getFullYear();
-const updated = new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-const links = [
-  { label: 'Work', href: '/#work' },
-  { label: 'Writing', href: '/writing' },
-  { label: 'Résumé', href: profile.resume, external: true },
-  ...profile.links.map((link) => ({ label: link.label, href: link.href, external: true })),
+const now = new Date();
+const year = now.getFullYear();
+const updated = now.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+
+const groups = [
+  {
+    title: 'Site',
+    links: [
+      { label: 'Work', href: '/#work' },
+      { label: 'Experience', href: '/#experience' },
+      { label: 'Writing', href: '/writing' },
+      { label: 'About', href: '/#about' },
+    ],
+  },
+  {
+    title: 'Elsewhere',
+    links: [
+      { label: 'Résumé', href: profile.resume, external: true },
+      ...profile.links.map((link) => ({ label: link.label, href: link.href, external: true })),
+      { label: 'Email', href: `mailto:${profile.email}` },
+    ],
+  },
 ];
 ---
 
-<footer class="border-t border-border">
-  <div class="container-page flex flex-col gap-5 py-8 text-sm text-subtle md:flex-row md:items-center md:justify-between">
-    <nav aria-label="Footer">
-      <ul class="flex flex-wrap gap-x-5 gap-y-1">
-        {
-          links.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                class="tap inline-block text-muted transition-colors hover:text-text"
-                {...(link.external ? { target: '_blank', rel: 'noopener' } : {})}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
-    <p class="font-mono text-xs">
-      © {year} {profile.name} · Updated {updated} ·{' '}
-      <a class="link" href="https://github.com/ravikumarmn/ravikumarmn.github.io">Source</a>
-    </p>
+<footer class="site-footer border-t border-border">
+  <div class="container-page grid gap-10 pt-12 pb-10 md:grid-cols-12 md:gap-6 md:pt-14">
+    <div class="md:col-span-6 lg:col-span-7">
+      <a href="/" class="inline-flex items-center gap-2.5 rounded-md text-sm font-medium text-text" aria-label={`${profile.name}, home`}>
+        <span
+          class="grid size-7 place-items-center rounded-md border border-border-strong bg-surface-2 font-mono text-[11px] font-semibold"
+          aria-hidden="true">{profile.initials}</span
+        >
+        {profile.name}
+      </a>
+      <p class="mt-4 max-w-[40ch] text-sm text-muted">
+        {profile.title} at {profile.company}.{profile.availability && <> {profile.availability}.</>}
+      </p>
+      <a
+        href={`mailto:${profile.email}`}
+        class="tap mt-3 inline-flex items-center gap-2 font-mono text-[13px] text-muted transition-colors hover:text-text"
+      >
+        <Icon name="mail" size={14} class="text-subtle" />
+        {profile.email}
+      </a>
+    </div>
+
+    <div class="grid grid-cols-2 gap-6 md:col-span-6 lg:col-span-4 lg:col-start-9">
+    {
+      groups.map((group) => (
+        <nav aria-label={group.title === 'Site' ? 'Footer' : 'Profiles'}>
+          <p class="eyebrow">{group.title}</p>
+          <ul class="mt-4 grid gap-2.5 text-sm">
+            {group.links.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="tap inline-flex items-center gap-1 text-muted transition-colors hover:text-text"
+                  {...(link.external ? { target: '_blank', rel: 'noopener' } : {})}
+                >
+                  {link.label}
+                  {link.external && <Icon name="arrow-up-right" size={13} class="text-subtle" />}
+                  {link.external && <span class="sr-only">(opens in a new tab)</span>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))
+    }
+    </div>
+  </div>
+
+  <div class="container-page">
+    <div
+      class="flex flex-col gap-2 border-t border-border py-6 font-mono text-xs text-subtle sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>© {year} {profile.name}</p>
+      <p>
+        Updated {updated} · Built with Astro ·{' '}
+        <a class="link" href="https://github.com/ravikumarmn/ravikumarmn.github.io">Source</a>
+      </p>
+    </div>
   </div>
 </footer>

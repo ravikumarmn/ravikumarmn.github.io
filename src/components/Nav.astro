@@ -3,22 +3,23 @@ import Icon from './Icon.astro';
 import ResumeLink from './ResumeLink.astro';
 import { navLinks, profile } from '~/lib/site';
 
-const path = Astro.url.pathname;
+// Pages are built as files (/writing.html), so normalise before matching.
+const path = Astro.url.pathname.replace(/\.html$/, '');
 const current = (link: (typeof navLinks)[number]) => (link.page?.test(path) ? 'page' : undefined);
 ---
 
 <header class="site-header sticky top-0 z-50" data-header>
-  <div class="container-page flex h-14 items-center justify-between gap-4">
-    <a href="/" class="group flex items-center gap-2.5 rounded-sm" aria-label={`${profile.name}, home`}>
-      <span
-        class="grid size-7 place-items-center rounded-md border border-border-strong bg-surface-2 font-mono text-[11px] font-medium tracking-tight text-text transition-colors group-hover:border-accent"
-        aria-hidden="true">{profile.initials}</span
-      >
-      <span class="text-sm font-medium tracking-tight">{profile.name}</span>
+  <div class="header-row container-page">
+    <a href="/" class="group flex min-w-0 items-center gap-2.5 justify-self-start rounded-md" aria-label={`${profile.name}, home`}>
+      <span class="monogram" aria-hidden="true">{profile.initials}</span>
+      <span class="truncate text-sm font-medium tracking-tight text-text">{profile.name}</span>
+      <span class="hidden items-center gap-2.5 text-sm text-subtle xl:flex" aria-hidden="true">
+        <span class="h-3.5 w-px bg-border-strong"></span>{profile.title}
+      </span>
     </a>
 
     <nav aria-label="Primary" class="hidden md:block">
-      <ul class="flex items-center gap-1">
+      <ul class="flex items-center gap-0.5">
         {
           navLinks.map((link) => (
             <li>
@@ -31,7 +32,7 @@ const current = (link: (typeof navLinks)[number]) => (link.page?.test(path) ? 'p
       </ul>
     </nav>
 
-    <div class="flex items-center gap-1.5">
+    <div class="flex items-center gap-1.5 justify-self-end">
       <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle color theme">
         <Icon name="sun" class="theme-icon-sun" />
         <Icon name="moon" class="theme-icon-moon" />
@@ -44,7 +45,7 @@ const current = (link: (typeof navLinks)[number]) => (link.page?.test(path) ? 'p
   </div>
 
   <div id="mobile-nav" popover class="mobile-nav" data-mobile-nav>
-    <div class="flex items-center justify-between border-b border-border px-4 py-2.5">
+    <div class="flex items-center justify-between border-b border-border py-2 pr-2 pl-4">
       <span class="eyebrow">Menu</span>
       <button type="button" class="icon-btn" popovertarget="mobile-nav" popovertargetaction="hide" aria-label="Close menu">
         <Icon name="close" size={18} />
@@ -55,20 +56,18 @@ const current = (link: (typeof navLinks)[number]) => (link.page?.test(path) ? 'p
         {
           navLinks.map((link) => (
             <li>
-              <a
-                href={link.href}
-                aria-current={current(link)}
-                class="flex min-h-11 items-center rounded-md px-3 text-base text-text hover:bg-surface-2 aria-[current=page]:bg-surface-2"
-              >
+              <a href={link.href} data-nav={link.id} aria-current={current(link)} class="mobile-link">
                 {link.label}
+                <Icon name="arrow-right" size={16} class="mobile-link-arrow" />
               </a>
             </li>
           ))
         }
       </ul>
     </nav>
-    <div class="border-t border-border p-4">
+    <div class="grid gap-3 border-t border-border p-4">
       <ResumeLink class="w-full justify-center" />
+      <p class="truncate text-center font-mono text-xs text-subtle">{profile.name} · {profile.title}</p>
     </div>
   </div>
 </header>
@@ -81,14 +80,54 @@ const current = (link: (typeof navLinks)[number]) => (link.page?.test(path) ? 'p
       border-color var(--dur) var(--ease-out);
   }
   .site-header[data-scrolled] {
-    /* Opaque enough that scrolled text never reads through, even where blur is unsupported. */
-    background: color-mix(in oklab, var(--bg) 94%, transparent);
+    /* Opaque enough that scrolled text never reads through where blur is unsupported. */
+    background: color-mix(in oklab, var(--bg) 96%, transparent);
     border-bottom-color: var(--border);
-    backdrop-filter: saturate(1.4) blur(16px);
-    -webkit-backdrop-filter: saturate(1.4) blur(16px);
+  }
+  @supports (backdrop-filter: blur(1px)) {
+    .site-header[data-scrolled] {
+      background: var(--header-bg);
+      backdrop-filter: blur(14px) saturate(1.5);
+    }
+  }
+
+  /* Three columns so the primary nav sits on the true centre line, whatever the sides measure. */
+  .header-row {
+    display: flex;
+    height: var(--header-h);
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  @media (min-width: 48rem) {
+    .header-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    }
+  }
+
+  .monogram {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(to bottom, var(--surface-3), var(--surface-1));
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  a:hover .monogram {
+    border-color: color-mix(in oklab, var(--accent) 70%, var(--border-strong));
   }
 
   .nav-link {
+    position: relative;
     display: inline-flex;
     align-items: center;
     height: 2rem;
@@ -98,15 +137,21 @@ const current = (link: (typeof navLinks)[number]) => (link.page?.test(path) ? 'p
     color: var(--text-muted);
     transition:
       color var(--dur-fast) var(--ease-out),
-      background-color var(--dur-fast) var(--ease-out);
+      background-color var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .nav-link:focus-visible {
+    outline-offset: 0;
   }
   .nav-link:hover {
     color: var(--text);
+    background: color-mix(in oklab, var(--surface-2) 60%, transparent);
   }
   .nav-link[aria-current='true'],
   .nav-link[aria-current='page'] {
     color: var(--text);
     background: var(--surface-2);
+    box-shadow: inset 0 0 0 1px var(--border);
   }
 
   .icon-btn {
@@ -145,29 +190,72 @@ const current = (link: (typeof navLinks)[number]) => (link.page?.test(path) ? 'p
   :global([data-theme='light'] .theme-icon-sun) {
     display: none;
   }
+  @media (prefers-reduced-motion: no-preference) {
+    :global([data-theme-toggle] svg) {
+      transition: transform var(--dur) var(--ease-out);
+    }
+    :global([data-theme-toggle]:hover svg) {
+      transform: rotate(-12deg);
+    }
+  }
 
   .mobile-nav {
     inset: 0.5rem 0.5rem auto auto;
     width: min(20rem, calc(100vw - 1rem));
     margin: 0;
     padding: 0;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-strong);
     border-radius: var(--radius-lg);
     background: var(--surface-1);
     color: var(--text);
-    box-shadow: var(--shadow-lift);
+    box-shadow: var(--shadow-pop);
+    transform-origin: top right;
   }
   .mobile-nav::backdrop {
-    background: rgb(0 0 0 / 0.4);
+    background: var(--scrim);
+  }
+  .mobile-link {
+    display: flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: var(--radius);
+    padding-inline: 0.75rem;
+    font-size: var(--text-base);
+    color: var(--text-muted);
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
+  }
+  .mobile-link:hover,
+  .mobile-link[aria-current='true'],
+  .mobile-link[aria-current='page'] {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+  .mobile-link :global(.mobile-link-arrow) {
+    color: var(--text-subtle);
+  }
+  .mobile-link[aria-current='true'] :global(.mobile-link-arrow),
+  .mobile-link[aria-current='page'] :global(.mobile-link-arrow) {
+    color: var(--accent-text);
   }
   @media (prefers-reduced-motion: no-preference) {
     .mobile-nav:popover-open {
       animation: menu-in var(--dur) var(--ease-out);
     }
+    .mobile-nav:popover-open::backdrop {
+      animation: scrim-in var(--dur) var(--ease-out);
+    }
     @keyframes menu-in {
       from {
         opacity: 0;
-        transform: translateY(-4px) scale(0.98);
+        transform: translateY(-6px) scale(0.97);
+      }
+    }
+    @keyframes scrim-in {
+      from {
+        opacity: 0;
       }
     }
   }

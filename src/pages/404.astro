@@ -1,21 +1,95 @@
 ---
 import Base from '~/layouts/Base.astro';
 import Icon from '~/components/Icon.astro';
+import { getPosts, getWork } from '~/lib/collections';
+
+const work = await getWork();
+const latest = (await getPosts())[0];
 ---
 
 <Base title="Page not found" description="This page doesn't exist." noindex glow>
-  <section class="container-page flex min-h-[60dvh] flex-col justify-center py-24">
-    <p class="font-mono text-sm text-subtle">404 · route not found</p>
-    <h1 class="mt-4 max-w-[18ch] text-2xl md:text-3xl">This route doesn’t resolve to anything.</h1>
-    <p class="mt-5 max-w-[52ch] text-muted">
-      The page may have moved when this site was rebuilt. Old blog links still work, under <code
-        class="rounded border border-border bg-surface-2 px-1.5 py-0.5 font-mono text-sm text-text">/blogs/…</code
-      >.
-    </p>
-    <div class="mt-10 flex flex-wrap gap-3">
-      <a href="/" class="btn btn-primary btn-md"><Icon name="arrow-left" /> Home</a>
-      <a href="/#work" class="btn btn-secondary btn-md">Selected work</a>
-      <a href="/writing" class="btn btn-secondary btn-md">Writing</a>
+  <section class="container-page grid-12 min-h-[64dvh] content-center gap-y-14 py-20 md:py-28">
+    <div class="col-span-12 lg:col-span-6">
+      <p class="enter flex flex-wrap items-center gap-x-2 font-mono text-sm text-subtle">
+        <span class="rounded-sm border border-border-strong bg-surface-2 px-1.5 py-0.5 text-text">404</span>
+        <span>Not found</span>
+        <span aria-hidden="true">·</span>
+        <span class="max-w-[28ch] truncate" data-missing-path>this URL</span>
+      </p>
+      <h1 class="enter enter-1 mt-5 max-w-[16ch] text-2xl tracking-[-0.03em] md:text-3xl">
+        This route doesn’t resolve to anything.
+      </h1>
+      <p class="enter enter-2 mt-5 max-w-[46ch] text-muted">
+        The page may have moved when this site was rebuilt. Old blog links still work, under <code
+          class="rounded border border-border bg-surface-2 px-1.5 py-0.5 font-mono text-sm text-text">/blogs/…</code
+        >.
+      </p>
+      <div class="enter enter-3 mt-9 flex flex-wrap gap-3">
+        <a href="/" class="btn btn-primary btn-md"><Icon name="arrow-left" /> Home</a>
+        <a href="/writing" class="btn btn-secondary btn-md">All writing</a>
+      </div>
     </div>
+
+    <nav aria-labelledby="nf-try" class="enter enter-2 col-span-12 lg:col-span-5 lg:col-start-8">
+      <p id="nf-try" class="eyebrow">Start here instead</p>
+      <ul class="mt-4 divide-y divide-border overflow-hidden rounded-lg border border-border bg-surface-1">
+        {
+          work.map((entry) => (
+            <li>
+              <a href={`/work/${entry.id}`} class="nf-row group">
+                <span class="min-w-0">
+                  <span class="block text-sm font-medium text-text">{entry.data.title}</span>
+                  <span class="mt-1 block font-mono text-xs text-subtle">{entry.data.org}</span>
+                </span>
+                <Icon name="arrow-right" class="text-subtle transition-transform group-hover:translate-x-0.5" />
+              </a>
+            </li>
+          ))
+        }
+        {
+          latest && (
+            <li>
+              <a href={`/blogs/${latest.id}`} class="nf-row group">
+                <span class="min-w-0">
+                  <span class="block text-sm font-medium text-text">{latest.data.title}</span>
+                  <span class="mt-1 block font-mono text-xs text-subtle">Latest writing</span>
+                </span>
+                <Icon name="arrow-right" class="text-subtle transition-transform group-hover:translate-x-0.5" />
+              </a>
+            </li>
+          )
+        }
+      </ul>
+    </nav>
   </section>
+
+  <script is:inline>
+    (() => {
+      const el = document.querySelector('[data-missing-path]');
+      if (!el) return;
+      try {
+        el.textContent = decodeURIComponent(location.pathname);
+      } catch {
+        el.textContent = location.pathname;
+      }
+    })();
+  </script>
 </Base>
+
+<style>
+  .nf-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+  .nf-row:hover {
+    background: var(--surface-2);
+  }
+  .nf-row:focus-visible {
+    outline-offset: -2px;
+    border-radius: 0;
+  }
+</style>

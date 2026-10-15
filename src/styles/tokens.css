@@ -1,7 +1,11 @@
 /*
  * Design tokens. Every color, size and duration used on the site comes from here.
- * Dark is the default; light mirrors it. Contrast ratios (vs --bg) are noted
- * for text colors and all meet WCAG AA.
+ * Dark is the default; light mirrors it.
+ *
+ * Contrast (WCAG 2.x). Each text color is listed as "vs --bg / vs the darkest
+ * surface it can sit on (--surface-3)". Every text tier passes AA (4.5:1) on
+ * every surface; borders are decorative hairlines and are not contrast-bearing.
+ * The focus ring (--ring) is ≥ 3:1 against every surface in both themes.
  */
 
 :root,
@@ -12,24 +16,28 @@
   --surface-1: #111316;
   --surface-2: #16181c;
   --surface-3: #1d2024;
-  --border: #23262b;
-  --border-strong: #31353b;
+  --border: #25282d;
+  --border-strong: #34383f;
 
-  --text: #edeef0; /* 16.9:1 */
-  --text-muted: #a1a6ae; /* 8.0:1 */
-  --text-subtle: #868b94; /* 5.7:1 */
+  --text: #edeef0; /* 16.9 / 14.1 */
+  --text-muted: #a3a8b0; /* 8.2 / 6.8 */
+  --text-subtle: #8a8f98; /* 6.0 / 5.0 */
 
-  --accent: #5fd4c0; /* 10.9:1 */
+  --accent: #5fd4c0; /* 10.9 / 9.1 */
   --accent-text: #5fd4c0;
-  --accent-contrast: #0b0c0e; /* text on accent fill */
+  --accent-contrast: #0b0c0e; /* text on accent fill: 10.9 */
   --accent-soft: rgb(95 212 192 / 0.1);
   --accent-glow: rgb(95 212 192 / 0.13);
+  --ring: #5fd4c0;
 
   --todo: #f5b454;
   --todo-soft: rgb(245 180 84 / 0.1);
 
   --selection: rgb(95 212 192 / 0.28);
+  --scrim: rgb(0 0 0 / 0.5);
+  --header-bg: rgb(11 12 14 / 0.8);
   --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 12px 32px -16px rgb(0 0 0 / 0.6);
+  --shadow-pop: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 24px 48px -12px rgb(0 0 0 / 0.7);
 }
 
 :root[data-theme='light'] {
@@ -39,27 +47,31 @@
   --surface-1: #ffffff;
   --surface-2: #f3f3f1;
   --surface-3: #ebebe8;
-  --border: #e4e4e0;
-  --border-strong: #d2d2cd;
+  --border: #e2e2de;
+  --border-strong: #cfcfca;
 
-  --text: #111214; /* 18.0:1 */
-  --text-muted: #55595f; /* 6.8:1 */
-  --text-subtle: #6b6f76; /* 4.8:1 */
+  --text: #111214; /* 18.0 / 15.7 */
+  --text-muted: #52565c; /* 7.1 / 6.2 */
+  --text-subtle: #62666d; /* 5.5 / 4.8 */
 
-  --accent: #0e7468; /* 5.4:1 */
-  --accent-text: #0b6157; /* 7.0:1 */
-  --accent-contrast: #ffffff;
+  --accent: #0e7468; /* 5.4 / 4.7 */
+  --accent-text: #0b6157; /* 7.0 / 6.1 */
+  --accent-contrast: #ffffff; /* text on accent fill: 5.7 */
   --accent-soft: rgb(14 116 104 / 0.08);
   --accent-glow: rgb(14 116 104 / 0.09);
+  --ring: #0e7468;
 
   --todo: #8a4b00;
   --todo-soft: rgb(138 75 0 / 0.07);
 
   --selection: rgb(14 116 104 / 0.18);
+  --scrim: rgb(17 18 20 / 0.24);
+  --header-bg: rgb(250 250 249 / 0.82);
   --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.8) inset, 0 12px 32px -18px rgb(17 18 20 / 0.18);
+  --shadow-pop: 0 1px 2px rgb(17 18 20 / 0.06), 0 24px 48px -16px rgb(17 18 20 / 0.22);
 }
 
-/* No-JS fallback: follow the OS preference when no explicit theme is set. */
+/* No-JS fallback: follow the OS preference when no explicit theme is set. Keep in sync with the block above. */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
     color-scheme: light;
@@ -67,20 +79,24 @@
     --surface-1: #ffffff;
     --surface-2: #f3f3f1;
     --surface-3: #ebebe8;
-    --border: #e4e4e0;
-    --border-strong: #d2d2cd;
+    --border: #e2e2de;
+    --border-strong: #cfcfca;
     --text: #111214;
-    --text-muted: #55595f;
-    --text-subtle: #6b6f76;
+    --text-muted: #52565c;
+    --text-subtle: #62666d;
     --accent: #0e7468;
     --accent-text: #0b6157;
     --accent-contrast: #ffffff;
     --accent-soft: rgb(14 116 104 / 0.08);
     --accent-glow: rgb(14 116 104 / 0.09);
+    --ring: #0e7468;
     --todo: #8a4b00;
     --todo-soft: rgb(138 75 0 / 0.07);
     --selection: rgb(14 116 104 / 0.18);
+    --scrim: rgb(17 18 20 / 0.24);
+    --header-bg: rgb(250 250 249 / 0.82);
     --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.8) inset, 0 12px 32px -18px rgb(17 18 20 / 0.18);
+    --shadow-pop: 0 1px 2px rgb(17 18 20 / 0.06), 0 24px 48px -16px rgb(17 18 20 / 0.22);
   }
 }
 
@@ -95,6 +111,12 @@
   --text-2xl: 2.441rem; /* 39 */
   --text-3xl: 3.052rem; /* 49 */
   --text-hero: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem); /* 40 → 72 */
+
+  /* Tracking: tighter as type gets larger. */
+  --tracking-display: -0.03em;
+  --tracking-heading: -0.022em;
+  --tracking-title: -0.012em;
+  --tracking-caps: 0.06em;
 
   /* Layout */
   --content-max: 70rem; /* 1120px */
