@@ -1,0 +1,165 @@
+---
+import Icon from './Icon.astro';
+import ResumeLink from './ResumeLink.astro';
+import { navLinks, profile } from '~/lib/site';
+---
+
+<header class="site-header sticky top-0 z-50" data-header>
+  <div class="container-page flex h-14 items-center justify-between gap-4">
+    <a href="/" class="group flex items-center gap-2.5 rounded-sm" aria-label={`${profile.name}, home`}>
+      <span
+        class="grid size-7 place-items-center rounded-md border border-border-strong bg-surface-2 font-mono text-[11px] font-medium tracking-tight text-text transition-colors group-hover:border-accent"
+        aria-hidden="true">{profile.initials}</span
+      >
+      <span class="text-sm font-medium tracking-tight">{profile.name}</span>
+    </a>
+
+    <nav aria-label="Primary" class="hidden md:block">
+      <ul class="flex items-center gap-1">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a href={link.href} data-nav={link.id} class="nav-link">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-1.5">
+      <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle color theme">
+        <Icon name="sun" class="theme-icon-sun" />
+        <Icon name="moon" class="theme-icon-moon" />
+      </button>
+      <ResumeLink class="hidden sm:inline-flex" size="sm" />
+      <button type="button" class="icon-btn menu-btn" popovertarget="mobile-nav" aria-label="Open menu">
+        <Icon name="menu" size={18} />
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-nav" popover class="mobile-nav" data-mobile-nav>
+    <div class="flex items-center justify-between border-b border-border px-4 py-2.5">
+      <span class="eyebrow">Menu</span>
+      <button type="button" class="icon-btn" popovertarget="mobile-nav" popovertargetaction="hide" aria-label="Close menu">
+        <Icon name="close" size={18} />
+      </button>
+    </div>
+    <nav aria-label="Mobile">
+      <ul class="p-2">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a href={link.href} class="flex min-h-11 items-center rounded-md px-3 text-base text-text hover:bg-surface-2">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <div class="border-t border-border p-4">
+      <ResumeLink class="w-full justify-center" />
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color var(--dur) var(--ease-out),
+      border-color var(--dur) var(--ease-out);
+  }
+  .site-header[data-scrolled] {
+    background: color-mix(in oklab, var(--bg) 78%, transparent);
+    border-bottom-color: var(--border);
+    backdrop-filter: saturate(1.4) blur(12px);
+    -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    height: 2rem;
+    padding-inline: 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
+  }
+  .nav-link:hover {
+    color: var(--text);
+  }
+  .nav-link[aria-current='true'] {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+
+  .icon-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
+  }
+  .icon-btn:hover {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+  @media (min-width: 48rem) {
+    .menu-btn {
+      display: none;
+    }
+  }
+  @media (pointer: coarse) {
+    .icon-btn {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+  }
+
+  :global([data-theme='dark']) .theme-icon-sun,
+  :global([data-theme='light']) .theme-icon-moon {
+    display: block;
+  }
+  :global([data-theme='dark']) .theme-icon-moon,
+  :global([data-theme='light']) .theme-icon-sun {
+    display: none;
+  }
+
+  .mobile-nav {
+    inset: 0.5rem 0.5rem auto auto;
+    width: min(20rem, calc(100vw - 1rem));
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface-1);
+    color: var(--text);
+    box-shadow: var(--shadow-lift);
+  }
+  .mobile-nav::backdrop {
+    background: rgb(0 0 0 / 0.4);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .mobile-nav:popover-open {
+      animation: menu-in var(--dur) var(--ease-out);
+    }
+    @keyframes menu-in {
+      from {
+        opacity: 0;
+        transform: translateY(-4px) scale(0.98);
+      }
+    }
+  }
+</style>

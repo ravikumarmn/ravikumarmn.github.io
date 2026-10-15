@@ -1,24 +1,13 @@
-# Bundler cache
-.bundle
-vendor
-Gemfile.lock
+# Dependencies & build output
+node_modules/
+dist/
+.astro/
 
-# Jekyll cache
-.jekyll-cache
-_site
+# Private: full résumé with phone number. Publish a redacted copy at public/resume.pdf.
+resume/
 
-# RubyGems
-*.gem
-
-# NPM dependencies
-node_modules
-package-lock.json
-
-# IDE configurations
+# OS / editors
+.DS_Store
 .idea
 .vscode
-
-# Misc
-assets/js/dist
-.frontmatter
-reference.md
+*.log

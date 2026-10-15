@@ -1,0 +1,119 @@
+/*
+ * Design tokens. Every color, size and duration used on the site comes from here.
+ * Dark is the default; light mirrors it. Contrast ratios (vs --bg) are noted
+ * for text colors and all meet WCAG AA.
+ */
+
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #0b0c0e;
+  --surface-1: #111316;
+  --surface-2: #16181c;
+  --surface-3: #1d2024;
+  --border: #23262b;
+  --border-strong: #31353b;
+
+  --text: #edeef0; /* 16.9:1 */
+  --text-muted: #a1a6ae; /* 8.0:1 */
+  --text-subtle: #868b94; /* 5.7:1 */
+
+  --accent: #5fd4c0; /* 10.9:1 */
+  --accent-text: #5fd4c0;
+  --accent-contrast: #0b0c0e; /* text on accent fill */
+  --accent-soft: rgb(95 212 192 / 0.1);
+  --accent-glow: rgb(95 212 192 / 0.13);
+
+  --todo: #f5b454;
+  --todo-soft: rgb(245 180 84 / 0.1);
+
+  --selection: rgb(95 212 192 / 0.28);
+  --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 12px 32px -16px rgb(0 0 0 / 0.6);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #fafaf9;
+  --surface-1: #ffffff;
+  --surface-2: #f3f3f1;
+  --surface-3: #ebebe8;
+  --border: #e4e4e0;
+  --border-strong: #d2d2cd;
+
+  --text: #111214; /* 18.0:1 */
+  --text-muted: #55595f; /* 6.8:1 */
+  --text-subtle: #6b6f76; /* 4.8:1 */
+
+  --accent: #0e7468; /* 5.4:1 */
+  --accent-text: #0b6157; /* 7.0:1 */
+  --accent-contrast: #ffffff;
+  --accent-soft: rgb(14 116 104 / 0.08);
+  --accent-glow: rgb(14 116 104 / 0.09);
+
+  --todo: #a35c00;
+  --todo-soft: rgb(163 92 0 / 0.08);
+
+  --selection: rgb(14 116 104 / 0.18);
+  --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.8) inset, 0 12px 32px -18px rgb(17 18 20 / 0.18);
+}
+
+/* No-JS fallback: follow the OS preference when no explicit theme is set. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+    --bg: #fafaf9;
+    --surface-1: #ffffff;
+    --surface-2: #f3f3f1;
+    --surface-3: #ebebe8;
+    --border: #e4e4e0;
+    --border-strong: #d2d2cd;
+    --text: #111214;
+    --text-muted: #55595f;
+    --text-subtle: #6b6f76;
+    --accent: #0e7468;
+    --accent-text: #0b6157;
+    --accent-contrast: #ffffff;
+    --accent-soft: rgb(14 116 104 / 0.08);
+    --accent-glow: rgb(14 116 104 / 0.09);
+    --todo: #a35c00;
+    --todo-soft: rgb(163 92 0 / 0.08);
+    --selection: rgb(14 116 104 / 0.18);
+    --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.8) inset, 0 12px 32px -18px rgb(17 18 20 / 0.18);
+  }
+}
+
+:root {
+  /* Type: major-third scale (1.25) on a 16px base. */
+  --text-xs: 0.75rem; /* 12 */
+  --text-sm: 0.875rem; /* 14 */
+  --text-base: 1rem; /* 16 */
+  --text-md: 1.25rem; /* 20 */
+  --text-lg: 1.5625rem; /* 25 */
+  --text-xl: 1.953rem; /* 31 */
+  --text-2xl: 2.441rem; /* 39 */
+  --text-3xl: 3.052rem; /* 49 */
+  --text-hero: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem); /* 40 → 72 */
+
+  /* Layout */
+  --content-max: 70rem; /* 1120px */
+  --prose-max: 68ch;
+  --gutter: 1rem;
+  --header-h: 3.5rem;
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-lg: 12px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-fast: 160ms;
+  --dur: 240ms;
+  --dur-reveal: 560ms;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gutter: 1.5rem;
+  }
+}

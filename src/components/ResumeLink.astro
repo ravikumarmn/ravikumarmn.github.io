@@ -1,0 +1,29 @@
+---
+import Icon from './Icon.astro';
+import { hasResume, profile } from '~/lib/site';
+
+interface Props {
+  variant?: 'primary' | 'secondary';
+  size?: 'sm' | 'md';
+  class?: string;
+}
+
+const { variant = 'secondary', size = 'md', class: className } = Astro.props;
+---
+
+{
+  hasResume ? (
+    <a href={profile.resume} class:list={['btn', `btn-${variant}`, `btn-${size}`, className]} download>
+      <Icon name="file-text" />
+      Résumé
+    </a>
+  ) : (
+    <span
+      class:list={['btn', 'btn-todo', `btn-${size}`, className]}
+      title="TODO: add a résumé PDF without your phone number at public/resume.pdf"
+    >
+      <Icon name="file-text" />
+      Résumé (TODO)
+    </span>
+  )
+}

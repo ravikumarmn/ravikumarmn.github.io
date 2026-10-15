@@ -1,0 +1,79 @@
+---
+import { Font } from 'astro:assets';
+import '~/styles/global.css';
+import Seo from '~/components/Seo.astro';
+import Nav from '~/components/Nav.astro';
+import Footer from '~/components/Footer.astro';
+
+type SeoProps = import('~/components/Seo.astro').Props;
+
+interface Props extends SeoProps {
+  /** Adds the hero glow behind the top of the page. */
+  glow?: boolean;
+}
+
+const { glow = false, ...seo } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Runs before first paint: applies the saved or system theme so there is no flash. -->
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+        let theme;
+        try {
+          theme = localStorage.getItem('theme');
+        } catch {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        root.dataset.theme = theme;
+      })();
+    </script>
+    <meta name="theme-color" content="#0b0c0e" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)" />
+    <Font cssVariable="--font-geist" preload />
+    <Font cssVariable="--font-geist-mono" preload />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="google-site-verification" content="YWEM8XVSFnwJrGq0fpQOcROSoo5JyBgBRwDfT4UN2oM" />
+    <meta name="generator" content={Astro.generator} />
+    <Seo {...seo} />
+    <slot name="head" />
+  </head>
+  <body class="relative flex min-h-dvh flex-col">
+    <a class="skip-link" href="#main">Skip to content</a>
+    {glow && <div class="hero-glow" aria-hidden="true" />}
+    <Nav />
+    <main id="main" class="relative flex-1" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import '~/scripts/site';
+    </script>
+  </body>
+</html>
+
+<style>
+  .hero-glow {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 46rem;
+    pointer-events: none;
+    background:
+      radial-gradient(42rem 24rem at 18% -6%, var(--accent-glow), transparent 70%),
+      radial-gradient(30rem 18rem at 82% 4%, color-mix(in oklab, var(--accent-glow) 45%, transparent), transparent 70%);
+    mask-image: linear-gradient(to bottom, black 40%, transparent);
+  }
+  main:focus {
+    outline: none;
+  }
+</style>
