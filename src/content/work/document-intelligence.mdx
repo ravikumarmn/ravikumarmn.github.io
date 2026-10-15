@@ -1,0 +1,78 @@
+---
+title: Agentic document intelligence, from PDFs to structured data and answers
+summary: Docling parsing and LLM extraction turn PDFs, forms, and reports into JSON, a knowledge graph, and grounded QA, at under 3s per page.
+role: AI / ML Engineer
+org: Zyoin · Acranton
+period: 'TODO: dates'
+order: 3
+metrics:
+  - { value: '<3s', label: 'ingestion per page' }
+  - { value: '1.5s', label: 'grounded QA response' }
+  - { value: '+30%', label: 'healthcare form throughput' }
+stack: [Docling, LLMs, Gemini API, FastAPI, Vector DB, Python]
+---
+
+import { documentIntelligence } from '~/components/diagrams/specs';
+
+<Todo block>Confirm the period and which parts were built where. The résumé lists Docling ingestion at Zyoin, the Gemini form extractor at Acranton, and the platform itself under Projects.</Todo>
+
+## Problem
+
+Most enterprise knowledge sits in documents nobody can query: PDFs, scanned forms, and long reports. The goal was to make that content usable in two ways at once, as **structured data** that downstream systems can consume and as **answers** people can get by asking questions.
+
+## Constraints
+
+- **Messy inputs.** Layouts, tables, forms, and handwriting vary widely between documents.
+- **Throughput.** Collections are enterprise-scale, so ingestion has to stay fast per page.
+- **Grounded answers.** Answers and summaries must come from the documents themselves.
+- **Healthcare data.** Some of it was medical. Extraction had to be fast enough for clinicians to use. <Todo>Any privacy or compliance constraints worth stating (e.g. PHI handling)?</Todo>
+
+## Approach
+
+### Parse structure before reasoning
+
+Each document goes through **Docling** first, which recovers layout, tables, and text. The LLM then works on structured content instead of raw PDF bytes. <Verify note="Inferred rationale.">That is cheaper and more reliable than asking the model to also work out the page layout.</Verify>
+
+### Agent-driven extraction and classification
+
+An extraction agent **classifies** each document and **extracts** fields into **structured JSON** and a **knowledge graph**. The same content is chunked and embedded into a vector index for semantic search.
+
+### Conversational QA and summarization
+
+A RAG pipeline over the vector index answers questions and summarizes across ingested documents, with **1.5s grounded QA** latency on enterprise-scale collections.
+
+<ArchitectureFigure spec={documentIntelligence} caption="The ingestion and query planes. All components are from the résumé; the edges between them are simplified." />
+
+### The same pattern in healthcare
+
+- **Form extraction (Acranton).** A Gemini API–based extractor converts unstructured healthcare documents into structured data in **under 3 seconds**, raising throughput **30%**.
+- **Handwritten prescriptions.** Gemini Flash converts handwritten prescriptions into JSON within **5 seconds**, making the data accessible to clinicians.
+
+<Callout title="Parser + LLM vs. one multimodal model" tone="tradeoff">
+  <Verify note="Inferred trade-off.">A single vision-language model can read a page end to end, but it is slower and harder to debug when it misreads a table. Splitting deterministic parsing (Docling) from LLM reasoning makes each failure visible at one stage. The healthcare extractors show the other side: for handwriting, a multimodal model is the right tool.</Verify>
+</Callout>
+
+## Results
+
+<MetricGrid>
+  <Metric value="<3s" label="document ingestion per page" />
+  <Metric value="1.5s" label="grounded QA response latency" />
+  <Metric value="<3s · +30%" label="healthcare form → structured data; throughput gain" />
+  <Metric value="<5s" label="handwritten prescription → JSON" />
+</MetricGrid>
+
+<Todo block>Add extraction accuracy (field-level precision or recall, or exact match) and collection size. Speed without accuracy invites the obvious question.</Todo>
+
+## Stack
+
+<StackList
+  groups={[
+    { label: 'Parsing', items: ['Docling'] },
+    { label: 'Models', items: ['LLMs', 'Gemini API', 'Gemini Flash'] },
+    { label: 'Serving', items: ['FastAPI', 'Vector DB', 'RAG'] },
+  ]}
+/>
+
+## Links
+
+<Todo block>Public repo, demo, or write-up, if any.</Todo>

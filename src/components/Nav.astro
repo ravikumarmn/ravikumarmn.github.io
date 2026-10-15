@@ -128,12 +128,12 @@ import { navLinks, profile } from '~/lib/site';
     }
   }
 
-  :global([data-theme='dark']) .theme-icon-sun,
-  :global([data-theme='light']) .theme-icon-moon {
+  :global([data-theme='dark'] .theme-icon-sun),
+  :global([data-theme='light'] .theme-icon-moon) {
     display: block;
   }
-  :global([data-theme='dark']) .theme-icon-moon,
-  :global([data-theme='light']) .theme-icon-sun {
+  :global([data-theme='dark'] .theme-icon-moon),
+  :global([data-theme='light'] .theme-icon-sun) {
     display: none;
   }
 

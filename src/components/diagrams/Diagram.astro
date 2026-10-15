@@ -1,0 +1,70 @@
+---
+import { arrowhead, NODE_H, type DiagramSpec } from '~/lib/diagram';
+
+interface Props {
+  spec: DiagramSpec;
+}
+const { spec } = Astro.props;
+const id = spec.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+---
+
+<svg
+  class="diagram"
+  viewBox={`0 0 ${spec.width} ${spec.height}`}
+  width={spec.width}
+  height={spec.height}
+  role="img"
+  aria-labelledby={`${id}-title ${id}-desc`}
+>
+  <title id={`${id}-title`}>{spec.title}</title>
+  <desc id={`${id}-desc`}>{spec.description}</desc>
+
+  {
+    spec.groups?.map((group) => (
+      <g class="dg-group">
+        <rect x={group.x} y={group.y} width={group.w} height={group.h} rx="12" />
+        <text x={group.x + 14} y={group.y + 20}>
+          {group.label}
+        </text>
+      </g>
+    ))
+  }
+
+  {
+    spec.edges.map((edge) => {
+      const pts = edge.points;
+      return (
+        <g class:list={['dg-edge', { dashed: edge.dashed }]}>
+          <polyline points={pts.map((p) => p.join(',')).join(' ')} />
+          {!edge.plain && <path class="dg-head" d={arrowhead(pts[pts.length - 2], pts[pts.length - 1])} />}
+          {edge.label && (
+            <text x={edge.label.at[0]} y={edge.label.at[1]} text-anchor={edge.label.anchor ?? 'middle'}>
+              {edge.label.text}
+            </text>
+          )}
+        </g>
+      );
+    })
+  }
+
+  {
+    spec.nodes.map((node) => {
+      const h = node.h ?? NODE_H;
+      const cx = node.x + node.w / 2;
+      const cy = node.y + h / 2;
+      return (
+        <g class:list={['dg-node', node.tone ?? 'default']}>
+          <rect x={node.x} y={node.y} width={node.w} height={h} rx="8" />
+          <text class="dg-label" x={cx} y={node.sub ? cy - 3 : cy + 4.5} text-anchor="middle">
+            {node.label}
+          </text>
+          {node.sub && (
+            <text class="dg-sub" x={cx} y={cy + 14} text-anchor="middle">
+              {node.sub}
+            </text>
+          )}
+        </g>
+      );
+    })
+  }
+</svg>

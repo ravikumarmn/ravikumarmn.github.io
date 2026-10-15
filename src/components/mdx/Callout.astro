@@ -1,0 +1,30 @@
+---
+interface Props {
+  title: string;
+  tone?: 'note' | 'tradeoff';
+}
+const { title, tone = 'note' } = Astro.props;
+---
+
+<aside class:list={['callout not-prose', tone]}>
+  <p class="eyebrow">{tone === 'tradeoff' ? 'Trade-off' : 'Note'}</p>
+  <p class="mt-1 font-medium text-text">{title}</p>
+  <div class="mt-2 text-muted"><slot /></div>
+</aside>
+
+<style>
+  .callout {
+    margin-block: 2rem;
+    padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--surface-1);
+  }
+  .callout.tradeoff {
+    border-left-color: var(--accent);
+  }
+  .callout :global(p + p) {
+    margin-top: 0.75rem;
+  }
+</style>

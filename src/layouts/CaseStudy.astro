@@ -1,0 +1,119 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Base from './Base.astro';
+import Icon from '~/components/Icon.astro';
+import MaybeTodo from '~/components/MaybeTodo.astro';
+import { articleJsonLd } from '~/lib/jsonld';
+import '~/styles/prose.css';
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+  prev?: CollectionEntry<'work'>;
+  next?: CollectionEntry<'work'>;
+}
+
+const { entry, prev, next } = Astro.props;
+const { title, summary, role, org, period, metrics, stack } = entry.data;
+const url = new URL(`/work/${entry.id}`, Astro.site);
+const image = `/og/work/${entry.id}.png`;
+---
+
+<Base
+  title={title}
+  description={summary}
+  image={image}
+  type="article"
+  jsonLd={articleJsonLd({ title, description: summary, url, image: new URL(image, Astro.site) })}
+  glow
+>
+  <article>
+    <header class="container-page pt-12 pb-12 md:pt-20">
+      <a href="/#work" class="group inline-flex items-center gap-1.5 text-sm text-muted hover:text-text">
+        <Icon name="arrow-left" size={14} class="transition-transform group-hover:-translate-x-0.5" />
+        Selected work
+      </a>
+      <p class="enter eyebrow mt-10">Case study</p>
+      <h1 class="enter enter-1 mt-4 max-w-[24ch] text-2xl leading-[1.08] tracking-[-0.03em] md:text-3xl">{title}</h1>
+      <p class="enter enter-2 mt-5 max-w-[60ch] text-md leading-relaxed text-muted">{summary}</p>
+
+      <dl class="enter enter-3 mt-10 grid grid-cols-2 gap-6 border-y border-border py-6 text-sm md:grid-cols-4">
+        <div>
+          <dt class="eyebrow">Role</dt>
+          <dd class="mt-1.5 text-text"><MaybeTodo value={role} /></dd>
+        </div>
+        <div>
+          <dt class="eyebrow">Where</dt>
+          <dd class="mt-1.5 text-text"><MaybeTodo value={org} /></dd>
+        </div>
+        <div>
+          <dt class="eyebrow">When</dt>
+          <dd class="mt-1.5 text-text"><MaybeTodo value={period} /></dd>
+        </div>
+        <div>
+          <dt class="eyebrow">Core stack</dt>
+          <dd class="mt-1.5 text-text">{stack.slice(0, 3).join(', ')}</dd>
+        </div>
+      </dl>
+
+      <dl class="mt-6 grid grid-cols-1 gap-3 min-[30rem]:grid-cols-2 md:grid-cols-3">
+        {
+          metrics.slice(0, 3).map((metric) => (
+            <div class="flex flex-col-reverse gap-1 rounded-lg border border-border bg-surface-1 p-5">
+              <dt class="text-sm text-subtle">{metric.label}</dt>
+              <dd class="font-mono text-2xl font-medium tracking-[-0.035em] text-text tabular-nums">{metric.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </header>
+
+    <div class="container-page pb-24">
+      <div class="prose case-prose">
+        <slot />
+      </div>
+    </div>
+
+    <nav class="container-page grid gap-4 border-t border-border py-12 sm:grid-cols-2" aria-label="More case studies">
+      {
+        prev ? (
+          <a href={`/work/${prev.id}`} class="pager group">
+            <span class="eyebrow inline-flex items-center gap-1.5">
+              <Icon name="arrow-left" size={12} /> Previous
+            </span>
+            <span class="mt-2 block font-medium text-text group-hover:text-accent-text">{prev.data.title}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        next && (
+          <a href={`/work/${next.id}`} class="pager group sm:text-right">
+            <span class="eyebrow inline-flex items-center gap-1.5">
+              Next <Icon name="arrow-right" size={12} />
+            </span>
+            <span class="mt-2 block font-medium text-text group-hover:text-accent-text">{next.data.title}</span>
+          </a>
+        )
+      }
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .pager {
+    display: block;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .pager:hover {
+    border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+  }
+  .case-prose > :first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+</style>

@@ -6,16 +6,20 @@
 interface Props {
   /** Shown when there is no slot content. */
   text?: string;
+  /** Render as its own paragraph (for standalone lines in MDX). */
+  block?: boolean;
 }
-const { text } = Astro.props;
+const { text, block = false } = Astro.props;
+const inner = text ?? (await Astro.slots.render('default'));
 if (import.meta.env.PROD && process.env.STRICT_CONTENT === '1') {
-  throw new Error(`Unresolved TODO in ${Astro.url.pathname}: ${text ?? '(see slot content)'}`);
+  throw new Error(`Unresolved TODO on ${Astro.url.pathname}: ${inner}`);
 }
+const html = `<span class="todo" data-todo><span class="todo-tag">TODO</span>${inner}</span>`;
 ---
 
-<span class="todo" data-todo><span class="todo-tag">TODO</span>{text}<slot /></span>
+{block ? <p set:html={html} /> : <Fragment set:html={html} />}
 
-<style>
+<style is:global>
   .todo {
     display: inline;
     padding: 0.05em 0.4em;

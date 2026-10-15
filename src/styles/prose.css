@@ -1,0 +1,254 @@
+/* Long-form typography for case studies and posts. Loaded by those layouts only. */
+
+.prose {
+  color: var(--text-muted);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.prose > * + * {
+  margin-top: 1.25em;
+}
+.prose > :where(p, ul, ol, blockquote, h2, h3, h4, table) {
+  max-width: var(--prose-max);
+}
+
+.prose :where(h2, h3, h4) {
+  color: var(--text);
+  scroll-margin-top: calc(var(--header-h) + 1.5rem);
+}
+.prose h2 {
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  font-size: var(--text-lg);
+}
+.prose h3 {
+  margin-top: 2.25rem;
+  font-size: var(--text-md);
+  letter-spacing: -0.015em;
+}
+.prose h4 {
+  margin-top: 1.75rem;
+  font-size: var(--text-base);
+}
+.prose :where(h2, h3, h4) + * {
+  margin-top: 0.75em;
+}
+
+.prose strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.prose a:not(.not-prose a) {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--accent) 40%, transparent);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.prose a:not(.not-prose a):hover {
+  text-decoration-color: var(--accent);
+}
+
+.prose :where(ul, ol):not(.not-prose *) {
+  padding-left: 1.25em;
+}
+.prose ul:not(.not-prose *) {
+  list-style: none;
+}
+.prose ul:not(.not-prose *) > li {
+  position: relative;
+}
+.prose ul:not(.not-prose *) > li::before {
+  content: '';
+  position: absolute;
+  left: -1.1em;
+  top: 0.85em;
+  width: 0.5em;
+  height: 1px;
+  background: var(--text-subtle);
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose ol > li::marker {
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+.prose li:not(.not-prose *) + li {
+  margin-top: 0.5em;
+}
+
+.prose blockquote {
+  padding-left: 1.25em;
+  border-left: 2px solid var(--border-strong);
+  color: var(--text-muted);
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin-block: 3rem;
+}
+
+.prose :not(pre) > code {
+  padding: 0.12em 0.36em;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 0.86em;
+}
+
+.prose pre {
+  overflow-x: auto;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+/* Shiki dual themes (defaultColor: false emits both as CSS variables). */
+.astro-code {
+  background-color: var(--surface-1) !important;
+}
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light);
+}
+[data-theme='dark'] .astro-code,
+[data-theme='dark'] .astro-code span {
+  color: var(--shiki-dark);
+}
+
+.prose img,
+.prose video,
+.prose iframe {
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+  border-radius: var(--radius);
+}
+.prose img {
+  border: 1px solid var(--border);
+  background: #fff;
+}
+.prose iframe {
+  width: 100%;
+  border: 1px solid var(--border);
+}
+.prose figure figcaption,
+.prose .caption {
+  margin-top: 0.75rem;
+  color: var(--text-subtle);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.prose table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+.prose :where(th, td) {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+.prose th {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.prose .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.25rem;
+}
+.prose .katex {
+  color: var(--text);
+}
+
+/* Architecture diagrams */
+.arch-figure {
+  margin-block: 2.5rem;
+}
+.arch-scroll {
+  overflow-x: auto;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0) 0 0 / 20px 20px,
+    var(--surface-1);
+}
+.arch-scroll .diagram {
+  display: block;
+  width: 100%;
+  min-width: 44rem;
+  height: auto;
+  margin-inline: auto;
+}
+.arch-figure figcaption {
+  max-width: var(--prose-max);
+  margin-top: 0.875rem;
+  color: var(--text-subtle);
+  font-size: var(--text-sm);
+}
+
+.diagram text {
+  font-family: var(--font-geist);
+}
+.dg-node rect {
+  fill: var(--surface-2);
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+.dg-node.accent rect {
+  fill: color-mix(in oklab, var(--accent) 10%, var(--surface-2));
+  stroke: var(--accent);
+}
+.dg-node.quiet rect {
+  fill: var(--surface-1);
+  stroke-dasharray: 3 3;
+}
+.dg-label {
+  fill: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+}
+.dg-sub {
+  fill: var(--text-subtle);
+  font-family: var(--font-geist-mono) !important;
+  font-size: 10.5px;
+}
+.dg-edge polyline {
+  fill: none;
+  stroke: var(--text-subtle);
+  stroke-width: 1.25;
+  stroke-linejoin: round;
+}
+.dg-edge.dashed polyline {
+  stroke-dasharray: 4 4;
+}
+.dg-head {
+  fill: var(--text-subtle);
+}
+.dg-edge text {
+  fill: var(--text-subtle);
+  font-family: var(--font-geist-mono) !important;
+  font-size: 10.5px;
+}
+.dg-group rect {
+  fill: color-mix(in oklab, var(--surface-2) 40%, transparent);
+  stroke: var(--border-strong);
+  stroke-dasharray: 5 4;
+}
+.dg-group text {
+  fill: var(--text-subtle);
+  font-family: var(--font-geist-mono) !important;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+}

@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Icon from './Icon.astro';
+import MaybeTodo from './MaybeTodo.astro';
 
 interface Props {
   entry: CollectionEntry<'work'>;
@@ -11,7 +12,7 @@ const { title, summary, org, period, metrics, stack } = entry.data;
 
 <a href={`/work/${entry.id}`} class="work-card group" data-reveal>
   <div class="flex items-start justify-between gap-4">
-    <p class="eyebrow">{org} · {period}</p>
+    <p class="eyebrow"><MaybeTodo value={org} /> · <MaybeTodo value={period} /></p>
     <Icon
       name="arrow-up-right"
       size={18}

@@ -6,14 +6,18 @@
  */
 interface Props {
   note?: string;
+  /** Render as its own paragraph (for standalone lines in MDX). */
+  block?: boolean;
 }
-const { note } = Astro.props;
-const dev = import.meta.env.DEV;
+const { note, block = false } = Astro.props;
+const inner = await Astro.slots.render('default');
+const title = (note ? `Verify: ${note}` : 'Verify: inferred from résumé').replace(/"/g, '&quot;');
+const html = import.meta.env.DEV ? `<span class="verify" title="${title}">${inner}</span>` : inner;
 ---
 
-{dev ? <span class="verify" title={note ? `Verify: ${note}` : 'Verify: inferred from résumé'}><slot /></span> : <slot />}
+{block ? <p set:html={html} /> : <Fragment set:html={html} />}
 
-<style>
+<style is:global>
   .verify {
     text-decoration: underline dotted var(--todo);
     text-decoration-thickness: 1.5px;

@@ -1,0 +1,80 @@
+---
+title: An enterprise GenAI copilot with agentic RAG and tool use
+summary: One copilot over documents, tables, and analytics tools, with hybrid retrieval and query planning, answering in 1.8s end to end.
+role: AI Engineer
+org: 'TODO: employer'
+period: 'TODO: dates'
+order: 2
+metrics:
+  - { value: '1.8s', label: 'end-to-end response latency' }
+  - { value: '<120ms', label: 'vector search latency at scale' }
+  - { value: '3', label: 'routes: hybrid search, SQL agent, tools' }
+stack: [LangChain, LlamaIndex, Azure, Databricks, MLflow, Python]
+---
+
+import { agenticRag } from '~/components/diagrams/specs';
+
+<Todo block>Confirm where this was built (Zyoin, C5i, or independently) and its dates. The résumé lists it under Projects without an employer.</Todo>
+
+## Problem
+
+Enterprise knowledge was split between unstructured documents and structured tables. People needed one place to ask questions that span both: analytics questions, document questions, and questions that need a bit of each. The answers had to be grounded in the source data.
+
+## Constraints
+
+- **Mixed sources.** Some questions need semantic recall over documents, some need exact keyword matches, and some need SQL over tables.
+- **Grounding.** Answers had to be traceable to retrieved evidence, not invented by the model.
+- **Interactive latency.** A copilot people actually use has to answer in seconds, with retrieval taking only a small part of that time.
+- **Operability.** Releases needed tracking, evaluation, and versioning so a quality regression could be caught and rolled back.
+
+## Approach
+
+### Plan first, then retrieve
+
+Multi-agent orchestration splits each request into three steps: **query planning**, **data retrieval**, and **response synthesis**. The planner decides which route a question needs: hybrid retrieval, a **SQL agent** for structured data, or **tool calls** for analytics and document workflows.
+
+### Hybrid retrieval across structured and unstructured data
+
+Vector search alone misses exact identifiers and rare terms, and keyword search alone misses paraphrases. I combined **vector and keyword retrieval** across structured and unstructured sources, which improved answer relevance and grounding accuracy. <Todo>By how much? Retrieval hit-rate, grounding score, or human rating before and after.</Todo> <Verify note="Merge/rank step drawn in the figure is inferred; confirm the fusion method (e.g. reciprocal rank fusion, a reranker).">The two result sets are merged and ranked before synthesis.</Verify>
+
+### Synthesis with memory and guardrails
+
+The synthesis step keeps **contextual memory** across turns and applies **guardrails** before an answer is returned.
+
+### Latency work
+
+I optimized both the inference path and the retrieval path, reaching **1.8s end-to-end** response latency with vector search **under 120ms** at scale. <Todo>What changed to get there (index type, caching, smaller models for planning, parallel retrieval), and what was the starting point?</Todo>
+
+<ArchitectureFigure spec={agenticRag} caption="Routing and retrieval paths. The merge-and-rank step is a simplification; confirm the fusion method." />
+
+### Shipping
+
+The system is deployed on **Azure** and **Databricks**, with **MLflow** for model tracking, evaluation, and versioned releases.
+
+<Callout title="Planning step vs. latency" tone="tradeoff">
+  <Verify note="Inferred trade-off.">The planner costs an extra model call on every request. In exchange, each question takes only the route it needs, so pure lookups don't pay for SQL generation and table questions don't pay for document retrieval.</Verify>
+</Callout>
+
+## Results
+
+<MetricGrid>
+  <Metric value="1.8s" label="end-to-end response latency" />
+  <Metric value="<120ms" label="vector search latency at scale" />
+  <Metric value="Hybrid" label="vector + keyword retrieval, structured + unstructured" />
+</MetricGrid>
+
+<Todo block>Add a quality number (grounding accuracy, answer relevance, or task success) and the corpus size or query volume.</Todo>
+
+## Stack
+
+<StackList
+  groups={[
+    { label: 'Orchestration', items: ['LangChain', 'LlamaIndex', 'SQL agents', 'Tool calling'] },
+    { label: 'Retrieval', items: ['Vector search', 'Keyword search', 'Hybrid retrieval'] },
+    { label: 'Platform', items: ['Azure', 'Databricks', 'MLflow'] },
+  ]}
+/>
+
+## Links
+
+<Todo block>Is there a public repo, demo, or write-up?</Todo>

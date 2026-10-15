@@ -1,0 +1,23 @@
+---
+interface Props {
+  groups: { label: string; items: string[] }[];
+}
+const { groups } = Astro.props;
+---
+
+<dl class="not-prose my-6 divide-y divide-border border-y border-border">
+  {
+    groups.map((group) => (
+      <div class="grid gap-2 py-4 sm:grid-cols-[10rem_1fr] sm:gap-6">
+        <dt class="eyebrow pt-1.5">{group.label}</dt>
+        <dd>
+          <ul class="flex flex-wrap gap-1.5">
+            {group.items.map((item) => (
+              <li class="chip">{item}</li>
+            ))}
+          </ul>
+        </dd>
+      </div>
+    ))
+  }
+</dl>

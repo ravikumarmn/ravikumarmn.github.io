@@ -1,0 +1,93 @@
+---
+title: A governed multi-agent assistant for enterprise workflows
+summary: A LangGraph assistant that retrieves, reasons, and acts across business workflows, with sub-800ms average responses and an audit trail on every turn.
+role: Senior AI Engineer
+org: C5i
+period: 2025 – present
+order: 1
+metrics:
+  - { value: '<800ms', label: 'average response latency' }
+  - { value: '−22%', label: 'end-to-end task time' }
+  - { value: '−30%', label: 'analyst query turnaround' }
+  - { value: '−25%', label: 'deployment overhead' }
+  - { value: '−20%', label: 'release cycle time' }
+  - { value: '−18%', label: 'incident response time' }
+stack: [LangGraph, Databricks Model Serving, Unity Catalog, Databricks Genie, Azure DevOps, Python]
+---
+
+import { multiAgentAssistant } from '~/components/diagrams/specs';
+
+## Problem
+
+Business teams needed one assistant that could find information, reason over it, and complete tasks across their workflows, working on enterprise data that carries access controls and compliance obligations.
+
+<Verify block note="Inferred framing of why a single-prompt chatbot wasn't enough.">A single prompt-and-retrieve chatbot couldn't do this reliably. Different steps need different tools and different data permissions, and a compliance team needs to be able to reconstruct what the system did and why.</Verify>
+
+## Constraints
+
+- **Latency.** Interactive use, so responses had to stay fast while many sessions ran concurrently. The system holds a sub-800ms *average*. <Todo>Is there a p95/p99 figure, and what was the latency before?</Todo>
+- **Multi-tenancy.** Concurrent sessions from multiple tenants on shared infrastructure, so it had to scale horizontally. <Todo>How many tenants, concurrent sessions, or requests per day?</Todo>
+- **Governed data.** Every agent-facing data source needed lineage, access control, and compliance coverage.
+- **Auditability.** Model versions, prompts, and responses all had to be reviewable after the fact.
+- **Release safety.** Web and application layers ship together, so builds, tests, and deploys had to be automated.
+
+## Approach
+
+### Specialized agents behind one orchestrator
+
+I architected the assistant in LangGraph as a set of specialized agents (retrieval, reasoning, and task execution) coordinated by an orchestration graph. <Verify note="Inferred design rationale.">Splitting by responsibility keeps each agent's prompt and toolset small. That makes failures easier to localize, and each agent can be tested and improved on its own.</Verify>
+
+### Structured data through Genie
+
+Many questions are really queries over structured tables. For those I built Genie-based conversational agents on Databricks that translate natural language into queries over governed enterprise data. This cut analyst query turnaround by **30%**.
+
+### Governance as part of the architecture
+
+Governance was designed in, not bolted on:
+
+- **Unity Catalog** catalogs, schemas, and governed tables for every agent-facing source, enforcing lineage and access control.
+- **Guardrails and audit logging** in the request path, with prompt and response auditing on every turn.
+- **Model versioning and access policies**, so any answer can be traced to the model and configuration that produced it.
+
+These controls improved compliance readiness and cut incident response time by **18%**. <Verify note="Inferred mechanism for the incident-response improvement.">When something goes wrong, the audit trail shows which agent, model version, and data source were involved.</Verify>
+
+### Horizontal scale on Databricks
+
+Agents run on Databricks Model Serving, with job clusters for heavier work and automated retraining pipelines. This cut deployment overhead by **25%**. The system scales horizontally across concurrent multi-tenant sessions while holding a sub-800ms average response time.
+
+### Shipping safely
+
+Azure DevOps pipelines build, test, and deploy both the web and application layers. Release cycle time fell **20%** and deployment failures fell **15%**.
+
+<ArchitectureFigure spec={multiAgentAssistant} caption="Request path and governance plane. Components are as built; the exact routing topology inside the orchestrator is simplified." />
+
+<Callout title="More agents means more latency" tone="tradeoff">
+  <Verify note="Inferred trade-off discussion; confirm it matches how you reasoned about it.">Every agent hop adds a model call. To keep a sub-800ms average, the orchestrator only involves the agents a request actually needs, and structured questions go straight to Genie instead of through free-form retrieval and reasoning.</Verify>
+</Callout>
+
+## Results
+
+<MetricGrid>
+  <Metric value="<800ms" label="average response latency, concurrent multi-tenant sessions" />
+  <Metric value="−22%" label="end-to-end task completion time" />
+  <Metric value="−30%" label="analyst query turnaround (Genie agents)" />
+  <Metric value="−25%" label="deployment overhead (Model Serving + job clusters)" />
+  <Metric value="−20% / −15%" label="release cycle time / deployment failures" />
+  <Metric value="−18%" label="incident response time" />
+</MetricGrid>
+
+<Todo block>How is answer quality evaluated (golden sets, LLM-as-judge, human review), and what are the numbers? This is the first thing frontier-lab reviewers will look for.</Todo>
+
+## Stack
+
+<StackList
+  groups={[
+    { label: 'Agents', items: ['LangGraph', 'Databricks Genie', 'Guardrails', 'Audit logging'] },
+    { label: 'Platform', items: ['Databricks Model Serving', 'Job clusters', 'Unity Catalog'] },
+    { label: 'Delivery', items: ['Azure DevOps CI/CD', 'Model versioning', 'Automated retraining'] },
+  ]}
+/>
+
+## Links
+
+Client work. There is no public repository or demo. <Todo>Add a public write-up or talk if one exists.</Todo>

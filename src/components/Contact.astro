@@ -74,11 +74,11 @@ import { profile } from '~/lib/site';
     background: var(--surface-2);
     color: var(--text);
   }
-  .copy-btn .check-icon,
-  .copy-btn[data-copied] .copy-icon {
+  .copy-btn :global(.check-icon),
+  .copy-btn[data-copied] :global(.copy-icon) {
     display: none;
   }
-  .copy-btn[data-copied] .check-icon {
+  .copy-btn[data-copied] :global(.check-icon) {
     display: block;
     color: var(--accent);
   }

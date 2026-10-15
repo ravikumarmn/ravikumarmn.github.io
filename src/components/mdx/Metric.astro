@@ -1,0 +1,24 @@
+---
+interface Props {
+  value: string;
+  label: string;
+}
+const { value, label } = Astro.props;
+---
+
+<div class="metric">
+  <dt class="text-sm text-subtle">{label}</dt>
+  <dd class="font-mono text-xl font-medium tracking-[-0.03em] text-text tabular-nums md:text-2xl">{value}</dd>
+</div>
+
+<style>
+  .metric {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.25rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface-1);
+  }
+</style>

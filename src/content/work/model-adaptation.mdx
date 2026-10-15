@@ -1,0 +1,69 @@
+---
+title: Model adaptation with LLMs, embeddings, and classifiers
+summary: Fine-tuning where prompting and retrieval run out, using SFT with LoRA, contrastive embeddings, and transformer classifiers taken from 78% to 89% accuracy.
+role: Machine Learning Engineer
+org: Acranton · projects
+period: 2022 – 2025
+order: 4
+metrics:
+  - { value: '78→89%', label: 'sentiment classification accuracy' }
+  - { value: '−30%', label: 'inference latency' }
+  - { value: '+10%', label: 'F1 on imbalanced classes' }
+stack: [PyTorch, Hugging Face Transformers, PEFT / LoRA, Sentence Transformers, Weights & Biases, Optuna]
+---
+
+import { modelAdaptation } from '~/components/diagrams/specs';
+
+## Problem
+
+Off-the-shelf models were close but not good enough. They didn't follow domain-specific instructions reliably, retrieval missed domain phrasing, and classifiers plateaued on the classes that mattered most. Each needed adaptation, under a GPU budget.
+
+## Constraints
+
+- **Compute.** Full fine-tuning of large models wasn't affordable, so memory and training cost had to come down.
+- **Production readiness.** Models had to be served fast, not just score well offline.
+- **Imbalanced labels.** The minority classes were often the important ones.
+
+## Approach
+
+### LLMs: SFT with parameter-efficient adapters
+
+I fine-tuned open-source LLMs for domain-specific instruction following using **supervised fine-tuning (SFT)** and **PEFT**. **LoRA** adapters kept the base model frozen, which reduced GPU memory and training cost while preserving model performance. The training pipelines covered dataset curation, prompt formatting, evaluation metrics, and inference optimization. <Todo>Base model and size, GPU memory or cost saved, and the task score before and after.</Todo>
+
+### Embeddings: contrastive fine-tuning for retrieval
+
+General-purpose embeddings blur domain distinctions, so I fine-tuned transformer embedding models on **domain-specific text pairs** with a contrastive objective (Sentence Transformers). This improved top-k retrieval relevance and downstream QA performance in RAG and semantic search. <Todo>Recall@k or MRR before and after, and the size of the pair set.</Todo>
+
+### Classifiers: accuracy and latency together
+
+At Acranton I optimized and fine-tuned transformer NLP models, raising sentiment classification accuracy from **78% to 89%** while cutting **inference latency 30%**. On imbalanced sentiment tasks, Hugging Face Transformers fine-tuning gave a **10% F1** improvement. Custom classification models raised data-pipeline accuracy **18%** and cut processing time **25%**.
+
+<ArchitectureFigure spec={modelAdaptation} caption="One adaptation loop for three model types. Evaluation results feed back into data curation." />
+
+<Callout title="When to fine-tune at all" tone="tradeoff">
+  <Verify note="Inferred stance; also echoed in the About section.">Fine-tuning comes last. If better retrieval or a better prompt closes the gap, that is cheaper to maintain. Fine-tuning pays off when the failure is about behavior or representation, such as instruction format, domain vocabulary in embeddings, or class boundaries, and not about missing knowledge.</Verify>
+</Callout>
+
+## Results
+
+<MetricGrid>
+  <Metric value="78→89%" label="sentiment classification accuracy" />
+  <Metric value="−30%" label="inference latency" />
+  <Metric value="+10%" label="F1 on imbalanced sentiment classes" />
+  <Metric value="+18% / −25%" label="pipeline accuracy / processing time (custom classifiers)" />
+</MetricGrid>
+
+## Stack
+
+<StackList
+  groups={[
+    { label: 'Training', items: ['PyTorch', 'Hugging Face Transformers', 'PEFT', 'LoRA', 'Sentence Transformers'] },
+    { label: 'Experimentation', items: ['Weights & Biases', 'Optuna', 'MLflow'] },
+  ]}
+/>
+
+## Links
+
+Related write-ups on this site: [Multi-label classification with Hugging Face Transformers](/blogs/multi-label-classification-using-huggingface-transformer) and [Sentiment classification and word embeddings](/blogs/sentiment-classification-and-word-embedding).
+
+<Todo block>A public fine-tuning repo or Hugging Face model card would strengthen this page.</Todo>

@@ -1,0 +1,20 @@
+---
+import Diagram from '../diagrams/Diagram.astro';
+import type { DiagramSpec } from '~/lib/diagram';
+
+interface Props {
+  spec: DiagramSpec;
+  caption: string;
+}
+const { spec, caption } = Astro.props;
+---
+
+<figure class="arch-figure not-prose">
+  <div class="arch-scroll" tabindex="0" role="region" aria-label={`${spec.title} (scrollable)`}>
+    <Diagram spec={spec} />
+  </div>
+  <figcaption>
+    <span class="eyebrow mr-2">Fig.</span>{caption}
+    <slot />
+  </figcaption>
+</figure>
