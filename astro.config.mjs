@@ -7,7 +7,6 @@ import tailwindcss from '@tailwindcss/vite';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
-/** @param {string} pkg @param {string} file */
 /** Overflowing display math scrolls horizontally, so it must be keyboard-focusable. */
 function rehypeFocusableMath() {
   /** @param {any} node */
@@ -20,6 +19,7 @@ function rehypeFocusableMath() {
   return walk;
 }
 
+/** @param {string} pkg @param {string} file */
 const fontFile = (pkg, file) => `./node_modules/@fontsource-variable/${pkg}/files/${file}`;
 
 export default defineConfig({
