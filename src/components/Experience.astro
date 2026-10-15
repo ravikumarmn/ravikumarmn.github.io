@@ -2,6 +2,31 @@
 import SectionHeader from './SectionHeader.astro';
 import MaybeTodo from './MaybeTodo.astro';
 import { experience, profile } from '~/lib/site';
+
+const slug = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+const year = (value: string) => value.match(/\d{4}/)?.[0] ?? value;
+
+/**
+ * Splits a highlight into plain text and its measured results (percentages, latencies,
+ * before/after pairs) so the numbers can be set in a stronger weight for scanning.
+ * Presentation only: the sentence itself is rendered verbatim.
+ */
+const METRIC = /(sub-\d+ms|\d+% to \d+%|\d+s to \d+s|under \d+ seconds|\d+(?:\.\d+)?%)/g;
+const segments = (text: string) =>
+  text.split(METRIC).map((part, index) => ({ text: part, metric: index % 2 === 1 }));
+
+/** Compact year span for the index: "2022–2025", "2026–now", or a single year. */
+const span = (start: string, end: string) => {
+  const from = year(start);
+  const to = end === 'Present' ? 'now' : year(end);
+  return from === to ? from : `${from}–${to}`;
+};
+
+const roles = experience.map((job) => ({ ...job, id: `role-${slug(job.org)}`, span: span(job.start, job.end) }));
 ---
 
 <section id="experience" class="section" aria-labelledby="experience-title">
@@ -14,25 +39,47 @@ import { experience, profile } from '~/lib/site';
           title="Where the work happened"
           lede="Shipping models to production since 2021: classical NLP and computer vision first, then LLM and agentic systems on enterprise data platforms."
         />
+
+        <nav class="mt-10 hidden max-w-xs lg:block" aria-label="Roles at a glance" data-reveal>
+          <ol class="border-t border-border">
+            {
+              roles.map((job) => (
+                <li class="border-b border-border">
+                  <a href={`#${job.id}`} class="index-row group">
+                    <span class="truncate text-sm text-muted transition-colors group-hover:text-text">{job.org}</span>
+                    <span class="shrink-0 font-mono text-xs text-subtle tabular-nums">
+                      {job.span}
+                    </span>
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
       </div>
     </div>
 
     <ol class="timeline col-span-12 lg:col-span-8">
       {
-        experience.map((job) => (
-          <li class="timeline-item" data-reveal>
-            <p class="font-mono text-xs text-subtle">
-              <MaybeTodo value={job.start} /> – <MaybeTodo value={job.end} />
-            </p>
-            <h3 class="mt-2 text-md leading-snug">
-              {job.role} <span class="text-muted">· {job.org}</span>
-            </h3>
+        roles.map((job, index) => (
+          <li id={job.id} class:list={['timeline-item', { 'is-current': index === 0 && job.end === 'Present' }]} data-reveal>
+            <div class="role-head">
+              <h3 class="min-w-0 text-md leading-snug">
+                {job.role} <span class="font-medium text-muted">· {job.org}</span>
+              </h3>
+              <p class="dates">
+                <MaybeTodo value={job.start} /> – <MaybeTodo value={job.end} />
+              </p>
+            </div>
             <p class="mt-1 text-sm text-subtle">
               {job.type} · {job.location}
             </p>
-            <ul class="mt-4 space-y-3 text-muted">
+            <p class="mt-4 max-w-[var(--prose-max)] text-text">{job.summary}</p>
+            <ul class="mt-4 space-y-2.5 text-muted">
               {job.highlights.map((item) => (
-                <li class="bullet">{item}</li>
+                <li class="bullet">
+                  {segments(item).map((part) => (part.metric ? <span class="metric">{part.text}</span> : part.text))}
+                </li>
               ))}
             </ul>
             <ul class="mt-5 flex flex-wrap gap-1.5" aria-label="Key tools">
@@ -43,11 +90,14 @@ import { experience, profile } from '~/lib/site';
           </li>
         ))
       }
-      <li class="timeline-item" data-reveal>
-        <p class="font-mono text-xs text-subtle">{profile.education.period}</p>
-        <h3 class="mt-2 text-md leading-snug">
-          {profile.education.degree} <span class="text-muted">· {profile.education.school}</span>
-        </h3>
+      <li class="timeline-item is-education" data-reveal>
+        <p class="eyebrow mb-2">Education</p>
+        <div class="role-head">
+          <h3 class="min-w-0 text-md leading-snug">
+            {profile.education.degree} <span class="font-medium text-muted">· {profile.education.school}</span>
+          </h3>
+          <p class="dates">{profile.education.period}</p>
+        </div>
         {profile.education.note && <p class="mt-1 text-sm text-subtle">{profile.education.note}</p>}
       </li>
     </ol>
@@ -55,10 +105,19 @@ import { experience, profile } from '~/lib/site';
 </section>
 
 <style>
+  /* Quick index of employers beside the timeline (desktop only). */
+  .index-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.625rem;
+  }
+
   .timeline {
     position: relative;
     display: grid;
-    gap: 3rem;
+    gap: 3.5rem;
     padding-left: 1.75rem;
   }
   .timeline::before {
@@ -72,6 +131,7 @@ import { experience, profile } from '~/lib/site';
   }
   .timeline-item {
     position: relative;
+    scroll-margin-top: calc(var(--header-h) + 2rem);
   }
   .timeline-item::before {
     content: '';
@@ -84,10 +144,45 @@ import { experience, profile } from '~/lib/site';
     border-radius: 999px;
     background: var(--bg);
   }
-  .timeline-item:first-child::before {
+  .timeline-item.is-current::before {
     border-color: var(--accent);
     background: var(--accent-soft);
+    box-shadow: 0 0 0 4px var(--accent-soft);
   }
+
+  /* Dates sit above the title on small screens and right-aligned beside it from sm up. */
+  .role-head {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.375rem;
+  }
+  .dates {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: 1.5rem;
+    color: var(--text-subtle);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .is-current .dates {
+    color: var(--accent-text);
+  }
+  @media (min-width: 40rem) {
+    .role-head {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+  }
+  /* Keep the dot on the first line of the item: the dates on mobile, the title from sm up. */
+  @media (min-width: 40rem) {
+    .timeline-item:not(.is-education)::before {
+      top: 0.5rem;
+    }
+  }
+
   .bullet {
     position: relative;
     padding-left: 1.125rem;
@@ -101,5 +196,10 @@ import { experience, profile } from '~/lib/site';
     width: 0.5rem;
     height: 1px;
     background: var(--text-subtle);
+  }
+  .metric {
+    color: var(--text);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
   }
 </style>

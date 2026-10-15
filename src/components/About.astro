@@ -2,6 +2,14 @@
 import SectionHeader from './SectionHeader.astro';
 import Verify from './mdx/Verify.astro';
 import { about, profile } from '~/lib/site';
+
+const [lead, ...rest] = about.paragraphs;
+
+/** "Course name (Provider)" → { name, provider } so the provider can be set as a quieter label. */
+const courses = profile.certifications.map((entry) => {
+  const match = entry.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+  return match ? { name: match[1], provider: match[2] } : { name: entry, provider: '' };
+});
 ---
 
 <section id="about" class="section" aria-labelledby="about-title">
@@ -10,21 +18,38 @@ import { about, profile } from '~/lib/site';
       <SectionHeader id="about" eyebrow="About" title="How I build AI systems" />
     </div>
     <div class="col-span-12 lg:col-span-8" data-reveal>
-      <div class="max-w-[var(--prose-max)] space-y-5 text-md leading-relaxed text-muted">
+      <div class="max-w-[var(--prose-max)]">
         {
-          about.paragraphs.map((paragraph) => (
-            <p>
+          lead && (
+            <p class="text-[1.125rem] leading-relaxed text-text sm:text-[1.3125rem] sm:leading-[1.62] sm:tracking-[-0.01em]">
+              <Verify note={about.verify}>{lead}</Verify>
+            </p>
+          )
+        }
+        {
+          rest.map((paragraph) => (
+            <p class="mt-6 leading-relaxed text-muted sm:text-[1.0625rem]">
               <Verify note={about.verify}>{paragraph}</Verify>
             </p>
           ))
         }
       </div>
-      <details class="mt-8 max-w-[var(--prose-max)] text-sm text-subtle">
-        <summary class="cursor-pointer text-muted hover:text-text">Coursework &amp; certifications</summary>
-        <ul class="mt-3 space-y-1">
-          {profile.certifications.map((cert) => <li>{cert}</li>)}
-        </ul>
-      </details>
+
+      {
+        courses.length > 0 && (
+          <div class="mt-12 max-w-[var(--prose-max)]">
+            <h3 class="eyebrow">Coursework &amp; certifications</h3>
+            <ul class="mt-4 grid border-t border-border sm:grid-cols-2 sm:gap-x-8">
+              {courses.map((course) => (
+                <li class="flex flex-col gap-0.5 border-b border-border py-3">
+                  <span class="text-sm text-text">{course.name}</span>
+                  {course.provider && <span class="font-mono text-xs text-subtle">{course.provider}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
     </div>
   </div>
 </section>

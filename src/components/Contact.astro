@@ -1,78 +1,198 @@
 ---
 import Icon from './Icon.astro';
-import ResumeLink from './ResumeLink.astro';
 import { profile } from '~/lib/site';
+
+const profiles = profile.links.map((link) => ({ label: link.label, href: link.href, value: link.handle }));
 ---
 
 <section id="contact" class="section" aria-labelledby="contact-title">
-  <div class="container-page" data-reveal>
-    <p class="eyebrow">Contact</p>
-    <h2 id="contact-title" class="mt-3 max-w-[22ch] text-2xl md:text-3xl">
-      Building agents, retrieval, or LLM infrastructure? Let’s talk.
-    </h2>
-    <p class="mt-5 max-w-[56ch] text-muted">
-      Email is the fastest way to reach me. Résumé and profiles are below.
-    </p>
-
-    <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
-      <div class="email-box">
-        <a href={`mailto:${profile.email}`} class="truncate py-3 font-mono text-sm text-text hover:text-accent-text sm:text-base">
-          {profile.email}
-        </a>
-        <button type="button" class="copy-btn" data-copy={profile.email} aria-label="Copy email address">
-          <Icon name="copy" class="copy-icon" />
-          <Icon name="check" class="check-icon" />
-          <span data-copy-label aria-live="polite">Copy</span>
-        </button>
-      </div>
-      <ResumeLink />
+  <div class="container-page grid-12 gap-y-10 lg:items-center">
+    <div class="col-span-12 lg:col-span-7 lg:pr-8" data-reveal>
+      <p class="eyebrow">Contact</p>
+      <h2 id="contact-title" class="mt-3 max-w-[20ch] text-2xl md:text-3xl lg:text-2xl xl:text-3xl">
+        Building agents, retrieval, or LLM infrastructure? Let’s talk.
+      </h2>
+      <p class="mt-5 max-w-[48ch] text-muted sm:text-md sm:leading-relaxed">
+        Email is the fastest way to reach me. My résumé, GitHub, and LinkedIn are here too.
+      </p>
+      {
+        profile.availability && (
+          <p class="mt-8 flex items-center gap-2.5 text-sm text-muted">
+            <span class="status-dot" aria-hidden="true" />
+            <span>
+              {profile.availability}
+              <span class="text-subtle"> · Based in {profile.location}</span>
+            </span>
+          </p>
+        )
+      }
     </div>
 
-    <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm">
-      {
-        profile.links.map((link) => (
-          <li>
-            <a href={link.href} class="tap group inline-flex items-center gap-2 text-muted hover:text-text" rel="me noopener">
-              <Icon name={link.icon} />
-              {link.label}
-              <span class="font-mono text-xs text-subtle">{link.handle}</span>
-              <Icon name="arrow-up-right" size={14} class="text-subtle transition-transform group-hover:-translate-y-px group-hover:translate-x-px" />
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+    <div class="col-span-12 lg:col-span-5" data-reveal>
+      <ul class="sheet" aria-label="Ways to reach me">
+        <li class="sheet-row is-email">
+          <a href={`mailto:${profile.email}`} class="sheet-link">
+            <span class="sheet-label">Email</span>
+            <span class="sheet-value truncate text-text">{profile.email}</span>
+          </a>
+          <button type="button" class="copy-btn" data-copy={profile.email} aria-label="Copy email address">
+            <Icon name="copy" class="copy-icon" />
+            <Icon name="check" class="check-icon" />
+            <span class="copy-text" data-copy-label aria-live="polite">Copy</span>
+          </button>
+        </li>
+        <li class="sheet-row">
+          <a href={profile.resume} class="sheet-link group" target="_blank" rel="noopener">
+            <span class="sheet-label">Résumé</span>
+            <span class="sheet-value">
+              View on Google Drive<span class="sr-only"> (opens in a new tab)</span>
+            </span>
+            <Icon name="arrow-up-right" size={16} class="sheet-arrow" />
+          </a>
+        </li>
+        {
+          profiles.map((link) => (
+            <li class="sheet-row">
+              <a href={link.href} class="sheet-link group" rel="me noopener">
+                <span class="sheet-label">{link.label}</span>
+                <span class="sheet-value font-mono text-sm">{link.value}</span>
+                <Icon name="arrow-up-right" size={16} class="sheet-arrow" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </div>
 </section>
 
 <style>
-  .email-box {
+  .status-dot {
+    flex-shrink: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+
+  /* Contact sheet: one row per channel, label above value. */
+  .sheet {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface-1);
+    box-shadow: var(--shadow-lift);
+    overflow: hidden;
+  }
+  .sheet-row {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+  }
+  .sheet-row + .sheet-row {
+    border-top: 1px solid var(--border);
+  }
+  .sheet-link {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'label arrow'
+      'value arrow';
+    align-items: center;
+    column-gap: 1rem;
+    flex: 1;
     min-width: 0;
-    height: 2.75rem;
-    padding-left: 1rem;
-    padding-right: 0.25rem;
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius);
-    background: var(--surface-1);
+    padding: 0.875rem 1.125rem;
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+  .sheet-link:hover {
+    background: var(--surface-2);
+  }
+  .sheet-link:focus-visible {
+    outline-offset: -2px;
+  }
+  .sheet-label {
+    grid-area: label;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+  }
+  .sheet-value {
+    grid-area: value;
+    min-width: 0;
+    margin-top: 0.125rem;
+    color: var(--text);
+  }
+  .is-email .sheet-value {
+    font-size: var(--text-base);
+    font-weight: 500;
+  }
+  @media (min-width: 40rem) {
+    .is-email .sheet-value {
+      font-size: 1.0625rem;
+    }
+  }
+  .sheet-link :global(.sheet-arrow) {
+    grid-area: arrow;
+    color: var(--text-subtle);
+    transition:
+      transform var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out);
+  }
+  .sheet-link:hover :global(.sheet-arrow) {
+    color: var(--text);
+    transform: translate(1px, -1px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sheet-link:hover :global(.sheet-arrow) {
+      transform: none;
+    }
+  }
+
+  /* The email row keeps its copy button outside the link. */
+  .is-email .sheet-link {
+    padding-right: 0.5rem;
   }
   .copy-btn {
     display: inline-flex;
+    flex-shrink: 0;
     align-items: center;
     gap: 0.375rem;
     height: 2.25rem;
+    margin-right: 0.75rem;
     padding-inline: 0.625rem;
+    border: 1px solid var(--border);
     border-radius: var(--radius-sm);
+    background: var(--surface-1);
     font-size: var(--text-xs);
     font-family: var(--font-mono);
     color: var(--text-muted);
     cursor: pointer;
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out);
   }
   .copy-btn:hover {
     background: var(--surface-2);
     color: var(--text);
+  }
+  /* On phones the button is icon-only so the full address fits; the label stays for screen readers. */
+  @media (max-width: 39.99rem) {
+    .copy-btn {
+      justify-content: center;
+      width: 2.25rem;
+      padding-inline: 0;
+    }
+    .copy-text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
   }
   .copy-btn :global(.check-icon),
   .copy-btn[data-copied] :global(.copy-icon) {
