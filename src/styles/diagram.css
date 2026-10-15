@@ -5,7 +5,7 @@
 }
 .dg-node rect {
   fill: var(--surface-2);
-  stroke: var(--border-strong);
+  stroke: color-mix(in oklab, var(--text-subtle) 30%, var(--border-strong));
   stroke-width: 1;
 }
 .dg-node.accent rect {
@@ -20,11 +20,12 @@
   fill: var(--text);
   font-size: 13px;
   font-weight: 500;
+  letter-spacing: -0.005em;
 }
 .dg-sub {
   fill: var(--text-subtle);
   font-family: var(--font-geist-mono) !important;
-  font-size: 10.5px;
+  font-size: 11px;
 }
 .dg-edge polyline {
   fill: none;
@@ -35,13 +36,14 @@
 .dg-edge.dashed polyline {
   stroke-dasharray: 4 4;
 }
-.dg-head {
+.dg-head,
+.dg-junction {
   fill: var(--text-subtle);
 }
 .dg-edge text {
   fill: var(--text-subtle);
   font-family: var(--font-geist-mono) !important;
-  font-size: 10.5px;
+  font-size: 11px;
 }
 .dg-group rect {
   fill: color-mix(in oklab, var(--surface-2) 40%, transparent);
@@ -51,6 +53,6 @@
 .dg-group text {
   fill: var(--text-subtle);
   font-family: var(--font-geist-mono) !important;
-  font-size: 10.5px;
+  font-size: 11px;
   letter-spacing: 0.06em;
 }

@@ -33,6 +33,8 @@ Business teams needed one assistant that could find information, reason over it,
 
 ## Approach
 
+<ArchitectureFigure spec={multiAgentAssistant} caption="Request path and governance plane. Components are as built; the exact routing topology inside the orchestrator is simplified." />
+
 ### Specialized agents behind one orchestrator
 
 I architected the assistant in LangGraph as a set of specialized agents (retrieval, reasoning, and task execution) coordinated by an orchestration graph. <Verify note="Inferred design rationale.">Splitting by responsibility keeps each agent's prompt and toolset small. That makes failures easier to localize, and each agent can be tested and improved on its own.</Verify>
@@ -58,8 +60,6 @@ Agents run on Databricks Model Serving, with job clusters for heavier work and a
 ### Shipping safely
 
 Azure DevOps pipelines build, test, and deploy both the web and application layers. Release cycle time fell **20%** and deployment failures fell **15%**.
-
-<ArchitectureFigure spec={multiAgentAssistant} caption="Request path and governance plane. Components are as built; the exact routing topology inside the orchestrator is simplified." />
 
 <Callout title="More agents means more latency" tone="tradeoff">
   <Verify note="Inferred trade-off discussion; confirm it matches how you reasoned about it.">Every agent hop adds a model call. To keep a sub-800ms average, the orchestrator only involves the agents a request actually needs, and structured questions go straight to Genie instead of through free-form retrieval and reasoning.</Verify>

@@ -27,6 +27,8 @@ Enterprise knowledge was split between unstructured documents and structured tab
 
 ## Approach
 
+<ArchitectureFigure spec={agenticRag} caption="Routing and retrieval paths. The merge-and-rank step is simplified." />
+
 ### Plan first, then retrieve
 
 Multi-agent orchestration splits each request into three steps: **query planning**, **data retrieval**, and **response synthesis**. The planner decides which route a question needs: hybrid retrieval, a **SQL agent** for structured data, or **tool calls** for analytics and document workflows.
@@ -42,8 +44,6 @@ The synthesis step keeps **contextual memory** across turns and applies **guardr
 ### Latency work
 
 I optimized both the inference path and the retrieval path, reaching **1.8s end-to-end** response latency with vector search **under 120ms** at scale. {/* GAP: what changed to get there, and the starting latency. */}
-
-<ArchitectureFigure spec={agenticRag} caption="Routing and retrieval paths. The merge-and-rank step is simplified." />
 
 ### Shipping
 

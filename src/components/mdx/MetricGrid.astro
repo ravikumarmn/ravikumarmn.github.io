@@ -1,7 +1,54 @@
 ---
-/** Wraps <Metric> items in a description list grid. */
+/**
+ * Wraps <Metric> items in one panel, cells divided by hairlines.
+ * Three or six items lay out in threes; two or four in pairs (four go to a single row on wide screens).
+ * Odd counts stay in one column until there is room for three.
+ */
+interface Props {
+  /** Drop the vertical margin (when the grid isn't inside prose). */
+  flush?: boolean;
+}
+const { flush = false } = Astro.props;
 ---
 
-<dl class="not-prose my-8 grid grid-cols-1 gap-3 min-[30rem]:grid-cols-2 md:grid-cols-3">
+<dl class:list={['metric-grid not-prose', { flush }]}>
   <slot />
 </dl>
+
+<style>
+  .metric-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    /* The 1px gaps are drawn by each cell's ring (see Metric.astro), so dividers never double up. */
+    gap: 1px;
+    margin-block: 2rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface-1);
+  }
+  .metric-grid.flush {
+    margin-block: 0;
+  }
+  /* Pairs from small widths when the count is even, so no row is left half empty. */
+  @media (min-width: 30rem) {
+    /* :where() keeps this at base specificity so the wider breakpoints below still apply. */
+    .metric-grid:where(:has(> :nth-child(even):last-child)) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 48rem) {
+    .metric-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .metric-grid:has(> :nth-child(2):last-child),
+    .metric-grid:has(> :nth-child(4):last-child) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 64rem) {
+    .metric-grid:has(> :nth-child(4):last-child) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

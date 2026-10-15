@@ -26,6 +26,8 @@ Off-the-shelf models were close but not good enough. They didn't follow domain-s
 
 ## Approach
 
+<ArchitectureFigure spec={modelAdaptation} caption="One adaptation loop for three model types. Evaluation results feed back into data curation." />
+
 ### LLMs: SFT with parameter-efficient adapters
 
 I fine-tuned open-source LLMs for domain-specific instruction following using **supervised fine-tuning (SFT)** and **PEFT**. **LoRA** adapters kept the base model frozen, which reduced GPU memory and training cost while preserving model performance. The training pipelines covered dataset curation, prompt formatting, evaluation metrics, and inference optimization. {/* GAP: base model and size, GPU memory or cost saved, task score before and after. */}
@@ -37,8 +39,6 @@ General-purpose embeddings blur domain distinctions, so I fine-tuned transformer
 ### Classifiers: accuracy and latency together
 
 At Acranton I optimized and fine-tuned transformer NLP models, raising sentiment classification accuracy from **78% to 89%** while cutting **inference latency 30%**. On imbalanced sentiment tasks, Hugging Face Transformers fine-tuning gave a **10% F1** improvement. Custom classification models raised data-pipeline accuracy **18%** and cut processing time **25%**.
-
-<ArchitectureFigure spec={modelAdaptation} caption="One adaptation loop for three model types. Evaluation results feed back into data curation." />
 
 <Callout title="When to fine-tune at all" tone="tradeoff">
   <Verify note="Inferred stance; also echoed in the About section.">Fine-tuning comes last. If better retrieval or a better prompt closes the gap, that is cheaper to maintain. Fine-tuning pays off when the failure is about behavior or representation, such as instruction format, domain vocabulary in embeddings, or class boundaries, and not about missing knowledge.</Verify>

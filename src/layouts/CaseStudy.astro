@@ -2,6 +2,8 @@
 import type { CollectionEntry } from 'astro:content';
 import Base from './Base.astro';
 import Icon from '~/components/Icon.astro';
+import Metric from '~/components/mdx/Metric.astro';
+import MetricGrid from '~/components/mdx/MetricGrid.astro';
 import { articleJsonLd } from '~/lib/jsonld';
 import '~/styles/prose.css';
 
@@ -24,6 +26,16 @@ const facts = [
   { label: 'Core stack', value: stack.slice(0, 3).join(', ') },
 ].filter((fact): fact is { label: string; value: string } => Boolean(fact.value));
 const image = `/og/work/${entry.id}.png`;
+
+// The pager always shows two destinations: a neighbouring case study, or the full list at either end.
+const pager = [
+  prev
+    ? { href: `/work/${prev.id}`, eyebrow: 'Previous', title: prev.data.title, summary: prev.data.summary, dir: 'prev' }
+    : { href: '/#work', eyebrow: 'All work', title: 'Back to selected work', dir: 'prev', fallback: true },
+  next
+    ? { href: `/work/${next.id}`, eyebrow: 'Next', title: next.data.title, summary: next.data.summary, dir: 'next' }
+    : { href: '/#work', eyebrow: 'All work', title: 'Back to selected work', dir: 'next', fallback: true },
+] as const;
 ---
 
 <Base
@@ -35,36 +47,38 @@ const image = `/og/work/${entry.id}.png`;
   glow
 >
   <article>
-    <header class="container-page pt-12 pb-12 md:pt-20">
+    <header class="container-page pt-12 pb-12 md:pt-20 md:pb-16">
       <a href="/#work" class="tap group inline-flex items-center gap-1.5 text-sm text-muted hover:text-text">
-        <Icon name="arrow-left" size={14} class="transition-transform group-hover:-translate-x-0.5" />
+        <Icon name="arrow-left" size={14} class="motion-safe:transition-transform motion-safe:group-hover:-translate-x-0.5" />
         Selected work
       </a>
-      <p class="enter eyebrow mt-10">Case study</p>
-      <h1 class="enter enter-1 mt-4 max-w-[24ch] text-2xl leading-[1.08] tracking-[-0.03em] md:text-3xl">{title}</h1>
-      <p class="enter enter-2 mt-5 max-w-[60ch] text-md leading-relaxed text-muted">{summary}</p>
 
-      <dl class="enter enter-3 mt-10 grid grid-cols-2 gap-6 border-y border-border py-6 text-sm md:grid-cols-4">
-        {
-          facts.map((fact) => (
-            <div>
-              <dt class="eyebrow">{fact.label}</dt>
-              <dd class="mt-1.5 text-text">{fact.value}</dd>
-            </div>
-          ))
-        }
-      </dl>
+      <div class="mt-10 grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-8">
+          <p class="enter eyebrow">Case study</p>
+          <h1 class="enter enter-1 mt-4 max-w-[24ch] text-2xl leading-[1.08] tracking-[-0.03em] text-balance md:text-3xl">
+            {title}
+          </h1>
+          <p class="enter enter-2 mt-5 max-w-[60ch] text-md leading-relaxed text-muted">{summary}</p>
+        </div>
 
-      <dl class="mt-6 grid grid-cols-1 gap-3 min-[30rem]:grid-cols-2 md:grid-cols-3">
-        {
-          metrics.slice(0, 3).map((metric) => (
-            <div class="flex flex-col-reverse justify-end gap-1 rounded-lg border border-border bg-surface-1 p-5">
-              <dt class="text-sm text-subtle">{metric.label}</dt>
-              <dd class="font-mono text-2xl font-medium tracking-[-0.035em] text-text tabular-nums">{metric.value}</dd>
-            </div>
-          ))
-        }
-      </dl>
+        <dl class="case-facts enter enter-3 lg:col-span-4 lg:self-end">
+          {
+            facts.map((fact) => (
+              <div>
+                <dt class="eyebrow">{fact.label}</dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+
+      <div class="enter enter-3 mt-10 md:mt-12">
+        <MetricGrid flush>
+          {metrics.slice(0, 3).map((metric) => <Metric value={metric.value} label={metric.label} />)}
+        </MetricGrid>
+      </div>
     </header>
 
     {
@@ -83,40 +97,91 @@ const image = `/og/work/${entry.id}.png`;
       )
     }
 
-    <div class="container-page pt-12 pb-24 md:pt-16">
+    <div class="container-page pt-12 pb-16 md:pt-16 md:pb-20">
       <div class="prose case-prose">
         <slot />
       </div>
     </div>
 
-    <nav class="container-page grid gap-4 border-t border-border py-12 sm:grid-cols-2" aria-label="More case studies">
-      {
-        prev ? (
-          <a href={`/work/${prev.id}`} class="pager group">
-            <span class="eyebrow inline-flex items-center gap-1.5">
-              <Icon name="arrow-left" size={12} /> Previous
-            </span>
-            <span class="mt-2 block font-medium text-text group-hover:text-accent-text">{prev.data.title}</span>
-          </a>
-        ) : (
-          <span />
-        )
-      }
-      {
-        next && (
-          <a href={`/work/${next.id}`} class="pager group sm:text-right">
-            <span class="eyebrow inline-flex items-center gap-1.5">
-              Next <Icon name="arrow-right" size={12} />
-            </span>
-            <span class="mt-2 block font-medium text-text group-hover:text-accent-text">{next.data.title}</span>
-          </a>
-        )
-      }
+    <nav class="container-page" aria-label="More case studies">
+      <div class="grid gap-3 pb-16 sm:grid-cols-2 md:pb-20">
+        {
+          pager.map((item) => (
+            <a
+              href={item.href}
+              class:list={[
+                'pager group',
+                item.dir === 'next' && 'sm:text-right',
+                // On one column, a real neighbour comes before the way back to the list.
+                'fallback' in item && 'order-last sm:order-none',
+              ]}
+            >
+              <span class:list={['eyebrow inline-flex items-center gap-1.5', item.dir === 'next' && 'sm:flex-row-reverse']}>
+                <Icon
+                  name={item.dir === 'prev' ? 'arrow-left' : 'arrow-right'}
+                  size={12}
+                  class:list={[
+                    'motion-safe:transition-transform',
+                    item.dir === 'prev' ? 'motion-safe:group-hover:-translate-x-0.5' : 'motion-safe:group-hover:translate-x-0.5',
+                  ]}
+                />
+                {item.eyebrow}
+              </span>
+              <span class="mt-3 block text-base leading-snug font-medium text-text text-balance group-hover:text-accent-text">
+                {item.title}
+              </span>
+              {'summary' in item && <span class="pager-summary">{item.summary}</span>}
+            </a>
+          ))
+        }
+      </div>
     </nav>
   </article>
 </Base>
 
 <style>
+  /* Facts: a two-column band under the title on small screens, a stacked list beside it on wide ones. */
+  .case-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem 1.5rem;
+    padding-block: 1.25rem;
+    border-block: 1px solid var(--border);
+    font-size: var(--text-sm);
+  }
+  .case-facts dd {
+    margin-top: 0.375rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  @media (min-width: 48rem) {
+    .case-facts {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 64rem) {
+    .case-facts {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding-block: 0;
+      border-block: 0;
+    }
+    .case-facts > div {
+      display: grid;
+      grid-template-columns: 6.5rem 1fr;
+      gap: 1rem;
+      align-items: baseline;
+      padding-block: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+    .case-facts > div:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+    .case-facts dd {
+      margin-top: 0;
+    }
+  }
+
   /* Jump bar: sticks under the site header on wide screens so Results is one click away. */
   .case-toc {
     display: none;
@@ -128,7 +193,8 @@ const image = `/og/work/${entry.id}.png`;
       top: var(--header-h);
       z-index: 40;
       border-block: 1px solid var(--border);
-      background: color-mix(in oklab, var(--bg) 94%, transparent);
+      /* Nearly opaque: body text scrolling underneath shouldn't read through the links. */
+      background: color-mix(in oklab, var(--bg) 97%, transparent);
       backdrop-filter: saturate(1.4) blur(16px);
       -webkit-backdrop-filter: saturate(1.4) blur(16px);
     }
@@ -166,14 +232,45 @@ const image = `/og/work/${entry.id}.png`;
     }
   }
 
+  /* Case-study reading rhythm, scoped here so the shared prose styles stay untouched. */
+  .case-prose :global(h2) {
+    letter-spacing: -0.02em;
+  }
+  .case-prose :global(h3) {
+    margin-top: 2.5rem;
+  }
+  /* Each Approach section opens with its architecture figure: the system's shape before the details. */
+  .case-prose :global(h2 + .arch-figure) {
+    margin-top: 1.5rem;
+  }
+  /* The problem statement is the first thing a reviewer reads: give it full text color. */
+  .case-prose :global(h2#problem + p) {
+    color: var(--text);
+    font-size: 1.125rem;
+    line-height: 1.7;
+  }
+
   .pager {
-    display: block;
-    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 1.375rem 1.375rem;
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
+    background: var(--surface-1);
     transition: border-color var(--dur-fast) var(--ease-out);
   }
   .pager:hover {
     border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+  }
+  .pager-summary {
+    display: -webkit-box;
+    margin-top: 0.5rem;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    color: var(--text-subtle);
+    font-size: var(--text-sm);
+    line-height: 1.55;
   }
 </style>
