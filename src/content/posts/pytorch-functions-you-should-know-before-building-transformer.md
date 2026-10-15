@@ -1,5 +1,5 @@
 ---
-title: "Pytorch Functions You Should Know, Before Building Transformer"
+title: "PyTorch Functions You Should Know Before Building Transformer"
 slug: "pytorch-functions-you-should-know,-before-building-transformer"
 date: "2024-05-28T01:05:22.319Z"
 description: "The PyTorch tensor operations you need before implementing a transformer from scratch, each with a short example."

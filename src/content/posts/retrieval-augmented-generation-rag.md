@@ -3,7 +3,7 @@ title: "Retrieval-Augmented Generation (RAG)"
 slug: "retrieval-augmented-generation-(rag)"
 date: "2024-02-02T20:18:09.710Z"
 description: "Large Language Models are designed to read, understand, and generate text almost like humans, They have been trained on vast amounts of text data."
-topic: "Retriever-Augmented Generation"
+topic: "Retrieval-Augmented Generation"
 tags: ["Question Answering"]
 featured: true
 math: false

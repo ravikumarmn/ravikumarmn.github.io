@@ -144,3 +144,11 @@ export const modelAdaptation: DiagramSpec = {
     },
   ],
 };
+
+/** Each case study's diagram, keyed by its slug (used for the work-card previews). */
+export const diagramsBySlug: Record<string, DiagramSpec> = {
+  'governed-multi-agent-assistant': multiAgentAssistant,
+  'agentic-rag-copilot': agenticRag,
+  'document-intelligence': documentIntelligence,
+  'model-adaptation': modelAdaptation,
+};

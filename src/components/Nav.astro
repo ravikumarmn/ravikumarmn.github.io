@@ -74,10 +74,11 @@ import { navLinks, profile } from '~/lib/site';
       border-color var(--dur) var(--ease-out);
   }
   .site-header[data-scrolled] {
-    background: color-mix(in oklab, var(--bg) 78%, transparent);
+    /* Opaque enough that scrolled text never reads through, even where blur is unsupported. */
+    background: color-mix(in oklab, var(--bg) 94%, transparent);
     border-bottom-color: var(--border);
-    backdrop-filter: saturate(1.4) blur(12px);
-    -webkit-backdrop-filter: saturate(1.4) blur(12px);
+    backdrop-filter: saturate(1.4) blur(16px);
+    -webkit-backdrop-filter: saturate(1.4) blur(16px);
   }
 
   .nav-link {

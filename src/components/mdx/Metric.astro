@@ -15,6 +15,8 @@ const { value, label } = Astro.props;
   .metric {
     display: flex;
     flex-direction: column-reverse;
+    /* Top-align the numeral so values line up across a row even when a label wraps. */
+    justify-content: flex-end;
     gap: 0.25rem;
     padding: 1.25rem;
     border: 1px solid var(--border);

@@ -1,0 +1,56 @@
+/* Theme-aware styling for the SVG architecture diagrams (case studies and work-card previews). */
+
+.diagram text {
+  font-family: var(--font-geist);
+}
+.dg-node rect {
+  fill: var(--surface-2);
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+.dg-node.accent rect {
+  fill: color-mix(in oklab, var(--accent) 10%, var(--surface-2));
+  stroke: var(--accent);
+}
+.dg-node.quiet rect {
+  fill: var(--surface-1);
+  stroke-dasharray: 3 3;
+}
+.dg-label {
+  fill: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+}
+.dg-sub {
+  fill: var(--text-subtle);
+  font-family: var(--font-geist-mono) !important;
+  font-size: 10.5px;
+}
+.dg-edge polyline {
+  fill: none;
+  stroke: var(--text-subtle);
+  stroke-width: 1.25;
+  stroke-linejoin: round;
+}
+.dg-edge.dashed polyline {
+  stroke-dasharray: 4 4;
+}
+.dg-head {
+  fill: var(--text-subtle);
+}
+.dg-edge text {
+  fill: var(--text-subtle);
+  font-family: var(--font-geist-mono) !important;
+  font-size: 10.5px;
+}
+.dg-group rect {
+  fill: color-mix(in oklab, var(--surface-2) 40%, transparent);
+  stroke: var(--border-strong);
+  stroke-dasharray: 5 4;
+}
+.dg-group text {
+  fill: var(--text-subtle);
+  font-family: var(--font-geist-mono) !important;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+}

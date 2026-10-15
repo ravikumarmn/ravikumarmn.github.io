@@ -1,5 +1,5 @@
 ---
-title: "Multi Label Classification Using Huggingface Transformer"
+title: "Multi-Label Classification Using Hugging Face Transformer"
 slug: "multi-label-classification-using-huggingface-transformer"
 date: "2024-05-28T03:38:45.736Z"
 description: "This time, I have decided to work on multi-label classification problem, While I was searching for dataset, I found one in datahack.analyticsvidya."

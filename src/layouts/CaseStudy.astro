@@ -10,9 +10,11 @@ interface Props {
   entry: CollectionEntry<'work'>;
   prev?: CollectionEntry<'work'>;
   next?: CollectionEntry<'work'>;
+  /** The case study's h2s, for the jump bar. */
+  sections?: { slug: string; text: string }[];
 }
 
-const { entry, prev, next } = Astro.props;
+const { entry, prev, next, sections = [] } = Astro.props;
 const { title, summary, role, org, period, metrics, stack } = entry.data;
 const url = new URL(`/work/${entry.id}`, Astro.site);
 const image = `/og/work/${entry.id}.png`;
@@ -58,7 +60,7 @@ const image = `/og/work/${entry.id}.png`;
       <dl class="mt-6 grid grid-cols-1 gap-3 min-[30rem]:grid-cols-2 md:grid-cols-3">
         {
           metrics.slice(0, 3).map((metric) => (
-            <div class="flex flex-col-reverse gap-1 rounded-lg border border-border bg-surface-1 p-5">
+            <div class="flex flex-col-reverse justify-end gap-1 rounded-lg border border-border bg-surface-1 p-5">
               <dt class="text-sm text-subtle">{metric.label}</dt>
               <dd class="font-mono text-2xl font-medium tracking-[-0.035em] text-text tabular-nums">{metric.value}</dd>
             </div>
@@ -67,7 +69,23 @@ const image = `/og/work/${entry.id}.png`;
       </dl>
     </header>
 
-    <div class="container-page pb-24">
+    {
+      sections.length > 1 && (
+        <nav class="case-toc" aria-label="Sections" data-toc>
+          <ul class="container-page flex gap-1">
+            {sections.map((section) => (
+              <li>
+                <a href={`#${section.slug}`} class="case-toc-link">
+                  {section.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    <div class="container-page pt-12 pb-24 md:pt-16">
       <div class="prose case-prose">
         <slot />
       </div>
@@ -101,6 +119,55 @@ const image = `/og/work/${entry.id}.png`;
 </Base>
 
 <style>
+  /* Jump bar: sticks under the site header on wide screens so Results is one click away. */
+  .case-toc {
+    display: none;
+  }
+  @media (min-width: 48rem) {
+    .case-toc {
+      display: block;
+      position: sticky;
+      top: var(--header-h);
+      z-index: 40;
+      border-block: 1px solid var(--border);
+      background: color-mix(in oklab, var(--bg) 94%, transparent);
+      backdrop-filter: saturate(1.4) blur(16px);
+      -webkit-backdrop-filter: saturate(1.4) blur(16px);
+    }
+  }
+  .case-toc-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 2.75rem;
+    padding-inline: 0.75rem;
+    font-size: var(--text-sm);
+    color: var(--text-subtle);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .case-toc li:first-child .case-toc-link {
+    padding-left: 0;
+  }
+  .case-toc-link:hover,
+  .case-toc-link[aria-current='true'] {
+    color: var(--text);
+  }
+  .case-toc-link[aria-current='true']::after {
+    content: '';
+    position: absolute;
+    inset: auto 0.75rem -1px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .case-toc li:first-child .case-toc-link[aria-current='true']::after {
+    left: 0;
+  }
+  @media (min-width: 48rem) {
+    .case-prose :global(:where(h2, h3, h4)) {
+      scroll-margin-top: calc(var(--header-h) + 2.75rem + 1rem);
+    }
+  }
+
   .pager {
     display: block;
     padding: 1.25rem;
@@ -110,10 +177,5 @@ const image = `/og/work/${entry.id}.png`;
   }
   .pager:hover {
     border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
-  }
-  .case-prose > :first-child {
-    margin-top: 0;
-    padding-top: 0;
-    border-top: 0;
   }
 </style>

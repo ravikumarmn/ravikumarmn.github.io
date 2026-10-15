@@ -1,5 +1,5 @@
 ---
-title: "Multi Label Classification Using PyTorch TransformerEncoderLayer"
+title: "Multi-Label Classification Using PyTorch TransformerEncoderLayer"
 slug: "multi-label-classification-using-pytorch-transformerencoderlayer"
 date: "2024-05-28T03:38:33.977Z"
 description: "In previous blog we used pretrained BERT-base-uncased model for text classification, Which was 99% accurate."

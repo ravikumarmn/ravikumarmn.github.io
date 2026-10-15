@@ -1,10 +1,13 @@
 ---
 import { arrowhead, NODE_H, type DiagramSpec } from '~/lib/diagram';
+import '~/styles/diagram.css';
 
 interface Props {
   spec: DiagramSpec;
+  /** A visual preview only (work cards): hidden from assistive tech, which gets the full figure on the case study. */
+  decorative?: boolean;
 }
-const { spec } = Astro.props;
+const { spec, decorative = false } = Astro.props;
 const id = spec.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 ---
 
@@ -13,11 +16,19 @@ const id = spec.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   viewBox={`0 0 ${spec.width} ${spec.height}`}
   width={spec.width}
   height={spec.height}
-  role="img"
-  aria-labelledby={`${id}-title ${id}-desc`}
+  role={decorative ? undefined : 'img'}
+  aria-hidden={decorative ? 'true' : undefined}
+  aria-labelledby={decorative ? undefined : `${id}-title ${id}-desc`}
+  focusable="false"
 >
-  <title id={`${id}-title`}>{spec.title}</title>
-  <desc id={`${id}-desc`}>{spec.description}</desc>
+  {
+    !decorative && (
+      <>
+        <title id={`${id}-title`}>{spec.title}</title>
+        <desc id={`${id}-desc`}>{spec.description}</desc>
+      </>
+    )
+  }
 
   {
     spec.groups?.map((group) => (

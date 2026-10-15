@@ -71,6 +71,22 @@ if (sections.length) {
   sections.forEach((section) => sectionObserver.observe(section));
 }
 
+// Case-study jump bar: mark the section whose heading was most recently scrolled past.
+const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc] a')];
+const tocTargets = tocLinks.map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))));
+if (tocLinks.length) {
+  const onScroll = () => {
+    const line = window.innerHeight * 0.3;
+    let current = -1;
+    tocTargets.forEach((target, index) => {
+      if (target && target.getBoundingClientRect().top < line) current = index;
+    });
+    tocLinks.forEach((link, index) => link.setAttribute('aria-current', String(index === current)));
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
+
 // Close the mobile menu after choosing a destination.
 const mobileNav = document.querySelector<HTMLElement>('[data-mobile-nav]');
 mobileNav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => mobileNav.hidePopover?.()));

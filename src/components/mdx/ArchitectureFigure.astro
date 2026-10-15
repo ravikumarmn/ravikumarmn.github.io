@@ -14,7 +14,7 @@ const { spec, caption } = Astro.props;
     <Diagram spec={spec} />
   </div>
   <figcaption>
-    <span class="eyebrow mr-2">Fig.</span>{caption}
-    <slot />
+    <span class="eyebrow shrink-0">Fig.</span>
+    <span>{caption}<slot /></span>
   </figcaption>
 </figure>

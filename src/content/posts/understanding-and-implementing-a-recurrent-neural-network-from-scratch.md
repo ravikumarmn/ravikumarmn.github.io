@@ -1,5 +1,5 @@
 ---
-title: "Understanding and Implementing A Recurrent Neural Network"
+title: "Understanding and Implementing a Recurrent Neural Network"
 slug: "understanding-and-implementing-a-recurrent-neural-network-from-scratch"
 date: "2024-05-27T19:00:49.679Z"
 description: "This blog helps you to understand the Recurrent Neural Network and implement Recurrent Neural Network using Pytorch."

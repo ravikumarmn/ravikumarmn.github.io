@@ -4,15 +4,15 @@ import { metrics } from '~/lib/site';
 
 <section class="container-page" aria-labelledby="impact-title">
   <h2 id="impact-title" class="sr-only">Impact in numbers</h2>
-  <ul class="impact grid grid-cols-1 border-y border-border sm:grid-cols-2 lg:grid-cols-4" data-reveal>
+  <ul class="impact grid grid-cols-2 border-y border-border lg:grid-cols-4" data-reveal>
     {
       metrics.map((metric) => (
-        <li class="impact-item py-7 sm:px-6 sm:py-8">
-          <p class="font-mono text-2xl font-medium tracking-[-0.04em] text-text tabular-nums md:text-3xl">
+        <li class="impact-item py-6 sm:px-6 sm:py-8">
+          <p class="font-mono text-xl font-medium tracking-[-0.04em] text-text tabular-nums sm:text-2xl md:text-3xl">
             {metric.value}
           </p>
           <p class="mt-2 text-sm font-medium text-text">{metric.label}</p>
-          <p class="mt-1 text-sm text-subtle">{metric.context}</p>
+          <p class="mt-1 text-xs text-subtle sm:text-sm">{metric.context}</p>
         </li>
       ))
     }
@@ -20,18 +20,20 @@ import { metrics } from '~/lib/site';
 </section>
 
 <style>
-  .impact-item + .impact-item {
+  /* Two columns on small screens, four from lg; hairlines between cells. */
+  .impact-item:nth-child(odd) {
+    padding-right: 1rem;
+  }
+  .impact-item:nth-child(even) {
+    padding-left: 1rem;
+    border-left: 1px solid var(--border);
+  }
+  .impact-item:nth-child(n + 3) {
     border-top: 1px solid var(--border);
   }
   @media (min-width: 40rem) {
-    .impact-item + .impact-item {
-      border-top: 0;
-    }
-    .impact-item:nth-child(even) {
-      border-left: 1px solid var(--border);
-    }
-    .impact-item:nth-child(n + 3) {
-      border-top: 1px solid var(--border);
+    .impact-item:nth-child(n) {
+      padding-inline: 1.5rem;
     }
   }
   @media (min-width: 64rem) {

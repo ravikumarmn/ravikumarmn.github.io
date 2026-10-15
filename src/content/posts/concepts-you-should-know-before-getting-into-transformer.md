@@ -1,5 +1,5 @@
 ---
-title: "Concepts You should know before Getting into Transformer"
+title: "Concepts You Should Know Before Getting into Transformer"
 slug: "concepts-you-should-know-before-getting-into-transformer"
 date: "2024-05-27T22:58:48.921Z"
 description: "Neural network learn through numbers, so each words will be mapped to vectors to represent particular word."
