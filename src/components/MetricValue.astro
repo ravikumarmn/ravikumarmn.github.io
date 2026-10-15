@@ -1,7 +1,8 @@
 ---
 /**
- * A headline number with its qualifier and unit set quieter than the digits, so "<800ms"
- * reads as 800 first. Screen readers get the original string unchanged.
+ * A headline number with its unit set smaller than the digits. The qualifier ("<") keeps the
+ * digits' color and weight: in a latency claim it carries meaning, so it must not look faded.
+ * Screen readers get the original string unchanged.
  * Values that aren't a number ("SQL + RAG") render as given.
  */
 interface Props {
@@ -25,8 +26,6 @@ const [, qualifier = '', number = value, unit = ''] = match ?? [];
   }
   .qualifier {
     margin-right: 0.04em;
-    color: var(--text-subtle);
-    font-weight: 400;
   }
   .unit {
     margin-left: 0.06em;

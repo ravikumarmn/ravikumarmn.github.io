@@ -18,9 +18,9 @@
     "source": "Resume · C5i, bullet 5"
   },
   {
-    "value": "89%",
-    "label": "classification accuracy, up from 78%",
-    "context": "Fine-tuned transformer, with 30% lower inference latency",
-    "source": "Resume · Acranton, bullet 3"
+    "value": "<3s",
+    "label": "document ingestion per page",
+    "context": "Docling parsing and LLM extraction, with 1.5s grounded QA",
+    "source": "Resume · Projects, Agentic Document Intelligence Platform"
   }
 ]
