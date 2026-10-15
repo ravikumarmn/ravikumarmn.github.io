@@ -14,3 +14,6 @@ resume/
 
 # Agent worktrees
 .claude/worktrees/
+
+# Private working notes (not published)
+drafts/
