@@ -22,6 +22,7 @@ npm run audit:content   # list remaining TODO placeholders and copy to verify
 | Experience timeline | `src/content/site/experience.json` |
 | Skills | `src/content/site/skills.json` |
 | "Also built" projects | `src/content/site/projects.json` |
+| "Now building" projects (homepage + `/building`) | `src/content/site/building.json` |
 | About paragraphs | `src/content/site/about.json` |
 | Case studies | `src/content/work/*.mdx` |
 | Architecture diagrams | `src/components/diagrams/specs.ts` |

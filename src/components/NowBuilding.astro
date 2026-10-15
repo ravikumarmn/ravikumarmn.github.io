@@ -1,0 +1,82 @@
+---
+import Icon from './Icon.astro';
+import SectionHeader from './SectionHeader.astro';
+import { building } from '~/lib/site';
+---
+
+<section id="building" class="section pt-0 md:pt-0" aria-labelledby="building-title">
+  <div class="container-page">
+    <SectionHeader
+      id="building"
+      eyebrow="Now building"
+      title="Open projects, published as I measure them"
+      lede="Agents, fine-tuning, serving, and reinforcement learning, each built in public on a single 24 GB GPU. Results go up as they are measured, including where my approach loses."
+    />
+
+    <ol class="mt-10 grid gap-4 md:mt-12 md:grid-cols-3 md:gap-5">
+      {
+        building.map((project) => (
+          <li data-reveal>
+            <a href={`/building#${project.slug}`} class="build-card group">
+              <span class="flex items-center justify-between gap-4">
+                <span class:list={['status', { 'is-active': project.status === 'Starting' || project.status === 'In progress' }]}>
+                  {project.status}
+                </span>
+                <Icon
+                  name="arrow-right"
+                  size={16}
+                  class="shrink-0 text-subtle transition-[color,transform] duration-200 group-hover:translate-x-0.5 group-hover:text-accent-text"
+                />
+              </span>
+              <span class="mt-4 block font-medium text-pretty text-text">{project.title}</span>
+              <span class="mt-2.5 block text-sm leading-relaxed text-muted">{project.summary}</span>
+              <span class="mt-auto block pt-5 font-mono text-xs text-subtle">{project.stack.slice(0, 3).join(' · ')}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .build-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface-1);
+    transition:
+      border-color var(--dur) var(--ease-out),
+      box-shadow var(--dur) var(--ease-out);
+  }
+  .build-card:hover {
+    border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+    box-shadow: var(--shadow-lift);
+  }
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--text-subtle);
+  }
+  .status::before {
+    content: '';
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+  }
+  .status.is-active {
+    color: var(--accent-text);
+  }
+  .status.is-active::before {
+    background: currentColor;
+  }
+</style>

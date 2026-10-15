@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "governed-agent-bench",
+    "status": "Starting",
+    "title": "governed-agent-bench",
+    "summary": "An open benchmark for the question enterprises ask before they ship an agent: does it finish the job without leaking data or breaking access rules?",
+    "approach": [
+      "A fictional company with 3 tenants, role-based permissions, a SQL database, documents, and tools for querying, search, email, ticket updates, and export.",
+      "60 tasks: 30 normal requests and 30 traps (another tenant’s data, requests the user’s role doesn’t allow, and instructions planted inside documents).",
+      "Two agents compared: a plain tool-calling agent with the rules in its prompt, and a governed LangGraph agent that enforces permissions inside the tools.",
+      "Run across Claude, GPT, Gemini, and one open model, 3 runs each."
+    ],
+    "measures": [
+      "Task success",
+      "Policy violations, read from the audit log instead of judged by an LLM",
+      "How often planted instructions get followed",
+      "p50 / p95 latency per stage, and cost per task",
+      "95% confidence intervals on every score"
+    ],
+    "publishes": ["Public repo that reproduces every number with one command", "Results table and write-up", "Short walkthrough of one agent trace"],
+    "stack": ["LangGraph", "SQLite", "OpenTelemetry", "Python"]
+  },
+  {
+    "slug": "open-models-for-governed-agents",
+    "status": "Next",
+    "title": "Fine-tuned open models for governed agents",
+    "summary": "Can a fine-tuned 8B-class open model, served on a single 24 GB GPU, get close to frontier APIs on that benchmark, and at what latency and cost?",
+    "approach": [
+      "QLoRA fine-tuning of Qwen, Llama, and Gemma on a separate set of training tasks. The 60 benchmark tasks are held out entirely.",
+      "Training data from filtered teacher runs: only traces that succeed with zero policy violations.",
+      "Served with vLLM as a LoRA adapter, in BF16, and quantized (AWQ, plus GPTQ or FP8), then load-tested at 1 to 32 concurrent users.",
+      "A general-skills check before and after fine-tuning, to catch regressions."
+    ],
+    "measures": [
+      "Task success and violation rate against the frontier APIs",
+      "Quality after quantization",
+      "Time to first token, p95 latency, and throughput",
+      "Cost per 1,000 tasks, with the assumptions stated"
+    ],
+    "publishes": ["Adapters with model cards on Hugging Face", "The synthetic training dataset", "Train, serve, and load-test scripts", "Write-up"],
+    "stack": ["TRL", "QLoRA", "vLLM", "AWQ", "Qwen · Llama · Gemma"]
+  },
+  {
+    "slug": "sql-grpo",
+    "status": "Planned",
+    "title": "sql-grpo: reinforcement learning for text-to-SQL",
+    "summary": "Does GRPO with an execution-based reward improve a small model’s SQL beyond supervised fine-tuning, and how does the model try to game the reward?",
+    "approach": [
+      "A 3B instruct model trained with GRPO, starting from a supervised fine-tuned checkpoint.",
+      "Reward: the query’s result matches the gold query’s result, plus a small reward for valid SQL.",
+      "Evaluated on BIRD mini-dev against two baselines, the prompted base model and SFT alone, across 3 seeds.",
+      "Runs on one 24 GB GPU."
+    ],
+    "measures": [
+      "Execution accuracy, overall and by difficulty",
+      "Reward curves",
+      "Reward hacking: what the model learned that earned reward without being right, and how it was closed"
+    ],
+    "publishes": ["Repo and training configs", "Model on Hugging Face", "Write-up"],
+    "stack": ["TRL", "GRPO", "SQLite", "BIRD"]
+  }
+]

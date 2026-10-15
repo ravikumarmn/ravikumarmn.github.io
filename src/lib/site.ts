@@ -10,6 +10,7 @@ import experienceJson from '../content/site/experience.json';
 import skillsJson from '../content/site/skills.json';
 import projectsJson from '../content/site/projects.json';
 import aboutJson from '../content/site/about.json';
+import buildingJson from '../content/site/building.json';
 
 const IconName = z.enum(['github', 'linkedin', 'mail']);
 
@@ -63,12 +64,25 @@ const Project = z.object({
 
 const About = z.object({ paragraphs: z.array(z.string()), verify: z.string().optional() });
 
+/** Projects in progress. Plans only: no results are claimed until they are measured. */
+const BuildingProject = z.object({
+  slug: z.string(),
+  status: z.enum(['Starting', 'In progress', 'Next', 'Planned', 'Shipped']),
+  title: z.string(),
+  summary: z.string(),
+  approach: z.array(z.string()).min(1),
+  measures: z.array(z.string()).min(1),
+  publishes: z.array(z.string()).min(1),
+  stack: z.array(z.string()),
+});
+
 export const profile = Profile.parse(profileJson);
 export const metrics = z.array(Metric).parse(metricsJson);
 export const experience = z.array(Role).parse(experienceJson);
 export const skills = z.array(SkillGroup).parse(skillsJson);
 export const projects = z.array(Project).parse(projectsJson);
 export const about = About.parse(aboutJson);
+export const building = z.array(BuildingProject).parse(buildingJson);
 
 export type IconName = z.infer<typeof IconName>;
 

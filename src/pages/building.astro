@@ -1,0 +1,150 @@
+---
+import Base from '~/layouts/Base.astro';
+import { building } from '~/lib/site';
+
+const isActive = (status: string) => status === 'Starting' || status === 'In progress';
+---
+
+<Base
+  title="Now building"
+  description="Open projects in progress: a governed agent benchmark, fine-tuned open models served on one GPU, and reinforcement learning for text-to-SQL."
+  glow
+>
+  <section class="container-page pt-12 pb-24 md:pt-20" aria-labelledby="building-title">
+    <header class="max-w-2xl">
+      <p class="enter eyebrow">Now building</p>
+      <h1 id="building-title" class="enter enter-1 mt-4 text-2xl leading-[1.08] tracking-[-0.03em] md:text-3xl">
+        Open projects, published as I measure them
+      </h1>
+      <p class="enter enter-2 mt-5 text-md leading-relaxed text-muted">
+        Three projects, each building on the last: an agent benchmark, open models fine-tuned and served for it, and
+        reinforcement learning on a task with a checkable answer. Everything runs on a single 24&nbsp;GB GPU.
+      </p>
+      <p class="enter enter-3 mt-4 text-muted">
+        These are plans, not results. Each one gets a case study when it ships, with its numbers, methods, and
+        confidence intervals, including where my approach loses.
+      </p>
+    </header>
+
+    <ol class="mt-14 grid gap-12 md:mt-16">
+      {
+        building.map((project, i) => (
+          <li id={project.slug} class="project" data-reveal>
+            <div class="project-meta">
+              <span class="font-mono text-xs text-subtle tabular-nums">0{i + 1}</span>
+              <span class:list={['status', { 'is-active': isActive(project.status) }]}>{project.status}</span>
+            </div>
+            <div class="min-w-0">
+              <h2 class="text-xl leading-snug text-pretty md:text-[1.625rem]">{project.title}</h2>
+              <p class="mt-4 max-w-[var(--prose-max)] text-md leading-relaxed text-text">{project.summary}</p>
+
+              <div class="mt-8 grid gap-8 lg:grid-cols-2">
+                <div class="lg:col-span-2">
+                  <h3 class="eyebrow">Approach</h3>
+                  <ul class="list mt-3">
+                    {project.approach.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 class="eyebrow">What gets measured</h3>
+                  <ul class="list mt-3">
+                    {project.measures.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 class="eyebrow">What gets published</h3>
+                  <ul class="list mt-3">
+                    {project.publishes.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <ul class="mt-8 flex flex-wrap gap-1.5" aria-label="Tools">
+                {project.stack.map((item) => (
+                  <li class="chip">{item}</li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+</Base>
+
+<style>
+  .project {
+    display: grid;
+    gap: 1rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+    scroll-margin-top: calc(var(--header-h) + 1.5rem);
+  }
+  @media (min-width: 64rem) {
+    .project {
+      grid-template-columns: 9rem minmax(0, 1fr);
+      gap: 2rem;
+    }
+  }
+  .project-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  @media (min-width: 64rem) {
+    .project-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding-top: 0.5rem;
+    }
+  }
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--text-subtle);
+  }
+  .status::before {
+    content: '';
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+  }
+  .status.is-active {
+    color: var(--accent-text);
+  }
+  .status.is-active::before {
+    background: currentColor;
+  }
+  .list {
+    display: grid;
+    gap: 0.6rem;
+    max-width: var(--prose-max);
+    color: var(--text-muted);
+  }
+  .list li {
+    position: relative;
+    padding-left: 1.125rem;
+  }
+  .list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.8em;
+    width: 0.5rem;
+    height: 1px;
+    background: var(--text-subtle);
+  }
+</style>
