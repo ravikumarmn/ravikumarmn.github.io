@@ -1,15 +1,15 @@
 ---
 title: Model adaptation with LLMs, embeddings, and classifiers
-summary: Fine-tuning where prompting and retrieval run out, using SFT with LoRA and QLoRA, contrastive embeddings, and transformer classifiers taken from 78% to 89% accuracy.
+summary: Fine-tuning where prompting and retrieval run out, using SFT with LoRA, contrastive embeddings, and transformer classifiers taken from 78% to 89% accuracy.
 role: Machine Learning Engineer
-org: Acranton · independent work
-period: 2022 – 2026
+org: Acranton · projects
+period: 2022 – 2025
 order: 4
 metrics:
   - { value: '89%', label: 'sentiment accuracy, up from 78%' }
   - { value: '−30%', label: 'inference latency' }
   - { value: '+10%', label: 'F1 on imbalanced classes' }
-stack: [PyTorch, Hugging Face Transformers, PEFT / LoRA, QLoRA, Unsloth, Sentence Transformers, Weights & Biases]
+stack: [PyTorch, Hugging Face Transformers, PEFT / LoRA, Sentence Transformers, Weights & Biases, Optuna]
 ---
 
 import { modelAdaptation } from '~/components/diagrams/specs';
@@ -31,17 +31,6 @@ Off-the-shelf models were close but not good enough. They didn't follow domain-s
 ### LLMs: SFT with parameter-efficient adapters
 
 I fine-tuned open-source LLMs for domain-specific instruction following using **supervised fine-tuning (SFT)** and **PEFT**. **LoRA** adapters kept the base model frozen, which reduced GPU memory and training cost while preserving model performance. The training pipelines covered dataset curation, prompt formatting, evaluation metrics, and inference optimization. {/* GAP: base model and size, GPU memory or cost saved, task score before and after. */}
-
-### Replacing a prompted GPT-4 extractor with a small fine-tuned model
-
-A supply-chain automation platform used GPT-4 with a long prompt to read supplier replies to purchase orders and turn them into JSON. The model had to classify each reply's intent (no change, a changed delivery date, or a split order) and extract the PO number, line items, quantities, and dates. The goal is to replace it with a small **self-hosted** model **without losing accuracy**.
-
-- **A model-size ladder, not a guess.** **QLoRA** fine-tuning with **Unsloth** on **Gemma 4**, from E2B up through E4B, 12B, and 31B, with one config file per size. The smallest model that passes the evaluation gate ships.
-- **Labels that are correct by construction.** The synthetic training data is generated from parameters first (intent, items, quantities, dates) and the email text second, so no label inherits an LLM's extraction mistakes.
-- **Teaching `null` instead of guessing.** Replies often arrive with partial thread history. The original PO record goes in as its own block that is never truncated, the conversation is randomly truncated during training, and the model learns to return `null` for anything it can't see.
-- **An evaluation gate on real data only.** The held-out test set is real supplier emails, never synthetic. It is scored on JSON parse rate, intent accuracy, per-field accuracy, and exact match, side by side with GPT-4's output on the same emails.
-
-The first Gemma 4 E2B run trained end to end in about 33 minutes on a single T4 GPU (800 synthetic examples, 4 epochs, merged to full precision). It passes the pipeline's sanity checks. Accuracy against GPT-4 on real emails is the next step, and I'll publish that number here when it exists rather than quote one from synthetic data.
 
 ### Embeddings: contrastive fine-tuning for retrieval
 
@@ -68,8 +57,7 @@ At Acranton I optimized and fine-tuned transformer NLP models, raising sentiment
 
 <StackList
   groups={[
-    { label: 'Training', items: ['PyTorch', 'Hugging Face Transformers', 'PEFT', 'LoRA', 'QLoRA', 'Unsloth', 'Sentence Transformers'] },
-    { label: 'Models', items: ['Gemma 4', 'Open-source LLMs', 'Transformer classifiers'] },
+    { label: 'Training', items: ['PyTorch', 'Hugging Face Transformers', 'PEFT', 'LoRA', 'Sentence Transformers'] },
     { label: 'Experimentation', items: ['Weights & Biases', 'Optuna', 'MLflow'] },
   ]}
 />
