@@ -1,0 +1,21 @@
+---
+import Base from '~/layouts/Base.astro';
+import Icon from '~/components/Icon.astro';
+---
+
+<Base title="Page not found" description="This page doesn't exist." noindex glow>
+  <section class="container-page flex min-h-[60dvh] flex-col justify-center py-24">
+    <p class="font-mono text-sm text-subtle">404 · route not found</p>
+    <h1 class="mt-4 max-w-[18ch] text-2xl md:text-3xl">This route doesn’t resolve to anything.</h1>
+    <p class="mt-5 max-w-[52ch] text-muted">
+      The page may have moved when this site was rebuilt. Old blog links still work, under <code
+        class="rounded border border-border bg-surface-2 px-1.5 py-0.5 font-mono text-sm text-text">/blogs/…</code
+      >.
+    </p>
+    <div class="mt-10 flex flex-wrap gap-3">
+      <a href="/" class="btn btn-primary btn-md"><Icon name="arrow-left" /> Home</a>
+      <a href="/#work" class="btn btn-secondary btn-md">Selected work</a>
+      <a href="/writing" class="btn btn-secondary btn-md">Writing</a>
+    </div>
+  </section>
+</Base>
