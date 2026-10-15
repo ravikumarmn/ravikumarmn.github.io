@@ -77,10 +77,14 @@ export const isTodo = (value: string) => value.trimStart().startsWith('TODO');
 export const todoText = (value: string) => value.replace(/^\s*TODO:?\s*/, '');
 
 
-export const navLinks = [
+/**
+ * `id` links scroll to a homepage section (highlighted while it is in view);
+ * `page` links go to their own page (highlighted on any path they match).
+ */
+export const navLinks: { href: string; label: string; id?: string; page?: RegExp }[] = [
   { href: '/#work', label: 'Work', id: 'work' },
   { href: '/#experience', label: 'Experience', id: 'experience' },
-  { href: '/#writing', label: 'Writing', id: 'writing' },
+  { href: '/writing', label: 'Writing', page: /^\/(writing|blogs)(\/|$)/ },
   { href: '/#about', label: 'About', id: 'about' },
   { href: '/#contact', label: 'Contact', id: 'contact' },
 ];

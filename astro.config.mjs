@@ -62,6 +62,8 @@ export default defineConfig({
     },
   ],
   redirects: {
+    // Short link to the résumé on Google Drive (same URL as profile.json → resume).
+    '/resume': 'https://drive.google.com/file/d/15pZ_vc9nsAT1Wo9ld3PBmUD5Tumd7yJP/view?usp=sharing',
     '/about': '/#about',
     '/archives': '/writing',
     '/tags': '/writing',
@@ -69,7 +71,7 @@ export default defineConfig({
   },
   integrations: [
     mdx(),
-    sitemap({ filter: (page) => !/\/(404|about|archives|tags|categories)$/.test(page) }),
+    sitemap({ filter: (page) => !/\/(404|about|archives|tags|categories|resume)$/.test(page) }),
   ],
   vite: { plugins: [tailwindcss()] },
 });

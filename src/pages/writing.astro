@@ -1,44 +1,146 @@
 ---
 import Base from '~/layouts/Base.astro';
 import Icon from '~/components/Icon.astro';
-import { getPosts } from '~/lib/collections';
+import { getPosts, readingTime } from '~/lib/collections';
 
-const posts = await getPosts();
-const byYear = Map.groupBy(posts, (post) => post.data.date.getFullYear());
+const posts = (await getPosts()).map((post) => ({ post, minutes: readingTime(post.body) }));
+const featured = posts.filter(({ post }) => post.data.featured);
+const years = [...new Set(posts.map(({ post }) => post.data.date.getFullYear()))];
+const month = (date: Date) => date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 ---
 
-<Base title="Writing" description="Explainers with working code on retrieval, transformers, embeddings, and PyTorch.">
-  <section class="container-page pt-12 pb-24 md:pt-20">
-    <p class="eyebrow">Writing</p>
-    <h1 class="mt-3 text-2xl md:text-3xl">Notes from the bench</h1>
-    <p class="mt-5 max-w-[60ch] text-muted">
-      Explainers with working code: retrieval, transformers, embeddings, and the PyTorch underneath.
-    </p>
+<Base
+  title="Writing"
+  description="Explainers with working code on retrieval, transformers, embeddings, and PyTorch."
+  glow
+>
+  <section class="container-page pt-12 pb-24 md:pt-20" aria-labelledby="writing-title">
+    <header class="max-w-2xl">
+      <p class="enter eyebrow">Writing</p>
+      <h1 id="writing-title" class="enter enter-1 mt-4 text-2xl leading-[1.08] tracking-[-0.03em] md:text-3xl">
+        Notes from the bench
+      </h1>
+      <p class="enter enter-2 mt-5 text-md leading-relaxed text-muted">
+        Explainers with working code: retrieval, transformers, embeddings, and the PyTorch underneath.
+      </p>
+      <p class="enter enter-3 mt-6 font-mono text-xs text-subtle">
+        {posts.length} posts · {years.join(', ')}
+      </p>
+    </header>
 
     {
-      [...byYear].map(([year, items]) => (
-        <div class="mt-14 grid gap-4 md:grid-cols-[8rem_1fr]">
-          <h2 class="font-mono text-sm text-subtle">{year}</h2>
-          <ul class="border-t border-border">
-            {items.map((post) => (
-              <li class="border-b border-border">
-                <a href={`/blogs/${post.id}`} class="group flex items-start justify-between gap-6 py-5">
-                  <span class="min-w-0">
-                    <span class="block font-medium text-text group-hover:text-accent-text">{post.data.title}</span>
-                    {post.data.description && (
-                      <span class="mt-1 block max-w-[68ch] text-sm text-subtle">{post.data.description}</span>
-                    )}
+      featured.length > 0 && (
+        <section class="mt-16" aria-labelledby="featured-title">
+          <h2 id="featured-title" class="eyebrow">
+            Start here
+          </h2>
+          <ul class="mt-5 grid gap-4 md:grid-cols-2">
+            {featured.map(({ post, minutes }) => (
+              <li data-reveal>
+                <a href={`/blogs/${post.id}`} class="feature group">
+                  <span class="flex items-start justify-between gap-4">
+                    <span class="eyebrow">{post.data.topic}</span>
+                    <Icon
+                      name="arrow-up-right"
+                      size={16}
+                      class="shrink-0 text-subtle transition-[color,transform] duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
+                    />
                   </span>
-                  <span class="hidden shrink-0 font-mono text-xs text-subtle sm:block">{post.data.topic}</span>
+                  <span class="mt-4 block text-lg leading-snug font-semibold tracking-[-0.02em] text-text">
+                    {post.data.title}
+                  </span>
+                  {post.data.description && (
+                    <span class="mt-3 line-clamp-3 block text-sm leading-relaxed text-muted">{post.data.description}</span>
+                  )}
+                  <span class="mt-auto block pt-6 font-mono text-xs text-subtle">
+                    <time datetime={post.data.date.toISOString()}>{month(post.data.date)}</time> · {minutes} min read
+                  </span>
                 </a>
               </li>
             ))}
           </ul>
-        </div>
-      ))
+        </section>
+      )
     }
-    <a href="/" class="tap link mt-14 inline-flex items-center gap-1.5 text-sm">
-      <Icon name="arrow-left" size={14} /> Back home
-    </a>
+
+    <section class="mt-20" aria-labelledby="all-title">
+      <h2 id="all-title" class="eyebrow">All posts</h2>
+      <ul class="mt-5 border-t border-border" data-reveal>
+        {
+          posts.map(({ post, minutes }) => (
+            <li class="border-b border-border">
+              <a href={`/blogs/${post.id}`} class="row group">
+                <time class="font-mono text-xs text-subtle tabular-nums" datetime={post.data.date.toISOString()}>
+                  {month(post.data.date)}
+                </time>
+                <span class="min-w-0">
+                  <span class="block font-medium text-text transition-colors group-hover:text-accent-text">
+                    {post.data.title}
+                  </span>
+                  {post.data.description && (
+                    <span class="mt-1 line-clamp-2 block max-w-[68ch] text-sm text-subtle">{post.data.description}</span>
+                  )}
+                  <span class="mt-2 block font-mono text-xs text-subtle">
+                    {post.data.topic}
+                    <span class="md:hidden"> · {minutes} min</span>
+                  </span>
+                </span>
+                <span class="hidden text-right font-mono text-xs text-subtle tabular-nums md:block">{minutes} min</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
   </section>
 </Base>
+
+<style>
+  .feature {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface-1);
+    transition:
+      border-color var(--dur) var(--ease-out),
+      box-shadow var(--dur) var(--ease-out),
+      translate var(--dur) var(--ease-out);
+  }
+  @media (min-width: 48rem) {
+    .feature {
+      padding: 1.75rem 2rem;
+    }
+  }
+  .feature:hover {
+    border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+    box-shadow: var(--shadow-lift);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .feature:hover {
+      translate: 0 -2px;
+    }
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1.25rem 0.75rem;
+    margin-inline: -0.75rem;
+    border-radius: var(--radius-sm);
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+  @media (min-width: 48rem) {
+    .row {
+      grid-template-columns: 6rem minmax(0, 1fr) 4rem;
+      gap: 1.5rem;
+    }
+  }
+  .row:hover {
+    background: var(--surface-1);
+  }
+</style>

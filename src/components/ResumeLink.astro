@@ -1,5 +1,5 @@
 ---
-/** Downloads the résumé PDF, which the build generates from /resume (scripts/build-resume-pdf.mjs). */
+/** Opens the résumé (hosted on Google Drive; the URL lives in profile.json) in a new tab. */
 import Icon from './Icon.astro';
 import { profile } from '~/lib/site';
 
@@ -15,7 +15,9 @@ const { variant = 'secondary', size = 'md', class: className } = Astro.props;
 <a
   href={profile.resume}
   class:list={['btn', `btn-${variant}`, `btn-${size}`, className]}
-  download="Ravikumar-MN-Resume.pdf"
+  target="_blank"
+  rel="noopener"
+  aria-label="Résumé (opens in a new tab)"
 >
   <Icon name="file-text" />
   Résumé

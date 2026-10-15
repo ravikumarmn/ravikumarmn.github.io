@@ -2,7 +2,7 @@
 title: "Search NeurIPS-2022 Similar Papers"
 slug: "search-neurips-2022-similar-papers"
 date: "2024-05-28T01:24:33.814Z"
-description: "This article is about simplifing the steps of achieving similar document retrieval and deploying it in Streamlit app."
+description: "Finding similar NeurIPS 2022 papers with Sentence-BERT embeddings and an Annoy index, deployed as a Streamlit app."
 topic: "Document Retrieval"
 tags: ["Sentence Transformer","S-BERT","NeurIPS","Annoy index"]
 featured: true

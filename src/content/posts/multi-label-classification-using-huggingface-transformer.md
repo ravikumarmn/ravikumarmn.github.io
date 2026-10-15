@@ -2,7 +2,7 @@
 title: "Multi-Label Classification Using Hugging Face Transformer"
 slug: "multi-label-classification-using-huggingface-transformer"
 date: "2024-05-28T03:38:45.736Z"
-description: "This time, I have decided to work on multi-label classification problem, While I was searching for dataset, I found one in datahack.analyticsvidya."
+description: "Multi-label topic classification of research articles with a fine-tuned BERT-base model: data exploration, the evaluation metric, and learning curves."
 topic: "Topic Modeling for Research Articles"
 tags: ["Multi Label Classification","Transformers","Huggingface"]
 featured: true

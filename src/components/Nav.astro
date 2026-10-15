@@ -2,6 +2,9 @@
 import Icon from './Icon.astro';
 import ResumeLink from './ResumeLink.astro';
 import { navLinks, profile } from '~/lib/site';
+
+const path = Astro.url.pathname;
+const current = (link: (typeof navLinks)[number]) => (link.page?.test(path) ? 'page' : undefined);
 ---
 
 <header class="site-header sticky top-0 z-50" data-header>
@@ -19,7 +22,7 @@ import { navLinks, profile } from '~/lib/site';
         {
           navLinks.map((link) => (
             <li>
-              <a href={link.href} data-nav={link.id} class="nav-link">
+              <a href={link.href} data-nav={link.id} aria-current={current(link)} class="nav-link">
                 {link.label}
               </a>
             </li>
@@ -52,7 +55,11 @@ import { navLinks, profile } from '~/lib/site';
         {
           navLinks.map((link) => (
             <li>
-              <a href={link.href} class="flex min-h-11 items-center rounded-md px-3 text-base text-text hover:bg-surface-2">
+              <a
+                href={link.href}
+                aria-current={current(link)}
+                class="flex min-h-11 items-center rounded-md px-3 text-base text-text hover:bg-surface-2 aria-[current=page]:bg-surface-2"
+              >
                 {link.label}
               </a>
             </li>
@@ -96,7 +103,8 @@ import { navLinks, profile } from '~/lib/site';
   .nav-link:hover {
     color: var(--text);
   }
-  .nav-link[aria-current='true'] {
+  .nav-link[aria-current='true'],
+  .nav-link[aria-current='page'] {
     color: var(--text);
     background: var(--surface-2);
   }

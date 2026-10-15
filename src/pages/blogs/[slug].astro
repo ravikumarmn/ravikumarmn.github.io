@@ -6,13 +6,17 @@ import { getPosts } from '~/lib/collections';
 // Old Jekyll URLs were /blogs/<slug> (no trailing slash); `build.format: 'file'` keeps them identical.
 export async function getStaticPaths() {
   const posts = await getPosts();
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+  // Sorted newest first, so the previous entry is the newer post.
+  return posts.map((post, index) => ({
+    params: { slug: post.id },
+    props: { post, newer: posts[index - 1], older: posts[index + 1] },
+  }));
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
+const { post, newer, older } = Astro.props;
+const { Content, headings } = await render(post);
 ---
 
-<Post post={post}>
+<Post post={post} headings={headings.filter((heading) => heading.depth <= 3)} newer={newer} older={older}>
   <Content />
 </Post>

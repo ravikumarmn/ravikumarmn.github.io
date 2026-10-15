@@ -3,13 +3,35 @@ import { profile } from '~/lib/site';
 
 const year = new Date().getFullYear();
 const updated = new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+const links = [
+  { label: 'Work', href: '/#work' },
+  { label: 'Writing', href: '/writing' },
+  { label: 'Résumé', href: profile.resume, external: true },
+  ...profile.links.map((link) => ({ label: link.label, href: link.href, external: true })),
+];
 ---
 
 <footer class="border-t border-border">
-  <div class="container-page flex flex-col gap-2 py-8 text-sm text-subtle sm:flex-row sm:items-center sm:justify-between">
-    <p>© {year} {profile.name}</p>
+  <div class="container-page flex flex-col gap-5 py-8 text-sm text-subtle md:flex-row md:items-center md:justify-between">
+    <nav aria-label="Footer">
+      <ul class="flex flex-wrap gap-x-5 gap-y-1">
+        {
+          links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="tap inline-block text-muted transition-colors hover:text-text"
+                {...(link.external ? { target: '_blank', rel: 'noopener' } : {})}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
     <p class="font-mono text-xs">
-      Built with Astro · Updated {updated} ·{' '}
+      © {year} {profile.name} · Updated {updated} ·{' '}
       <a class="link" href="https://github.com/ravikumarmn/ravikumarmn.github.io">Source</a>
     </p>
   </div>

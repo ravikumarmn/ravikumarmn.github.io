@@ -3,13 +3,20 @@ import type { CollectionEntry } from 'astro:content';
 import Base from './Base.astro';
 import Icon from '~/components/Icon.astro';
 import { articleJsonLd } from '~/lib/jsonld';
+import { readingTime } from '~/lib/collections';
 import '~/styles/prose.css';
 
 interface Props {
   post: CollectionEntry<'posts'>;
+  /** h2/h3 headings, for the "On this page" sidebar. */
+  headings?: { depth: number; slug: string; text: string }[];
+  newer?: CollectionEntry<'posts'>;
+  older?: CollectionEntry<'posts'>;
 }
 
-const { post } = Astro.props;
+const { post, headings = [], newer, older } = Astro.props;
+const minutes = readingTime(post.body);
+const toc = headings.length >= 3 ? headings : [];
 const { title, description, date, topic, tags, math } = post.data;
 const url = new URL(`/blogs/${post.id}`, Astro.site);
 const image = `/og/blogs/${post.id}.png`;
@@ -36,12 +43,111 @@ const formatted = date.toLocaleDateString('en-US', { month: 'long', day: 'numeri
       <p class="eyebrow mt-10">{topic}</p>
       <h1 class="mt-4 text-2xl leading-[1.1] tracking-[-0.03em] md:text-3xl">{title}</h1>
       <p class="mt-5 font-mono text-xs text-subtle">
-        <time datetime={date.toISOString()}>{formatted}</time>
+        <time datetime={date.toISOString()}>{formatted}</time> · {minutes} min read
         {tags.length > 0 && <span> · {tags.join(' · ')}</span>}
       </p>
     </header>
-    <div class="prose mt-12 border-t border-border pt-10">
-      <slot />
+
+    <div class:list={['mt-12 border-t border-border pt-10', { 'post-grid': toc.length > 0 }]}>
+      <div class="prose min-w-0">
+        <slot />
+      </div>
+      {
+        toc.length > 0 && (
+          <aside class="post-toc" aria-label="On this page">
+            <nav class="sticky top-[calc(var(--header-h)+2rem)]" data-toc>
+              <p class="eyebrow">On this page</p>
+              <ul class="mt-4 border-l border-border">
+                {toc.map((heading) => (
+                  <li>
+                    <a href={`#${heading.slug}`} class:list={['toc-link', { 'toc-sub': heading.depth === 3 }]}>
+                      {heading.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </aside>
+        )
+      }
     </div>
+
+    <nav class="mt-20 grid gap-4 border-t border-border pt-10 sm:grid-cols-2" aria-label="More writing">
+      {
+        older ? (
+          <a href={`/blogs/${older.id}`} class="pager group">
+            <span class="eyebrow inline-flex items-center gap-1.5">
+              <Icon name="arrow-left" size={12} /> Older
+            </span>
+            <span class="mt-2 block font-medium text-text group-hover:text-accent-text">{older.data.title}</span>
+          </a>
+        ) : (
+          <span class="hidden sm:block" />
+        )
+      }
+      {
+        newer && (
+          <a href={`/blogs/${newer.id}`} class="pager group sm:text-right">
+            <span class="eyebrow inline-flex items-center gap-1.5">
+              Newer <Icon name="arrow-right" size={12} />
+            </span>
+            <span class="mt-2 block font-medium text-text group-hover:text-accent-text">{newer.data.title}</span>
+          </a>
+        )
+      }
+    </nav>
+    <a href="/writing" class="tap link mt-8 inline-flex items-center gap-1.5 text-sm">
+      All writing <Icon name="arrow-right" size={14} />
+    </a>
   </article>
 </Base>
+
+<style>
+  .post-toc {
+    display: none;
+  }
+  /* Wide screens: prose on the left, a sticky outline on the right. */
+  @media (min-width: 80rem) {
+    .post-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 15rem;
+      gap: 4rem;
+    }
+    .post-toc {
+      display: block;
+    }
+  }
+  .toc-link {
+    display: block;
+    margin-left: -1px;
+    padding: 0.3125rem 0 0.3125rem 1rem;
+    border-left: 1px solid transparent;
+    color: var(--text-subtle);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+  .toc-sub {
+    padding-left: 1.75rem;
+  }
+  .toc-link:hover {
+    color: var(--text);
+  }
+  .toc-link[aria-current='true'] {
+    border-left-color: var(--accent);
+    color: var(--text);
+  }
+
+  .pager {
+    display: block;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .pager:hover {
+    border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+  }
+</style>

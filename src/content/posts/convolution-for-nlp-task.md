@@ -2,7 +2,7 @@
 title: "Convolution for NLP Task"
 slug: "convolution-for-nlp-task"
 date: "2024-05-27T19:00:49.679Z"
-description: "The blog explains about how 1D-Convolution Neural Network is used for Natural language processing problems, and how the inner calculation wil be happing."
+description: "How a 1D convolution runs over word embeddings, computed by hand and checked against PyTorch's nn.Conv1d, then a 1D-CNN sentiment classifier on IMDb reviews."
 topic: "Natural Language Processing"
 tags: ["Convolution Neural Network","Embeddings","IMDB Dataset"]
 featured: false

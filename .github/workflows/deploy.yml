@@ -24,8 +24,8 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      # Type-checks content and components, builds to dist/, then prints /resume to dist/resume.pdf
-      # with the runner's preinstalled Chrome. STRICT_CONTENT fails the build if a TODO placeholder remains.
+      # Type-checks content and components, then builds to dist/.
+      # STRICT_CONTENT fails the build if a TODO placeholder remains.
       - run: npm run build
         env:
           STRICT_CONTENT: '1'
