@@ -1,0 +1,47 @@
+[
+  {
+    "role": "Senior AI Engineer",
+    "org": "C5i",
+    "type": "Full-time",
+    "location": "India",
+    "start": "TODO: start month 2025",
+    "end": "Present",
+    "summary": "Enterprise multi-agent assistant on LangGraph and Databricks, with governance built in.",
+    "highlights": [
+      "Architecting a multi-agent assistant on LangGraph (specialized agents for retrieval, reasoning, and task execution) that holds sub-800ms average response latency across concurrent multi-tenant sessions and cut end-to-end task time 22%.",
+      "Serve agents on Databricks Model Serving with Unity Catalog lineage and access control on every agent-facing source; Genie-based agents cut analyst query turnaround 30%.",
+      "Built governance in from day one (model versioning, prompt and response auditing, access policies) plus Azure DevOps CI/CD that cut release cycle time 20% and deployment failures 15%."
+    ],
+    "stack": ["LangGraph", "Databricks", "Unity Catalog", "Azure DevOps"]
+  },
+  {
+    "role": "AI Engineer",
+    "org": "Zyoin",
+    "type": "Contract",
+    "location": "India",
+    "start": "Oct 2025",
+    "end": "TODO: end month 2025",
+    "summary": "Agentic RAG and synthetic data for enterprise analytics and customer intelligence.",
+    "highlights": [
+      "Designed and deployed an agentic RAG chatbot for enterprise knowledge, fed by Docling-based ingestion that turns unstructured documents into structured data.",
+      "Built an agentic synthetic-persona generator for financial survey datasets to improve downstream model robustness and segmentation analysis.",
+      "Ran the model lifecycle on Databricks, Azure, and MLflow: experiment tracking, versioning, and cloud deployment."
+    ],
+    "stack": ["RAG", "Docling", "Databricks", "MLflow"]
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "org": "Acranton",
+    "type": "Full-time",
+    "location": "Davangere, India",
+    "start": "Jan 2022",
+    "end": "Aug 2025",
+    "summary": "NLP, computer vision, and generative AI, from prototype to production.",
+    "highlights": [
+      "Fine-tuned transformer NLP models from 78% to 89% sentiment accuracy while cutting inference latency 30%; custom classifiers raised pipeline accuracy 18% and cut processing time 25%.",
+      "Shipped a Gemini-based extractor that turns unstructured healthcare forms into structured data in under 3 seconds, raising throughput 30%.",
+      "Integrated GPT-powered microservices into enterprise workflows, cutting manual content-creation time 40%."
+    ],
+    "stack": ["PyTorch", "Hugging Face", "Gemini API", "OpenAI API"]
+  }
+]

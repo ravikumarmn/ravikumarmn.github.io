@@ -1,0 +1,7 @@
+{
+  "paragraphs": [
+    "Most of my work sits between a model and a business process: agents that retrieve, reason, and act on enterprise data. The model call is rarely the hard part. The hard parts are the latency budget, the retrieval quality underneath every answer, and knowing when an answer is wrong. I treat evaluation, grounding, and audit trails as part of the system, not something added after launch.",
+    "I design for the constraints production will impose anyway: concurrent tenants, governed data, compliance reviews, release pipelines that have to stay green. I reach for fine-tuning when retrieval and prompting run out, not before. I started in classical NLP and computer vision, and that still shapes how I debug: look at the data first, then the model."
+  ],
+  "verify": "Both paragraphs are written in your voice from themes in the resume (governance, latency, evaluation, fine-tuning, NLP/CV background). Edit freely."
+}

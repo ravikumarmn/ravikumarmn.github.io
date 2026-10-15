@@ -1,0 +1,75 @@
+---
+import Icon from './Icon.astro';
+import ResumeLink from './ResumeLink.astro';
+import { profile } from '~/lib/site';
+---
+
+<section class="container-page pt-16 pb-14 sm:pt-24 md:pt-32 md:pb-20" aria-labelledby="hero-title">
+  {
+    profile.availability && (
+      <p class="enter eyebrow flex items-center gap-2.5 normal-case tracking-normal text-muted">
+        <span class="status-dot" aria-hidden="true" />
+        {profile.availability}
+      </p>
+    )
+  }
+  <h1
+    id="hero-title"
+    class="enter enter-1 mt-6 max-w-[21ch] text-hero leading-[1.03] font-semibold tracking-[-0.038em] text-text"
+  >
+    {profile.headline}
+  </h1>
+  <p class="enter enter-2 mt-6 max-w-[62ch] text-base text-muted sm:text-md sm:leading-relaxed">
+    {profile.subline}
+  </p>
+  <div class="enter enter-3 mt-10 flex flex-wrap items-center gap-3">
+    <ResumeLink variant="primary" />
+    <a href="#contact" class="btn btn-secondary btn-md">
+      <Icon name="mail" />
+      Contact
+    </a>
+    <span class="mx-1 hidden h-6 w-px bg-border sm:block" aria-hidden="true"></span>
+    <ul class="flex items-center gap-1" aria-label="Profiles">
+      {
+        profile.links.map((link) => (
+          <li>
+            <a href={link.href} class="social" aria-label={link.label} rel="me noopener">
+              <Icon name={link.icon} size={18} />
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a href={`mailto:${profile.email}`} class="social" aria-label="Email">
+          <Icon name="mail" size={18} />
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .status-dot {
+    position: relative;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  .social {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius);
+    color: var(--text-muted);
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
+  }
+  .social:hover {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+</style>

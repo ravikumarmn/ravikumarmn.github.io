@@ -1,0 +1,23 @@
+---
+/**
+ * Wraps copy that was inferred rather than stated in the résumé.
+ * In `astro dev` it is underlined so it's easy to review; in production it renders as plain text.
+ * Remove the wrapper once the claim is confirmed (or rewrite it).
+ */
+interface Props {
+  note?: string;
+}
+const { note } = Astro.props;
+const dev = import.meta.env.DEV;
+---
+
+{dev ? <span class="verify" title={note ? `Verify: ${note}` : 'Verify: inferred from résumé'}><slot /></span> : <slot />}
+
+<style>
+  .verify {
+    text-decoration: underline dotted var(--todo);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+    cursor: help;
+  }
+</style>

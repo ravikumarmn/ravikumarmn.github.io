@@ -1,0 +1,75 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+}
+const { entry } = Astro.props;
+const { title, summary, org, period, metrics, stack } = entry.data;
+---
+
+<a href={`/work/${entry.id}`} class="work-card group" data-reveal>
+  <div class="flex items-start justify-between gap-4">
+    <p class="eyebrow">{org} · {period}</p>
+    <Icon
+      name="arrow-up-right"
+      size={18}
+      class="text-subtle transition-[color,transform] duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
+    />
+  </div>
+  <h3 class="mt-4 text-lg leading-snug">{title}</h3>
+  <p class="mt-3 text-muted">{summary}</p>
+
+  <dl class="mt-8 grid grid-cols-2 gap-6 border-t border-border pt-6">
+    {
+      metrics.slice(0, 2).map((metric) => (
+        <div class="flex flex-col-reverse gap-1">
+          <dt class="text-sm text-subtle">{metric.label}</dt>
+          <dd class="font-mono text-xl font-medium tracking-[-0.03em] text-text tabular-nums">{metric.value}</dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  <ul class="mt-6 flex flex-wrap gap-1.5" aria-label="Stack">
+    {stack.slice(0, 4).map((item) => <li class="chip">{item}</li>)}
+  </ul>
+  <span class="sr-only">Read case study</span>
+</a>
+
+<style>
+  .work-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface-1);
+    transition:
+      border-color var(--dur) var(--ease-out),
+      box-shadow var(--dur) var(--ease-out),
+      translate var(--dur) var(--ease-out);
+  }
+  @media (min-width: 48rem) {
+    .work-card {
+      padding: 2rem;
+    }
+  }
+  .work-card:hover {
+    border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+    box-shadow: var(--shadow-lift);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .work-card:hover {
+      translate: 0 -2px;
+    }
+  }
+  .work-card dl {
+    margin-top: auto;
+  }
+  .work-card > p + dl {
+    margin-top: 2rem;
+  }
+</style>

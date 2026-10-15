@@ -1,0 +1,45 @@
+---
+import { metrics } from '~/lib/site';
+---
+
+<section class="container-page" aria-labelledby="impact-title">
+  <h2 id="impact-title" class="sr-only">Impact in numbers</h2>
+  <ul class="impact grid grid-cols-1 border-y border-border sm:grid-cols-2 lg:grid-cols-4" data-reveal>
+    {
+      metrics.map((metric) => (
+        <li class="impact-item py-7 sm:px-6 sm:py-8">
+          <p class="font-mono text-2xl font-medium tracking-[-0.04em] text-text tabular-nums md:text-3xl">
+            {metric.value}
+          </p>
+          <p class="mt-2 text-sm font-medium text-text">{metric.label}</p>
+          <p class="mt-1 text-sm text-subtle">{metric.context}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .impact-item + .impact-item {
+    border-top: 1px solid var(--border);
+  }
+  @media (min-width: 40rem) {
+    .impact-item + .impact-item {
+      border-top: 0;
+    }
+    .impact-item:nth-child(even) {
+      border-left: 1px solid var(--border);
+    }
+    .impact-item:nth-child(n + 3) {
+      border-top: 1px solid var(--border);
+    }
+  }
+  @media (min-width: 64rem) {
+    .impact-item:nth-child(n + 3) {
+      border-top: 0;
+    }
+    .impact-item + .impact-item {
+      border-left: 1px solid var(--border);
+    }
+  }
+</style>

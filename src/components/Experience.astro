@@ -1,0 +1,105 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import MaybeTodo from './MaybeTodo.astro';
+import { experience, profile } from '~/lib/site';
+---
+
+<section id="experience" class="section" aria-labelledby="experience-title">
+  <div class="container-page grid-12 gap-y-12">
+    <div class="col-span-12 lg:col-span-4">
+      <div class="lg:sticky lg:top-24">
+        <SectionHeader
+          id="experience"
+          eyebrow="Experience"
+          title="Where the work happened"
+          lede="Shipping models to production since 2022: classical NLP and computer vision first, then LLM and agentic systems on enterprise data platforms."
+        />
+      </div>
+    </div>
+
+    <ol class="timeline col-span-12 lg:col-span-8">
+      {
+        experience.map((job) => (
+          <li class="timeline-item" data-reveal>
+            <p class="font-mono text-xs text-subtle">
+              <MaybeTodo value={job.start} /> – <MaybeTodo value={job.end} />
+            </p>
+            <h3 class="mt-2 text-md leading-snug">
+              {job.role} <span class="text-muted">· {job.org}</span>
+            </h3>
+            <p class="mt-1 text-sm text-subtle">
+              {job.type} · {job.location}
+            </p>
+            <ul class="mt-4 space-y-3 text-muted">
+              {job.highlights.map((item) => (
+                <li class="bullet">{item}</li>
+              ))}
+            </ul>
+            <ul class="mt-5 flex flex-wrap gap-1.5" aria-label="Key tools">
+              {job.stack.map((item) => (
+                <li class="chip">{item}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+      <li class="timeline-item" data-reveal>
+        <p class="font-mono text-xs text-subtle">{profile.education.period}</p>
+        <h3 class="mt-2 text-md leading-snug">
+          {profile.education.degree} <span class="text-muted">· {profile.education.school}</span>
+        </h3>
+        {profile.education.note && <p class="mt-1 text-sm text-subtle">{profile.education.note}</p>}
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    position: relative;
+    display: grid;
+    gap: 3rem;
+    padding-left: 1.75rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.3125rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--border-strong), var(--border) 85%, transparent);
+  }
+  .timeline-item {
+    position: relative;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1.75rem;
+    top: 0.3rem;
+    width: 0.6875rem;
+    height: 0.6875rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: var(--bg);
+  }
+  .timeline-item:first-child::before {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .bullet {
+    position: relative;
+    padding-left: 1.125rem;
+    max-width: var(--prose-max);
+  }
+  .bullet::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.8em;
+    width: 0.5rem;
+    height: 1px;
+    background: var(--text-subtle);
+  }
+</style>

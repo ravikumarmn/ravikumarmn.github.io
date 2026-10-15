@@ -1,0 +1,12 @@
+---
+/** Renders a string from the JSON content, or a visible TODO when it starts with "TODO". */
+import Todo from './mdx/Todo.astro';
+import { isTodo, todoText } from '~/lib/site';
+
+interface Props {
+  value: string;
+}
+const { value } = Astro.props;
+---
+
+{isTodo(value) ? <Todo text={todoText(value)} /> : value}

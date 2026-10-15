@@ -1,0 +1,26 @@
+[
+  {
+    "value": "<800ms",
+    "label": "average response latency",
+    "context": "Multi-agent assistant, concurrent multi-tenant sessions",
+    "source": "Resume · C5i, bullet 2"
+  },
+  {
+    "value": "<120ms",
+    "label": "vector search latency",
+    "context": "Inside a 1.8s end-to-end agentic RAG copilot",
+    "source": "Resume · Projects, Enterprise GenAI Copilot"
+  },
+  {
+    "value": "−30%",
+    "label": "analyst query turnaround",
+    "context": "Natural-language agents over governed enterprise data",
+    "source": "Resume · C5i, bullet 5"
+  },
+  {
+    "value": "78→89%",
+    "label": "classification accuracy",
+    "context": "Fine-tuned transformer, with 30% lower inference latency",
+    "source": "Resume · Acranton, bullet 3"
+  }
+]

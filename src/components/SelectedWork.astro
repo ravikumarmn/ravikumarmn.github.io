@@ -1,0 +1,56 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import WorkCard from './WorkCard.astro';
+import { getWork } from '~/lib/collections';
+import { projects } from '~/lib/site';
+
+const work = await getWork();
+---
+
+<section id="work" class="section" aria-labelledby="work-title">
+  <div class="container-page">
+    <SectionHeader
+      id="work"
+      eyebrow="Selected work"
+      title="Systems I’ve designed and shipped"
+      lede="Each case study covers the problem, the constraints, the trade-offs, and the numbers."
+    />
+
+    <ul class="mt-12 grid gap-4 md:grid-cols-2 md:gap-5">
+      {
+        work.map((entry) => (
+          <li>
+            <WorkCard entry={entry} />
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-20" data-reveal>
+      <h3 class="eyebrow">Also built</h3>
+      <ul class="mt-4 grid border-t border-border md:grid-cols-2 md:gap-x-10">
+        {
+          projects.map((project) => (
+            <li class="border-b border-border py-4">
+              <div class="flex items-baseline justify-between gap-4">
+                <p class="font-medium text-text">
+                  {project.href ? (
+                    <a href={project.href} class="link">
+                      {project.title}
+                    </a>
+                  ) : (
+                    project.title
+                  )}
+                </p>
+                <p class="shrink-0 text-right font-mono text-xs text-muted">{project.metric}</p>
+              </div>
+              <p class="mt-1 text-sm text-subtle">
+                {project.detail} <span class="font-mono text-xs">{project.stack}</span>
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

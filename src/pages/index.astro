@@ -1,0 +1,23 @@
+---
+import Base from '~/layouts/Base.astro';
+import Hero from '~/components/Hero.astro';
+import ImpactStrip from '~/components/ImpactStrip.astro';
+import SelectedWork from '~/components/SelectedWork.astro';
+import Experience from '~/components/Experience.astro';
+import Writing from '~/components/Writing.astro';
+import Skills from '~/components/Skills.astro';
+import About from '~/components/About.astro';
+import Contact from '~/components/Contact.astro';
+import { personJsonLd } from '~/lib/jsonld';
+---
+
+<Base glow jsonLd={personJsonLd()}>
+  <Hero />
+  <ImpactStrip />
+  <SelectedWork />
+  <Experience />
+  <Writing />
+  <Skills />
+  <About />
+  <Contact />
+</Base>

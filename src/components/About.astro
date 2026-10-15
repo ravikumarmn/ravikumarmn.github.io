@@ -1,0 +1,30 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import Verify from './mdx/Verify.astro';
+import { about, profile } from '~/lib/site';
+---
+
+<section id="about" class="section" aria-labelledby="about-title">
+  <div class="container-page grid-12 gap-y-10">
+    <div class="col-span-12 lg:col-span-4">
+      <SectionHeader id="about" eyebrow="About" title="How I build AI systems" />
+    </div>
+    <div class="col-span-12 lg:col-span-8" data-reveal>
+      <div class="max-w-[var(--prose-max)] space-y-5 text-md leading-relaxed text-muted">
+        {
+          about.paragraphs.map((paragraph) => (
+            <p>
+              <Verify note={about.verify}>{paragraph}</Verify>
+            </p>
+          ))
+        }
+      </div>
+      <details class="mt-8 max-w-[var(--prose-max)] text-sm text-subtle">
+        <summary class="cursor-pointer text-muted hover:text-text">Coursework &amp; certifications</summary>
+        <ul class="mt-3 space-y-1">
+          {profile.certifications.map((cert) => <li>{cert}</li>)}
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>

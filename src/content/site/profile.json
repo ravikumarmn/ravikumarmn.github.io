@@ -1,0 +1,30 @@
+{
+  "name": "Ravikumar M. N.",
+  "shortName": "Ravikumar",
+  "initials": "RM",
+  "title": "Senior AI Engineer",
+  "company": "C5i",
+  "location": "India",
+  "availability": "Open to senior AI engineering roles",
+  "email": "ravikumarnaduvin@gmail.com",
+  "resume": "/resume.pdf",
+  "headline": "I build agentic AI systems that hold up in production: fast, governed, and measured.",
+  "subline": "Senior AI Engineer at C5i. I design multi-agent assistants, retrieval, and document intelligence on Databricks and Azure, plus the fine-tuning, evaluation, and CI/CD behind them.",
+  "seoDescription": "Ravikumar M. N., Senior AI Engineer. Production multi-agent systems, RAG, and document intelligence: sub-800ms multi-agent responses, governed by design.",
+  "links": [
+    { "label": "GitHub", "href": "https://github.com/ravikumarmn", "icon": "github", "handle": "ravikumarmn" },
+    { "label": "LinkedIn", "href": "https://www.linkedin.com/in/ravikumar-mn", "icon": "linkedin", "handle": "in/ravikumar-mn" }
+  ],
+  "education": {
+    "degree": "B.Tech, Electrical Engineering",
+    "school": "Central University of Karnataka",
+    "period": "2018 – 2022",
+    "note": "IEEE student member; started the Enigma AI Club."
+  },
+  "certifications": [
+    "Finetuning Large Language Models (DeepLearning.AI)",
+    "Building and Evaluating Advanced RAG Applications (DeepLearning.AI)",
+    "Deep Learning Specialization (Coursera)",
+    "Machine Learning Specialization (Coursera)"
+  ]
+}

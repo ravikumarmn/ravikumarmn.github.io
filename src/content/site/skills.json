@@ -1,0 +1,18 @@
+[
+  {
+    "group": "LLMs & agents",
+    "items": ["LangGraph", "LangChain", "LlamaIndex", "CrewAI", "Agentic RAG", "Hybrid retrieval", "Tool calling & SQL agents", "Databricks Genie", "Guardrails & audit logging", "Docling"]
+  },
+  {
+    "group": "Training & inference",
+    "items": ["PyTorch", "Hugging Face Transformers", "SFT", "PEFT / LoRA", "Sentence Transformers", "Contrastive learning", "scikit-learn", "Optuna", "Inference optimization"]
+  },
+  {
+    "group": "Data & MLOps",
+    "items": ["Databricks Model Serving", "Unity Catalog", "MLflow", "Weights & Biases", "TruLens", "Azure DevOps CI/CD", "Docker", "SonarQube", "Pinecone", "Weaviate", "Chroma", "Elasticsearch"]
+  },
+  {
+    "group": "Languages & infra",
+    "items": ["Python", "FastAPI", "Flask", "Pandas", "Streamlit", "AWS (EC2, S3, SageMaker)", "Azure"]
+  }
+]
