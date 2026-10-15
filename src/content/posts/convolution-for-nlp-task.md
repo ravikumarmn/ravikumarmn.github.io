@@ -9,7 +9,7 @@ featured: false
 math: false
 ---
 
-### Understanding 1D Convolution Neural Network & Verify.
+## Understanding 1D Convolution Neural Network & Verify.
 
 The blog explains about how 1D-Convolution Neural Network is used for Natural language processing problems, and how the inner calculation wil be happing.
  
@@ -102,7 +102,7 @@ with torch.no_grad():
 
 <hr>
 
-### Implementing 1D-CNN using IMDb dataset.
+## Implementing 1D-CNN using IMDb dataset.
 
 Previously, I have used LSTM to classify movie reviews, In this article, I will be using 1D Convolution Neural Network. and comparing the results between LSTM & 1D CNN.
 
@@ -116,11 +116,11 @@ We get embeddings from embedding layer, we pass them through several 1D convolut
 
 When we train it for 8 epoch, we got an training accuracy of 93.6, validation accuracy of 87.5.
 
-### Accuracy 
+## Accuracy 
 
 ![cnn_result_acc.png](../../assets/posts/data_science/convolution_for_nlp_task/cnn_result_acc.png)
 
-### Loss
+## Loss
 
 ![cnn_result_loss.png](../../assets/posts/data_science/convolution_for_nlp_task/cnn_result_loss.png)
 
@@ -130,7 +130,7 @@ from the above plot we can see that model has less overfitted. and alos the perf
 
 When we compare the model LSTM and 1D CNN, We got better performance in LSTM model. 
 
-### Summary :
+## Summary :
 
 We have understood, How 1D Convolution Neural Network can be used in text data and we also have gone through how weights and inputs are multiplied and summed visually. 
 

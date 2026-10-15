@@ -78,6 +78,7 @@
     line-height: 1.12;
     letter-spacing: -0.025em;
     text-wrap: balance;
+    overflow-wrap: break-word;
   }
 
   p {
@@ -223,6 +224,12 @@
     font-size: 0.8125rem;
     color: var(--text-muted);
     white-space: nowrap;
+  }
+
+  /* Grows the hit area of compact text links to ≥ 40px without changing layout. */
+  .tap {
+    padding-block: 0.6875rem;
+    margin-block: -0.6875rem;
   }
 
   .hairline {

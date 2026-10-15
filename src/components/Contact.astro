@@ -16,7 +16,7 @@ import { profile } from '~/lib/site';
 
     <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
       <div class="email-box">
-        <a href={`mailto:${profile.email}`} class="truncate font-mono text-sm text-text hover:text-accent-text sm:text-base">
+        <a href={`mailto:${profile.email}`} class="truncate py-3 font-mono text-sm text-text hover:text-accent-text sm:text-base">
           {profile.email}
         </a>
         <button type="button" class="copy-btn" data-copy={profile.email} aria-label="Copy email address">
@@ -32,7 +32,7 @@ import { profile } from '~/lib/site';
       {
         profile.links.map((link) => (
           <li>
-            <a href={link.href} class="group inline-flex items-center gap-2 text-muted hover:text-text" rel="me noopener">
+            <a href={link.href} class="tap group inline-flex items-center gap-2 text-muted hover:text-text" rel="me noopener">
               <Icon name={link.icon} />
               {link.label}
               <span class="font-mono text-xs text-subtle">{link.handle}</span>

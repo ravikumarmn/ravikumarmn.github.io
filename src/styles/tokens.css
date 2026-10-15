@@ -52,8 +52,8 @@
   --accent-soft: rgb(14 116 104 / 0.08);
   --accent-glow: rgb(14 116 104 / 0.09);
 
-  --todo: #a35c00;
-  --todo-soft: rgb(163 92 0 / 0.08);
+  --todo: #8a4b00;
+  --todo-soft: rgb(138 75 0 / 0.07);
 
   --selection: rgb(14 116 104 / 0.18);
   --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.8) inset, 0 12px 32px -18px rgb(17 18 20 / 0.18);
@@ -77,8 +77,8 @@
     --accent-contrast: #ffffff;
     --accent-soft: rgb(14 116 104 / 0.08);
     --accent-glow: rgb(14 116 104 / 0.09);
-    --todo: #a35c00;
-    --todo-soft: rgb(163 92 0 / 0.08);
+    --todo: #8a4b00;
+    --todo-soft: rgb(138 75 0 / 0.07);
     --selection: rgb(14 116 104 / 0.18);
     --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.8) inset, 0 12px 32px -18px rgb(17 18 20 / 0.18);
   }

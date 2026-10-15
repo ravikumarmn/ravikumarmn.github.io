@@ -47,7 +47,7 @@ pos_weight : recommends the pos_weight to be a ratio between the negative counts
 So, if len(dataset) is 1000, element 0 of your multihot encoding has 100 positive counts, then element 0 of the pos_weights_vector should be 900/100 = 9. That means that the binary crossent loss will behave as if the dataset contains 900 positive examples instead of 100.
 
 $$
-\text{pos_weight} = \frac{\sum (y == 0)}{\sum y}
+\text{pos\_weight} = \frac{\sum (y == 0)}{\sum y}
 $$
 
 This would solve the problem of imbalance dataset.

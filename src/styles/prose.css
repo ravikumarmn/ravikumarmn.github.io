@@ -5,6 +5,9 @@
   font-size: 1.0625rem;
   line-height: 1.75;
 }
+.prose :where(p, li, td, blockquote) {
+  overflow-wrap: anywhere;
+}
 .prose > * + * {
   margin-top: 1.25em;
 }
@@ -163,6 +166,8 @@
 }
 
 .prose .katex-display {
+  /* Contain KaTeX's visually-hidden MathML so it can't widen the page. */
+  position: relative;
   overflow-x: auto;
   overflow-y: hidden;
   padding-block: 0.25rem;

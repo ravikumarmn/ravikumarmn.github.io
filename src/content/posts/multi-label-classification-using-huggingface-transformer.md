@@ -21,7 +21,7 @@ Note that a research article can possibly have more than 1 topics. The research 
 - Quantitative Biology
 - Quantitative Finance
 
-### Evaluation Metric
+## Evaluation Metric
 
 ![f1_score.png](../../assets/posts/machine-learning/natural_language_processing/multi_label_classification/f1_score.png)
 
@@ -100,7 +100,7 @@ The job of a tokenizer is to prepare the model's inputs
 
 Before we jump into coding part, Understand how tokenizer works. 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/VFp38yj8h3A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[Watch the video on YouTube](https://www.youtube.com/watch?v=VFp38yj8h3A)
 
 **Tokenization pipeline** 
 

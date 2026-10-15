@@ -8,6 +8,18 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
 /** @param {string} pkg @param {string} file */
+/** Overflowing display math scrolls horizontally, so it must be keyboard-focusable. */
+function rehypeFocusableMath() {
+  /** @param {any} node */
+  const walk = (node) => {
+    if (node.type === 'element' && node.properties?.className?.includes?.('katex-display')) {
+      node.properties.tabIndex = 0;
+    }
+    node.children?.forEach(walk);
+  };
+  return walk;
+}
+
 const fontFile = (pkg, file) => `./node_modules/@fontsource-variable/${pkg}/files/${file}`;
 
 export default defineConfig({
@@ -22,10 +34,10 @@ export default defineConfig({
   markdown: {
     processor: unified({
       remarkPlugins: [[remarkMath, { singleDollarTextMath: false }]],
-      rehypePlugins: [[rehypeKatex, { strict: false, throwOnError: false }]],
+      rehypePlugins: [[rehypeKatex, { strict: false, throwOnError: false }], rehypeFocusableMath],
     }),
     shikiConfig: {
-      themes: { light: 'github-light', dark: 'github-dark-dimmed' },
+      themes: { light: 'github-light-default', dark: 'github-dark-dimmed' },
       defaultColor: false,
     },
   },
