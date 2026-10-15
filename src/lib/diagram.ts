@@ -36,6 +36,8 @@ export interface DiagramSpec {
   groups?: DiagramGroup[];
   nodes: DiagramNode[];
   edges: DiagramEdge[];
+  /** Points where wires split or merge, marked with a dot so branches read as one bus. */
+  junctions?: Point[];
 }
 
 export const NODE_H = 56;

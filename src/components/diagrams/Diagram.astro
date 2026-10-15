@@ -59,6 +59,11 @@ const id = spec.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   }
 
   {
+    !decorative &&
+      spec.junctions?.map(([cx, cy]) => <circle class="dg-junction" cx={cx} cy={cy} r="2.5" />)
+  }
+
+  {
     spec.nodes.map((node) => {
       const h = node.h ?? NODE_H;
       const cx = node.x + node.w / 2;

@@ -28,6 +28,8 @@ Most enterprise knowledge sits in documents nobody can query: PDFs, scanned form
 
 ## Approach
 
+<ArchitectureFigure spec={documentIntelligence} caption="The ingestion and query planes. All components are from the résumé; the edges between them are simplified." />
+
 ### Parse structure before reasoning
 
 Each document goes through **Docling** first, which recovers layout, tables, and text. The LLM then works on structured content instead of raw PDF bytes. <Verify note="Inferred rationale.">That is cheaper and more reliable than asking the model to also work out the page layout.</Verify>
@@ -39,8 +41,6 @@ An extraction agent **classifies** each document and **extracts** fields into **
 ### Conversational QA and summarization
 
 A RAG pipeline over the vector index answers questions and summarizes across ingested documents, with **1.5s grounded QA** latency on enterprise-scale collections.
-
-<ArchitectureFigure spec={documentIntelligence} caption="The ingestion and query planes. All components are from the résumé; the edges between them are simplified." />
 
 ### The same pattern in healthcare
 

@@ -7,15 +7,17 @@ const { title, tone = 'note' } = Astro.props;
 ---
 
 <aside class:list={['callout not-prose', tone]}>
-  <p class="eyebrow">{tone === 'tradeoff' ? 'Trade-off' : 'Note'}</p>
-  <p class="mt-1 font-medium text-text">{title}</p>
-  <div class="mt-2 text-muted"><slot /></div>
+  <p class="callout-kicker eyebrow">{tone === 'tradeoff' ? 'Trade-off' : 'Note'}</p>
+  <p class="callout-title">{title}</p>
+  <div class="callout-body"><slot /></div>
 </aside>
 
 <style>
   .callout {
-    margin-block: 2rem;
-    padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    /* Same measure as the body copy, so the aside reads as part of the argument. */
+    max-width: var(--prose-max);
+    margin-block: 2.25rem;
+    padding: 1.25rem 1.5rem 1.375rem;
     border: 1px solid var(--border);
     border-left: 2px solid var(--border-strong);
     border-radius: var(--radius);
@@ -24,7 +26,24 @@ const { title, tone = 'note' } = Astro.props;
   .callout.tradeoff {
     border-left-color: var(--accent);
   }
-  .callout :global(p + p) {
+  .callout.tradeoff .callout-kicker {
+    color: var(--accent-text);
+  }
+  .callout-title {
+    margin-top: 0.5rem;
+    color: var(--text);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+  .callout-body {
+    margin-top: 0.5rem;
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  .callout-body :global(p + p) {
     margin-top: 0.75rem;
   }
 </style>
