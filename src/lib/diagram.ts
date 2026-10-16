@@ -38,6 +38,8 @@ export interface DiagramSpec {
   edges: DiagramEdge[];
   /** Points where wires split or merge, marked with a dot so branches read as one bus. */
   junctions?: Point[];
+  /** Node label size in user units (default 13). Previews use larger labels so they stay readable when shrunk. */
+  labelSize?: number;
 }
 
 export const NODE_H = 56;

@@ -153,10 +153,147 @@ export const modelAdaptation: DiagramSpec = {
   junctions: [[200, 178], [500, 178]],
 };
 
-/** Each case study's diagram, keyed by its slug (used for the work-card previews). */
+/*
+ * Work-card previews: each case study's diagram cut down to its main path, with short labels
+ * drawn large enough to read at card size. The full figures live on the case study pages.
+ */
+const PREVIEW_H = 44;
+
+const multiAgentPreview: DiagramSpec = {
+  title: 'Governed multi-agent assistant preview',
+  description: multiAgentAssistant.description,
+  width: 700,
+  height: 400,
+  labelSize: 18,
+  groups: [{ x: 148, y: 6, w: 372, h: 316, label: 'LANGGRAPH · DATABRICKS' }],
+  nodes: [
+    { x: 0, y: 150, w: 125, h: PREVIEW_H, label: 'Guardrails' },
+    { x: 166, y: 150, w: 145, h: PREVIEW_H, label: 'Orchestrator', tone: 'accent' },
+    { x: 352, y: 50, w: 150, h: PREVIEW_H, label: 'Retrieval' },
+    { x: 352, y: 120, w: 150, h: PREVIEW_H, label: 'Genie (SQL)' },
+    { x: 352, y: 190, w: 150, h: PREVIEW_H, label: 'Reasoning' },
+    { x: 352, y: 260, w: 150, h: PREVIEW_H, label: 'Task actions' },
+    { x: 550, y: 50, w: 150, h: 114, label: 'Unity Catalog' },
+    { x: 550, y: 248, w: 150, h: 68, label: 'Tools · APIs', tone: 'quiet' },
+    { x: 0, y: 350, w: 125, h: PREVIEW_H, label: 'Audit log' },
+    { x: 166, y: 350, w: 145, h: PREVIEW_H, label: 'Governance' },
+    { x: 352, y: 350, w: 150, h: PREVIEW_H, label: 'Azure DevOps' },
+  ],
+  edges: [
+    { points: [[125, 172], [166, 172]] },
+    { points: [[311, 172], [332, 172], [332, 72], [352, 72]] },
+    { points: [[332, 142], [352, 142]] },
+    { points: [[332, 172], [332, 212], [352, 212]] },
+    { points: [[332, 212], [332, 282], [352, 282]] },
+    { points: [[502, 72], [550, 72]] },
+    { points: [[502, 142], [550, 142]] },
+    { points: [[502, 282], [550, 282]] },
+    { points: [[62, 194], [62, 350]], dashed: true, label: { text: 'every turn', at: [70, 338], anchor: 'start' } },
+    { points: [[238, 350], [238, 322]], dashed: true },
+    { points: [[427, 350], [427, 322]], dashed: true },
+  ],
+};
+
+const agenticRagPreview: DiagramSpec = {
+  title: 'Agentic RAG copilot preview',
+  description: agenticRag.description,
+  width: 480,
+  height: 220,
+  labelSize: 19,
+  nodes: [
+    { x: 0, y: 88, w: 104, h: PREVIEW_H, label: 'Planner', tone: 'accent' },
+    { x: 150, y: 14, w: 170, h: PREVIEW_H, label: 'Hybrid search' },
+    { x: 150, y: 88, w: 170, h: PREVIEW_H, label: 'SQL agent' },
+    { x: 150, y: 162, w: 170, h: PREVIEW_H, label: 'Tool calls' },
+    { x: 366, y: 88, w: 114, h: PREVIEW_H, label: 'Synthesis', tone: 'accent' },
+  ],
+  edges: [
+    { points: [[104, 110], [150, 110]] },
+    { points: [[127, 110], [127, 36], [150, 36]] },
+    { points: [[127, 110], [127, 184], [150, 184]] },
+    { points: [[320, 36], [343, 36], [343, 110]], plain: true },
+    { points: [[320, 184], [343, 184], [343, 110]], plain: true },
+    { points: [[320, 110], [366, 110]] },
+  ],
+};
+
+const documentIntelligencePreview: DiagramSpec = {
+  title: 'Agentic document intelligence preview',
+  description: documentIntelligence.description,
+  width: 480,
+  height: 220,
+  labelSize: 19,
+  nodes: [
+    { x: 0, y: 88, w: 96, h: PREVIEW_H, label: 'Docling', tone: 'accent' },
+    { x: 124, y: 88, w: 158, h: PREVIEW_H, label: 'LLM extraction' },
+    { x: 308, y: 14, w: 172, h: PREVIEW_H, label: 'JSON' },
+    { x: 308, y: 88, w: 172, h: PREVIEW_H, label: 'Knowledge graph' },
+    { x: 308, y: 162, w: 172, h: PREVIEW_H, label: 'Vector index' },
+  ],
+  edges: [
+    { points: [[96, 110], [124, 110]] },
+    { points: [[282, 110], [295, 110], [295, 36], [308, 36]] },
+    { points: [[295, 110], [308, 110]] },
+    { points: [[295, 110], [295, 184], [308, 184]] },
+  ],
+};
+
+const modelAdaptationPreview: DiagramSpec = {
+  title: 'Model adaptation pipeline preview',
+  description: modelAdaptation.description,
+  width: 480,
+  height: 220,
+  labelSize: 19,
+  nodes: [
+    { x: 0, y: 88, w: 128, h: PREVIEW_H, label: 'Domain data' },
+    { x: 166, y: 14, w: 150, h: PREVIEW_H, label: 'SFT + LoRA' },
+    { x: 166, y: 88, w: 150, h: PREVIEW_H, label: 'Embeddings' },
+    { x: 166, y: 162, w: 150, h: PREVIEW_H, label: 'Classifier' },
+    { x: 366, y: 88, w: 114, h: PREVIEW_H, label: 'Eval gate', tone: 'accent' },
+  ],
+  edges: [
+    { points: [[128, 110], [166, 110]] },
+    { points: [[147, 110], [147, 36], [166, 36]] },
+    { points: [[147, 110], [147, 184], [166, 184]] },
+    { points: [[316, 36], [341, 36], [341, 110]], plain: true },
+    { points: [[316, 184], [341, 184], [341, 110]], plain: true },
+    { points: [[316, 110], [366, 110]] },
+  ],
+};
+
+/** The lead card's preview below lg, where it is only as wide as the other cards. */
+const multiAgentCompactPreview: DiagramSpec = {
+  title: 'Governed multi-agent assistant compact preview',
+  description: multiAgentAssistant.description,
+  width: 480,
+  height: 220,
+  labelSize: 19,
+  nodes: [
+    { x: 0, y: 88, w: 140, h: PREVIEW_H, label: 'Orchestrator', tone: 'accent' },
+    { x: 162, y: 14, w: 150, h: PREVIEW_H, label: 'Retrieval' },
+    { x: 162, y: 88, w: 150, h: PREVIEW_H, label: 'Genie (SQL)' },
+    { x: 162, y: 162, w: 150, h: PREVIEW_H, label: 'Task actions' },
+    { x: 334, y: 88, w: 146, h: PREVIEW_H, label: 'Unity Catalog' },
+  ],
+  edges: [
+    { points: [[140, 110], [162, 110]] },
+    { points: [[151, 110], [151, 36], [162, 36]] },
+    { points: [[151, 110], [151, 184], [162, 184]] },
+    { points: [[312, 36], [323, 36], [323, 110]], plain: true },
+    { points: [[312, 184], [323, 184], [323, 110]], plain: true },
+    { points: [[312, 110], [334, 110]] },
+  ],
+};
+
+/** Compact previews for cards whose main preview only fits the wide layout. */
+export const compactDiagramsBySlug: Record<string, DiagramSpec> = {
+  'governed-multi-agent-assistant': multiAgentCompactPreview,
+};
+
+/** Each case study's work-card preview, keyed by its slug. */
 export const diagramsBySlug: Record<string, DiagramSpec> = {
-  'governed-multi-agent-assistant': multiAgentAssistant,
-  'agentic-rag-copilot': agenticRag,
-  'document-intelligence': documentIntelligence,
-  'model-adaptation': modelAdaptation,
+  'governed-multi-agent-assistant': multiAgentPreview,
+  'agentic-rag-copilot': agenticRagPreview,
+  'document-intelligence': documentIntelligencePreview,
+  'model-adaptation': modelAdaptationPreview,
 };

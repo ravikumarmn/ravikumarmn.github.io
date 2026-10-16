@@ -9,6 +9,7 @@ interface Props {
 }
 const { spec, decorative = false } = Astro.props;
 const id = spec.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+const labelSize = spec.labelSize ?? 13;
 ---
 
 <svg
@@ -71,7 +72,13 @@ const id = spec.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
       return (
         <g class:list={['dg-node', node.tone ?? 'default']}>
           <rect x={node.x} y={node.y} width={node.w} height={h} rx="8" />
-          <text class="dg-label" x={cx} y={node.sub ? cy - 3 : cy + 4.5} text-anchor="middle">
+          <text
+            class="dg-label"
+            x={cx}
+            y={node.sub ? cy - 3 : cy + labelSize * 0.35}
+            text-anchor="middle"
+            style={spec.labelSize ? `font-size:${labelSize}px` : undefined}
+          >
             {node.label}
           </text>
           {node.sub && (

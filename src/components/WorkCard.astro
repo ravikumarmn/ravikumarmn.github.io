@@ -3,7 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import Icon from './Icon.astro';
 import MetricValue from './MetricValue.astro';
 import Diagram from './diagrams/Diagram.astro';
-import { diagramsBySlug } from './diagrams/specs';
+import { compactDiagramsBySlug, diagramsBySlug } from './diagrams/specs';
 
 interface Props {
   entry: CollectionEntry<'work'>;
@@ -13,6 +13,8 @@ interface Props {
 const { entry, featured = false } = Astro.props;
 const { title, summary, org, period, metrics, stack } = entry.data;
 const diagram = diagramsBySlug[entry.id];
+// The lead card's full preview only fits beside the text (lg and up); below that it shows a compact one.
+const compact = featured ? compactDiagramsBySlug[entry.id] : undefined;
 const shownMetrics = metrics.slice(0, featured ? 3 : 2);
 const shownStack = stack.slice(0, featured ? 5 : 3);
 ---
@@ -21,7 +23,18 @@ const shownStack = stack.slice(0, featured ? 5 : 3);
   {
     diagram && (
       <div class="work-preview">
-        <Diagram spec={diagram} decorative />
+        {compact ? (
+          <>
+            <div class="preview-compact">
+              <Diagram spec={compact} decorative />
+            </div>
+            <div class="preview-wide">
+              <Diagram spec={diagram} decorative />
+            </div>
+          </>
+        ) : (
+          <Diagram spec={diagram} decorative />
+        )}
       </div>
     )
   }
@@ -95,9 +108,9 @@ const shownStack = stack.slice(0, featured ? 5 : 3);
     outline-offset: 2px;
   }
 
-  /* The case study's own architecture diagram, shrunk to a schematic. */
+  /* A cut-down version of the case study's architecture diagram, with labels sized to read at card size. */
   .work-preview {
-    height: 8.5rem;
+    height: 10rem;
     padding: 1rem 1.25rem;
     border-bottom: 1px solid var(--border);
     background:
@@ -106,8 +119,23 @@ const shownStack = stack.slice(0, featured ? 5 : 3);
   }
   @media (min-width: 48rem) {
     .work-preview {
-      height: 11rem;
-      padding: 1.5rem 2rem;
+      height: 12rem;
+      padding: 1.25rem 1.5rem;
+    }
+  }
+  .preview-compact,
+  .preview-wide {
+    height: 100%;
+  }
+  .preview-wide {
+    display: none;
+  }
+  @media (min-width: 64rem) {
+    .preview-compact {
+      display: none;
+    }
+    .preview-wide {
+      display: block;
     }
   }
   .work-preview :global(.diagram) {
@@ -115,10 +143,10 @@ const shownStack = stack.slice(0, featured ? 5 : 3);
     height: 100%;
     transition: transform var(--dur-reveal) var(--ease-out);
   }
-  /* Text is unreadable at this scale, so the preview is a pure schematic: boxes, wires, and
-     the system's key component in the accent color. Strokes stay 1px whatever the scale. */
-  .work-preview :global(text) {
-    display: none;
+  /* Strokes stay 1px whatever the scale; group and wire labels grow with the node labels. */
+  .work-preview :global(.dg-group text),
+  .work-preview :global(.dg-edge text) {
+    font-size: 15px;
   }
   .work-preview :global(rect),
   .work-preview :global(polyline) {
