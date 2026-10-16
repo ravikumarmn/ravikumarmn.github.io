@@ -4,11 +4,11 @@ import SectionHeader from './SectionHeader.astro';
 import { building } from '~/lib/site';
 ---
 
-<section id="building" class="section pt-0 md:pt-0" aria-labelledby="building-title">
+<section id="projects" class="section pt-0 md:pt-0" aria-labelledby="projects-title">
   <div class="container-page">
     <SectionHeader
-      id="building"
-      eyebrow="Now building"
+      id="projects"
+      eyebrow="Projects"
       title="Open projects, published as I measure them"
       lede="Evaluation, fine-tuning and serving, and reinforcement learning. Each one builds on work I’ve done in production and is rebuilt in public on a single 24 GB GPU, with numbers anyone can reproduce."
     />
@@ -17,7 +17,7 @@ import { building } from '~/lib/site';
       {
         building.map((project, i) => (
           <li data-reveal>
-            <a href={`/building#${project.slug}`} class="build-card group">
+            <a href={`/projects#${project.slug}`} class="build-card group">
               <span class="flex items-center justify-between gap-4">
                 <span class="font-mono text-xs text-subtle tabular-nums">0{i + 1}</span>
                 <Icon

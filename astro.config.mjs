@@ -68,10 +68,12 @@ export default defineConfig({
     '/archives': '/writing',
     '/tags': '/writing',
     '/categories': '/writing',
+    // The projects page was first published at /building.
+    '/building': '/projects',
   },
   integrations: [
     mdx(),
-    sitemap({ filter: (page) => !/\/(404|about|archives|tags|categories|resume)$/.test(page) }),
+    sitemap({ filter: (page) => !/\/(404|about|archives|tags|categories|resume|building)$/.test(page) }),
   ],
   vite: { plugins: [tailwindcss()] },
 });

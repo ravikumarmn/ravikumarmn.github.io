@@ -98,6 +98,7 @@ export const todoText = (value: string) => value.replace(/^\s*TODO:?\s*/, '');
  */
 export const navLinks: { href: string; label: string; id?: string; page?: RegExp }[] = [
   { href: '/#work', label: 'Work', id: 'work' },
+  { href: '/#projects', label: 'Projects', id: 'projects', page: /^\/projects$/ },
   { href: '/#experience', label: 'Experience', id: 'experience' },
   { href: '/writing', label: 'Writing', page: /^\/(writing|blogs)(\/|$)/ },
   { href: '/#about', label: 'About', id: 'about' },
