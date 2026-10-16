@@ -1,13 +1,11 @@
 ---
 import Base from '~/layouts/Base.astro';
 import { building } from '~/lib/site';
-
-const isActive = (status: string) => status === 'Starting' || status === 'In progress';
 ---
 
 <Base
   title="Now building"
-  description="Open projects in progress: a governed agent benchmark, fine-tuned open models served on one GPU, and reinforcement learning for text-to-SQL."
+  description="Open projects that rebuild production work in public: evaluating LLM applications, fine-tuning and serving small open models, and reinforcement learning for reasoning and instruction following."
   glow
 >
   <section class="container-page pt-12 pb-24 md:pt-20" aria-labelledby="building-title">
@@ -17,12 +15,13 @@ const isActive = (status: string) => status === 'Starting' || status === 'In pro
         Open projects, published as I measure them
       </h1>
       <p class="enter enter-2 mt-5 text-md leading-relaxed text-muted">
-        Three projects, each building on the last: an agent benchmark, open models fine-tuned and served for it, and
-        reinforcement learning on a task with a checkable answer. Everything runs on a single 24&nbsp;GB GPU.
+        Three areas every team shipping LLMs runs into: evaluation, fine-tuning and serving, and reinforcement
+        learning. Each project builds on work I’ve done in production and rebuilds it in public, with code and numbers
+        anyone can reproduce. Open models run on a single 24&nbsp;GB GPU.
       </p>
       <p class="enter enter-3 mt-4 text-muted">
-        These are plans, not results. Each one gets a case study when it ships, with its numbers, methods, and
-        confidence intervals, including where my approach loses.
+        Results are added as they are measured, with methods and confidence intervals, including where my approach
+        loses. Each project becomes a full case study when it ships.
       </p>
     </header>
 
@@ -32,11 +31,18 @@ const isActive = (status: string) => status === 'Starting' || status === 'In pro
           <li id={project.slug} class="project" data-reveal>
             <div class="project-meta">
               <span class="font-mono text-xs text-subtle tabular-nums">0{i + 1}</span>
-              <span class:list={['status', { 'is-active': isActive(project.status) }]}>{project.status}</span>
             </div>
             <div class="min-w-0">
               <h2 class="text-xl leading-snug text-pretty md:text-[1.625rem]">{project.title}</h2>
               <p class="mt-4 max-w-[var(--prose-max)] text-md leading-relaxed text-text">{project.summary}</p>
+              <p class="builds-on mt-5 max-w-[var(--prose-max)] text-muted">
+                <span class="eyebrow">Builds on</span>
+                <span>
+                  <a href={project.buildsOn.href} class="link">
+                    {project.buildsOn.text}
+                  </a>
+                </span>
+              </p>
 
               <div class="mt-8 grid gap-8 lg:grid-cols-2">
                 <div class="lg:col-span-2">
@@ -105,28 +111,16 @@ const isActive = (status: string) => status === 'Starting' || status === 'In pro
       padding-top: 0.5rem;
     }
   }
-  .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-caps);
-    text-transform: uppercase;
-    color: var(--text-subtle);
+  .builds-on {
+    display: grid;
+    gap: 0.375rem;
+    padding: 0.875rem 1rem;
+    border-left: 2px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 var(--radius) var(--radius) 0;
   }
-  .status::before {
-    content: '';
-    width: 0.4rem;
-    height: 0.4rem;
-    border-radius: 999px;
-    border: 1px solid currentColor;
-  }
-  .status.is-active {
-    color: var(--accent-text);
-  }
-  .status.is-active::before {
-    background: currentColor;
+  .builds-on .link {
+    cursor: pointer;
   }
   .list {
     display: grid;

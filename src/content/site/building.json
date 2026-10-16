@@ -1,62 +1,104 @@
 [
   {
-    "slug": "governed-agent-bench",
-    "status": "Starting",
-    "title": "governed-agent-bench",
-    "summary": "An open benchmark for the question enterprises ask before they ship an agent: does it finish the job without leaking data or breaking access rules?",
+    "slug": "llm-app-evals",
+    "title": "Evaluating LLM applications before they ship",
+    "summary": "How do you know an LLM system is ready for production? An open evaluation suite for retrieval, tool use, and safety that compares models and designs on quality, failures, latency, and cost.",
+    "buildsOn": {
+      "text": "the RAG and tool-using systems I’ve shipped, where access control, audit logging, and release evaluation were requirements.",
+      "href": "/work/governed-multi-agent-assistant"
+    },
     "approach": [
-      "A fictional company with 3 tenants, role-based permissions, a SQL database, documents, and tools for querying, search, email, ticket updates, and export.",
-      "60 tasks: 30 normal requests and 30 traps (another tenant’s data, requests the user’s role doesn’t allow, and instructions planted inside documents).",
-      "Two agents compared: a plain tool-calling agent with the rules in its prompt, and a governed LangGraph agent that enforces permissions inside the tools.",
-      "Run across Claude, GPT, Gemini, and one open model, 3 runs each."
+      "Three workloads on one fictional company: question answering over its documents (RAG), multi-step tasks using tools and a SQL database, and adversarial cases (prompt injection, out-of-scope requests, and other users’ data).",
+      "About 50 hand-written cases per workload, with reference answers, kept separate from anything used to tune prompts.",
+      "Two designs compared: rules written in the prompt, and checks enforced in code (retrieval filters, permission-checked tools, output validation).",
+      "Run across Claude, GPT, Gemini, and one open model served locally, 3 runs each."
     ],
     "measures": [
-      "Task success",
-      "Policy violations, read from the audit log instead of judged by an LLM",
-      "How often planted instructions get followed",
-      "p50 / p95 latency per stage, and cost per task",
+      "Answer correctness, and whether each answer is supported by the retrieved text",
+      "Tool-task success and policy violations, read from logs instead of judged by an LLM",
+      "How closely the LLM judge agrees with my own labels on a sample",
+      "p50 / p95 latency and cost per request",
       "95% confidence intervals on every score"
     ],
-    "publishes": ["Public repo that reproduces every number with one command", "Results table and write-up", "Short walkthrough of one agent trace"],
-    "stack": ["LangGraph", "SQLite", "OpenTelemetry", "Python"]
+    "publishes": [
+      "Public repo that reproduces every number with one command",
+      "Results table and write-up",
+      "Short walkthrough of failure cases"
+    ],
+    "stack": [
+      "Python",
+      "LangGraph",
+      "OpenTelemetry",
+      "SQLite",
+      "vLLM"
+    ]
   },
   {
-    "slug": "open-models-for-governed-agents",
-    "status": "Next",
-    "title": "Fine-tuned open models for governed agents",
-    "summary": "Can a fine-tuned 8B-class open model, served on a single 24 GB GPU, get close to frontier APIs on that benchmark, and at what latency and cost?",
+    "slug": "open-model-fine-tuning",
+    "title": "Fine-tuning and serving small open models",
+    "summary": "When does a fine-tuned small open model beat prompting a frontier API? Measured on quality, latency, and cost, on one 24 GB GPU.",
+    "buildsOn": {
+      "text": "my production fine-tuning work: SFT and LoRA for open-source LLMs, contrastive embedding models, and transformer classifiers taken from 78% to 89% accuracy.",
+      "href": "/work/model-adaptation"
+    },
     "approach": [
-      "QLoRA fine-tuning of Qwen, Llama, and Gemma on a separate set of training tasks. The 60 benchmark tasks are held out entirely.",
-      "Training data from filtered teacher runs: only traces that succeed with zero policy violations.",
-      "Served with vLLM as a LoRA adapter, in BF16, and quantized (AWQ, plus GPTQ or FP8), then load-tested at 1 to 32 concurrent users.",
+      "Three task types where teams usually prompt a frontier API: structured extraction to JSON, tool calling, and classification.",
+      "LoRA and QLoRA fine-tuning of Qwen, Llama, and Gemma models in the 4–12B range, with held-out test sets that are never used for training.",
+      "Served with vLLM as LoRA adapters, in BF16, and quantized (AWQ, plus GPTQ or FP8), then load-tested at 1 to 32 concurrent users.",
       "A general-skills check before and after fine-tuning, to catch regressions."
     ],
     "measures": [
-      "Task success and violation rate against the frontier APIs",
+      "Task accuracy against a frontier API on the same test sets",
+      "How much training data each task needs",
       "Quality after quantization",
       "Time to first token, p95 latency, and throughput",
-      "Cost per 1,000 tasks, with the assumptions stated"
+      "Cost per 1,000 requests, with the assumptions stated"
     ],
-    "publishes": ["Adapters with model cards on Hugging Face", "The synthetic training dataset", "Train, serve, and load-test scripts", "Write-up"],
-    "stack": ["TRL", "QLoRA", "vLLM", "AWQ", "Qwen · Llama · Gemma"]
+    "publishes": [
+      "Adapters with model cards on Hugging Face",
+      "Training and evaluation datasets",
+      "Train, serve, and load-test scripts",
+      "Write-up"
+    ],
+    "stack": [
+      "TRL",
+      "LoRA / QLoRA",
+      "vLLM",
+      "AWQ",
+      "Qwen · Llama · Gemma"
+    ]
   },
   {
-    "slug": "sql-grpo",
-    "status": "Planned",
-    "title": "sql-grpo: reinforcement learning for text-to-SQL",
-    "summary": "Does GRPO with an execution-based reward improve a small model’s SQL beyond supervised fine-tuning, and how does the model try to game the reward?",
+    "slug": "rl-reasoning",
+    "title": "Reinforcement learning for reasoning and instruction following",
+    "summary": "Can reinforcement learning (GRPO) make a small open model reason and follow instructions better than supervised fine-tuning alone, and how does the model learn to game the reward?",
+    "buildsOn": {
+      "text": "my production fine-tuning work: SFT and LoRA training pipelines with evaluation built in, taken one step further from supervised learning to reinforcement learning.",
+      "href": "/work/model-adaptation"
+    },
     "approach": [
-      "A 3B instruct model trained with GRPO, starting from a supervised fine-tuned checkpoint.",
-      "Reward: the query’s result matches the gold query’s result, plus a small reward for valid SQL.",
-      "Evaluated on BIRD mini-dev against two baselines, the prompted base model and SFT alone, across 3 seeds.",
-      "Runs on one 24 GB GPU."
+      "Two general skills where a program can check the answer: math reasoning (reward for the correct final answer) and following instructions with checkable rules such as length limits, required formats, and keywords.",
+      "A 3–4B open instruct model trained with GRPO and LoRA, compared against the prompted base model and supervised fine-tuning alone, across 3 seeds.",
+      "Scored on standard held-out test sets (GSM8K test, MATH-500, and IFEval) that are never used for training.",
+      "Runs on one 24 GB GPU, with vLLM generating the training samples."
     ],
     "measures": [
-      "Execution accuracy, overall and by difficulty",
-      "Reward curves",
+      "Benchmark accuracy for each method, with confidence intervals",
+      "A general-skills check, to see whether gains on one skill cost another",
+      "Reward curves, answer length, and training cost compared with supervised fine-tuning",
       "Reward hacking: what the model learned that earned reward without being right, and how it was closed"
     ],
-    "publishes": ["Repo and training configs", "Model on Hugging Face", "Write-up"],
-    "stack": ["TRL", "GRPO", "SQLite", "BIRD"]
+    "publishes": [
+      "Repo and training configs",
+      "Models on Hugging Face",
+      "Write-up"
+    ],
+    "stack": [
+      "TRL",
+      "GRPO",
+      "LoRA",
+      "vLLM",
+      "Qwen"
+    ]
   }
 ]

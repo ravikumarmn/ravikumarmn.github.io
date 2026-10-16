@@ -10,18 +10,16 @@ import { building } from '~/lib/site';
       id="building"
       eyebrow="Now building"
       title="Open projects, published as I measure them"
-      lede="Agents, fine-tuning, serving, and reinforcement learning, each built in public on a single 24 GB GPU. Results go up as they are measured, including where my approach loses."
+      lede="Evaluation, fine-tuning and serving, and reinforcement learning. Each one builds on work I’ve done in production and is rebuilt in public on a single 24 GB GPU, with numbers anyone can reproduce."
     />
 
     <ol class="mt-10 grid gap-4 md:mt-12 md:grid-cols-3 md:gap-5">
       {
-        building.map((project) => (
+        building.map((project, i) => (
           <li data-reveal>
             <a href={`/building#${project.slug}`} class="build-card group">
               <span class="flex items-center justify-between gap-4">
-                <span class:list={['status', { 'is-active': project.status === 'Starting' || project.status === 'In progress' }]}>
-                  {project.status}
-                </span>
+                <span class="font-mono text-xs text-subtle tabular-nums">0{i + 1}</span>
                 <Icon
                   name="arrow-right"
                   size={16}
@@ -55,28 +53,5 @@ import { building } from '~/lib/site';
   .build-card:hover {
     border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
     box-shadow: var(--shadow-lift);
-  }
-  .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-caps);
-    text-transform: uppercase;
-    color: var(--text-subtle);
-  }
-  .status::before {
-    content: '';
-    width: 0.4rem;
-    height: 0.4rem;
-    border-radius: 999px;
-    border: 1px solid currentColor;
-  }
-  .status.is-active {
-    color: var(--accent-text);
-  }
-  .status.is-active::before {
-    background: currentColor;
   }
 </style>

@@ -64,12 +64,13 @@ const Project = z.object({
 
 const About = z.object({ paragraphs: z.array(z.string()), verify: z.string().optional() });
 
-/** Projects in progress. Plans only: no results are claimed until they are measured. */
+/** Projects in progress, each tied to real experience. No results are claimed until they are measured. */
 const BuildingProject = z.object({
   slug: z.string(),
-  status: z.enum(['Starting', 'In progress', 'Next', 'Planned', 'Shipped']),
   title: z.string(),
   summary: z.string(),
+  /** The real work this project builds on, linked to its case study. */
+  buildsOn: z.object({ text: z.string(), href: z.string() }),
   approach: z.array(z.string()).min(1),
   measures: z.array(z.string()).min(1),
   publishes: z.array(z.string()).min(1),
