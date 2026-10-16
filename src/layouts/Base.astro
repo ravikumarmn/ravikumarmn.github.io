@@ -20,7 +20,7 @@ const { glow = false, ...seo } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Runs before first paint: applies the saved or system theme so there is no flash. -->
+    <!-- Runs before first paint: applies the saved theme, or light by default, so there is no flash. -->
     <script is:inline>
       (() => {
         const root = document.documentElement;
@@ -29,15 +29,12 @@ const { glow = false, ...seo } = Astro.props;
         try {
           theme = localStorage.getItem('theme');
         } catch {}
-        if (theme !== 'light' && theme !== 'dark') {
-          theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-        }
+        if (theme !== 'light' && theme !== 'dark') theme = 'light';
         root.dataset.theme = theme;
       })();
     </script>
-    <meta name="color-scheme" content="dark light" />
-    <meta name="theme-color" content="#0b0c0e" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#fafaf9" />
     <Font cssVariable="--font-geist" preload />
     <Font cssVariable="--font-geist-mono" preload />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />

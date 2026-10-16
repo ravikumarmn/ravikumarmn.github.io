@@ -27,15 +27,6 @@ syncTheme(root.dataset.theme === 'light' ? 'light' : 'dark');
 toggles.forEach((button) => {
   button.addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true));
 });
-// Follow OS changes until the visitor picks a theme explicitly.
-matchMedia('(prefers-color-scheme: light)').addEventListener('change', (event) => {
-  let saved: string | null = null;
-  try {
-    saved = localStorage.getItem('theme');
-  } catch {}
-  if (!saved) setTheme(event.matches ? 'light' : 'dark', false);
-});
-
 // Header border/blur once the page has scrolled.
 const header = document.querySelector<HTMLElement>('[data-header]');
 if (header) {
