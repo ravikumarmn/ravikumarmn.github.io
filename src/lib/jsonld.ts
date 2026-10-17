@@ -13,7 +13,7 @@ export function personJsonLd() {
         '@type': 'Person',
         '@id': PERSON_ID,
         name: profile.name,
-        alternateName: 'Ravikumar Naduvin',
+        alternateName: 'Ravikumar M. N.',
         url: SITE,
         email: `mailto:${profile.email}`,
         jobTitle: profile.title,

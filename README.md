@@ -1,6 +1,6 @@
 # ravikumarmn.github.io
 
-Personal site of Ravikumar M. N., Senior AI Engineer. Static Astro site deployed to GitHub Pages.
+Personal site of Ravikumar Naduvin, Senior AI Engineer. Static Astro site deployed to GitHub Pages.
 
 ## Develop
 

@@ -1,7 +1,7 @@
 {
-  "name": "Ravikumar M. N.",
+  "name": "Ravikumar Naduvin",
   "shortName": "Ravikumar",
-  "initials": "RM",
+  "initials": "RN",
   "title": "Senior AI Engineer",
   "company": "C5i",
   "location": "India",
@@ -10,7 +10,7 @@
   "resume": "https://drive.google.com/file/d/15pZ_vc9nsAT1Wo9ld3PBmUD5Tumd7yJP/view?usp=sharing",
   "headline": "I build agentic AI systems that hold up in production: fast, governed, and auditable.",
   "subline": "Multi-agent assistants, hybrid retrieval, and document intelligence on Databricks and Azure, from fine-tuning to CI/CD.",
-  "seoDescription": "Ravikumar M. N., Senior AI Engineer. Production multi-agent systems, RAG, and document intelligence: sub-800ms multi-agent responses, governed by design.",
+  "seoDescription": "Ravikumar Naduvin, Senior AI Engineer. Production multi-agent systems, RAG, and document intelligence: sub-800ms multi-agent responses, governed by design.",
   "links": [
     { "label": "GitHub", "href": "https://github.com/ravikumarmn", "icon": "github", "handle": "ravikumarmn" },
     { "label": "LinkedIn", "href": "https://www.linkedin.com/in/ravikumar-mn", "icon": "linkedin", "handle": "in/ravikumar-mn" }
