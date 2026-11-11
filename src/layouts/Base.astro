@@ -44,6 +44,16 @@ const { glow = false, ...seo } = Astro.props;
     <meta name="google-site-verification" content="YWEM8XVSFnwJrGq0fpQOcROSoo5JyBgBRwDfT4UN2oM" />
     <meta name="generator" content={Astro.generator} />
     <Seo {...seo} />
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-21VX65TTS3"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-21VX65TTS3');
+    </script>
     <slot name="head" />
   </head>
   <body class="relative flex min-h-dvh flex-col">
